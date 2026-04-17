@@ -4,721 +4,610 @@ import {
   packageCompareRows, resumeService, won,
 } from "./data/products";
 
-// ─── 색상 팔레트 ────────────────────────────────────────────
-const BRAND = {
-  navy:   "#1A2B4A",
-  blue:   "#185FA5",
-  blueL:  "#E6F1FB",
-  green:  "#3B6D11",
-  greenL: "#EAF3DE",
-  amber:  "#854F0B",
-  amberL: "#FFF8EE",
-  purple: "#3C3489",
-  purpleL:"#EEEDFE",
-  pink:   "#72243E",
-  pinkL:  "#FBEAF0",
-  teal:   "#0F6E56",
-  tealL:  "#E1F5EE",
-  gray:   "#444441",
-  grayL:  "#F1EFE8",
+const C = {
+  navy:    "#17253D",
+  navyD:   "#0F1A2E",
+  blue:    "#1C6BCC",
+  blueL:   "#EBF3FF",
+  blueMid: "#4A90D9",
+  green:   "#1E6B3C",
+  greenL:  "#E8F5EE",
+  amber:   "#7A4400",
+  amberL:  "#FFF4E6",
+  purple:  "#3D2FA0",
+  purpleL: "#EFEDFC",
+  pink:    "#8B1A4A",
+  pinkL:   "#FCEEF4",
+  teal:    "#0B6657",
+  tealL:   "#E4F4F1",
+  gray:    "#6B7280",
+  grayL:   "#F3F4F6",
+  border:  "#E5E9F0",
+  white:   "#FFFFFF",
+  bg:      "#F5F7FA",
+  text:    "#17253D",
 };
 
-const TIER_COLOR = {
-  emperor: { text: BRAND.blue,   bg: BRAND.blueL,   border: "#B5D4F4" },
-  lord:    { text: BRAND.green,  bg: BRAND.greenL,  border: "#C0DD97" },
-  knight:  { text: BRAND.amber,  bg: BRAND.amberL,  border: "#FAC775" },
-  sword:   { text: BRAND.blue,   bg: BRAND.blueL,   border: "#B5D4F4" },
-  shield:  { text: BRAND.green,  bg: BRAND.greenL,  border: "#C0DD97" },
-  armor:   { text: BRAND.amber,  bg: BRAND.amberL,  border: "#FAC775" },
-};
+const fw = (n) => n?.toLocaleString("ko-KR") + "원";
 
-// ─── 공통 UI 파트 ─────────────────────────────────────────
+// ─── 공통 UI ─────────────────────────────────────────────
 
-const Badge = ({ label, color, bg }) => (
-  <span style={{
-    display: "inline-block", fontSize: 11, fontWeight: 600,
-    padding: "2px 9px", borderRadius: 5,
-    color: color || BRAND.blue, background: bg || BRAND.blueL,
-    letterSpacing: "0.03em",
-  }}>{label}</span>
+const Tag = ({ label, color = C.blue, bg = C.blueL }) => (
+  <span style={{ display:"inline-block", fontSize:11, fontWeight:700, padding:"3px 10px", borderRadius:4, color, background:bg, letterSpacing:"0.05em" }}>{label}</span>
 );
 
-const SectionLabel = ({ children }) => (
-  <p style={{
-    fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-    textTransform: "uppercase", color: BRAND.blue,
-    marginBottom: 8, opacity: 0.7,
-  }}>{children}</p>
+const Chip = ({ children, color = C.blue, bg = C.blueL }) => (
+  <span style={{ display:"inline-block", fontSize:11, padding:"2px 8px", borderRadius:20, background:bg, color, fontWeight:600 }}>{children}</span>
 );
 
-const Card = ({ children, style = {}, featured = false }) => (
-  <div style={{
-    background: "#fff",
-    border: featured ? `2px solid ${BRAND.blue}` : "1px solid #E8ECF2",
-    borderRadius: 14, padding: "1.1rem 1.25rem",
-    ...style,
-  }}>{children}</div>
+const NavBtn = ({ dir, onClick, disabled }) => (
+  <button onClick={onClick} disabled={disabled} style={{
+    width:42, height:42, borderRadius:"50%",
+    border:`1.5px solid ${disabled ? C.border : C.navy}`,
+    background: disabled ? C.grayL : C.navy,
+    color: disabled ? C.gray : C.white,
+    cursor: disabled ? "default" : "pointer",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    fontSize:16, fontWeight:700, flexShrink:0, transition:"all .15s",
+  }}>{dir === "prev" ? "←" : "→"}</button>
 );
 
-const PriceTable = ({ headers, rows, note }) => (
-  <div style={{ overflowX: "auto" }}>
-    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
-      <thead>
-        <tr>
-          {headers.map((h, i) => (
-            <th key={i} style={{
-              textAlign: i === 0 ? "left" : "center",
-              padding: "8px 10px", background: "#F7F9FC",
-              color: "#6B7280", fontWeight: 600, fontSize: 11.5,
-              borderBottom: "1px solid #E8ECF2",
-              whiteSpace: "nowrap",
-            }}>{h}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, ri) => (
-          <tr key={ri} style={{ borderBottom: ri < rows.length - 1 ? "1px solid #F0F3F8" : "none" }}>
-            {row.map((cell, ci) => (
-              <td key={ci} style={{
-                padding: "8px 10px",
-                textAlign: ci === 0 ? "left" : "center",
-                color: cell?.highlight ? BRAND.blue : (cell?.muted ? "#9CA3AF" : "#374151"),
-                fontWeight: cell?.highlight ? 600 : 400,
-                fontSize: cell?.small ? 11 : 12.5,
-                whiteSpace: "nowrap",
-              }}>
-                {cell?.value ?? cell}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    {note && <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 8 }}>{note}</p>}
+const DotBtn = ({ active, onClick }) => (
+  <button onClick={onClick} style={{
+    width: active ? 20 : 7, height:7, borderRadius:4,
+    background: active ? C.blue : C.border,
+    border:"none", cursor:"pointer", padding:0, transition:"all .25s",
+  }} />
+);
+
+// ─── 목업 공통 ────────────────────────────────────────────
+
+const BrowserChrome = () => (
+  <div style={{ background:"#2A3245", padding:"7px 12px", display:"flex", alignItems:"center", gap:8 }}>
+    <div style={{ display:"flex", gap:5 }}>
+      {["#FF5F57","#FEBC2E","#28C840"].map((c,i) => (
+        <div key={i} style={{ width:9, height:9, borderRadius:"50%", background:c }} />
+      ))}
+    </div>
+    <div style={{ flex:1, background:"#1A2035", borderRadius:4, padding:"3px 10px", fontSize:9.5, color:"#8892A4", textAlign:"center" }}>
+      gamejob.co.kr
+    </div>
   </div>
 );
 
-// ─── 탭 정의 ──────────────────────────────────────────────
-const TABS = [
-  { id: "overview",  label: "상품 개요" },
-  { id: "main",      label: "메인 채용관" },
-  { id: "recruit",   label: "채용정보 채용관" },
-  { id: "banner",    label: "배너 광고" },
-  { id: "package",   label: "배너 패키지" },
-  { id: "resume",    label: "이력서 열람" },
-  { id: "position",  label: "지면 위치도" },
-];
-
-// ══════════════════════════════════════════════════════════
-//  섹션 컴포넌트
-// ══════════════════════════════════════════════════════════
-
-// ── 1. 개요 ───────────────────────────────────────────────
-function Overview() {
-  const cards = [
-    {
-      badge: "프리미엄 노출형", color: BRAND.blue, bg: BRAND.blueL,
-      title: "메인 채용관",
-      desc: "게임잡 메인화면 최상단 — 기업 로고 + 공고를 직접 게재. Emperor · Lord · Knight 3단계 선택.",
-      from: "836,000원~", fromSub: "1주 개별 기준",
-      points: ["20분 간격 위치 순환", "채용정보 채용관 동시 노출 포함", "이력서 열람 건수 기본 제공"],
-      featured: true,
-    },
-    {
-      badge: "성과 효율형", color: BRAND.green, bg: BRAND.greenL,
-      title: "채용정보 채용관",
-      desc: "직종·지역·경력 조건 기반 타깃 노출. Sword · Shield · Armor 3등급.",
-      from: "16,500원~", fromSub: "일 단가 개별 기준",
-      points: ["최근 수정공고 순 갱신", "특정 직군 타깃 효율 집중", "단독 신청 또는 메인채용관 세트"],
-    },
-    {
-      badge: "브랜딩형", color: BRAND.purple, bg: BRAND.purpleL,
-      title: "배너 광고 / 패키지",
-      desc: "메인·서브·모바일·커뮤니티 전 지면 배너. 올인원·커튼·실속 패키지 구성.",
-      from: "4,400,000원~", fromSub: "실속 패키지 1주 기준",
-      points: ["PC + 모바일 동시 노출", "커튼·백스킨 등 풀스크린 배너", "패키지 구성으로 할인 혜택"],
-    },
-  ];
-
-  return (
-    <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px,1fr))", gap: 12, marginBottom: 16 }}>
-        {cards.map((c, i) => (
-          <Card key={i} featured={c.featured} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div>
-              <Badge label={c.badge} color={c.color} bg={c.bg} />
-              <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 8, color: BRAND.navy }}>{c.title}</h3>
-              <p style={{ fontSize: 12, color: "#6B7280", marginTop: 4, lineHeight: 1.6 }}>{c.desc}</p>
-            </div>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
-              {c.points.map((p, pi) => (
-                <li key={pi} style={{ fontSize: 12, color: "#4B5563", display: "flex", gap: 7, alignItems: "flex-start" }}>
-                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: c.color, marginTop: 5, flexShrink: 0 }} />
-                  {p}
-                </li>
-              ))}
-            </ul>
-            <div style={{ marginTop: "auto", paddingTop: 10, borderTop: "1px solid #F0F3F8" }}>
-              <span style={{ fontSize: 16, fontWeight: 700, color: c.color }}>{c.from}</span>
-              <span style={{ fontSize: 11, color: "#9CA3AF", marginLeft: 6 }}>{c.fromSub}</span>
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      {/* 이력서 카드 */}
-      <Card>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
-          <Badge label="인재 DB" color={BRAND.pink} bg={BRAND.pinkL} />
-          <span style={{ fontSize: 14, fontWeight: 700, color: BRAND.navy }}>이력서 열람 서비스</span>
-          <span style={{ fontSize: 12, color: "#6B7280" }}>— 이력서·포트폴리오 열람 후 직접 입사제의</span>
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-          {resumeService.plans.map((p, i) => (
-            <div key={i} style={{
-              padding: "5px 12px", borderRadius: 20, background: "#F7F9FC",
-              border: "1px solid #E8ECF2", fontSize: 12, color: "#374151",
-            }}>
-              <span style={{ fontWeight: 600 }}>{p.count}건</span>
-              <span style={{ color: "#9CA3AF", margin: "0 4px" }}>·</span>
-              {p.days}일
-              <span style={{ color: "#9CA3AF", margin: "0 4px" }}>·</span>
-              <span style={{ color: BRAND.blue, fontWeight: 600 }}>{won(p.price)}</span>
-            </div>
-          ))}
-        </div>
-      </Card>
+const GNB = () => (
+  <div style={{ background:"#0F1A2E", padding:"7px 14px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+    <span style={{ color:"#fff", fontWeight:900, fontSize:12, letterSpacing:"-0.02em" }}>GAMEJOB</span>
+    <div style={{ display:"flex", gap:10 }}>
+      {["채용정보","커뮤니티","기업정보","인재정보"].map(m => (
+        <span key={m} style={{ color:"rgba(255,255,255,0.5)", fontSize:8.5 }}>{m}</span>
+      ))}
     </div>
-  );
-}
+  </div>
+);
 
-// ── 2. 메인 채용관 ────────────────────────────────────────
-function MainBooth() {
-  const [mode, setMode] = useState("combined");
-  const [tierIdx, setTierIdx] = useState(0);
-  const tier = mainBooth.tiers[tierIdx];
-  const rows_data = mode === "combined" ? tier.combined : tier.individual;
+// 하이라이트 블록
+const HlBlock = ({ label, sub, color, active, style={} }) => (
+  <div style={{
+    borderRadius:6, padding:"7px 10px", textAlign:"center",
+    background: active ? `${color}25` : "#1E2640",
+    border: active ? `1.5px solid ${color}` : "1.5px solid transparent",
+    transition:"all .2s", ...style,
+  }}>
+    <div style={{ fontSize:9, fontWeight: active ? 800 : 400, color: active ? color : "#8892A4" }}>
+      {active ? `★ ${label}` : label}
+    </div>
+    {sub && <div style={{ fontSize:8, color: active ? `${color}bb` : "#5A6478", marginTop:1 }}>{sub}</div>}
+  </div>
+);
 
-  const tableHeaders = mode === "combined"
-    ? ["기간", "기본가", "결합 할인가", "상단고정 옵션", "상단고정 포함가"]
-    : ["기간", "개별 가격", "상단고정 옵션", "상단고정 포함가"];
+// ─── PC 메인 목업 ─────────────────────────────────────────
+const MockupPCMain = ({ hl }) => (
+  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+    <BrowserChrome />
+    {hl === "curtain" && (
+      <div style={{ background:"rgba(0,0,0,0.75)", padding:"8px", textAlign:"center" }}>
+        <div style={{ background:C.blue, borderRadius:5, padding:"5px 0", fontSize:9, fontWeight:700, color:"#fff", width:"80%", margin:"0 auto" }}>
+          ★ 메인 커튼 — 전면 팝업 배너
+        </div>
+      </div>
+    )}
+    <GNB />
+    {/* 탑 + 우측 */}
+    <div style={{ display:"flex", gap:0 }}>
+      <HlBlock label="메인 탑" sub="2560×1000px · 3구좌" color={C.green} active={hl==="maintop"} style={{ flex:1, margin:"5px 0 5px 5px", borderRadius:6 }} />
+      <HlBlock label="메인 우측" color={C.amber} active={hl==="mainright"} style={{ width:52, margin:"5px 5px 5px 4px", borderRadius:6 }} />
+    </div>
+    {/* 상단띠 */}
+    <HlBlock label="메인 상단띠" sub="1080×70px" color={C.purple} active={hl==="topstrip"} style={{ margin:"0 5px 4px", borderRadius:5 }} />
+    {/* Emperor */}
+    <div style={{ display:"flex", margin:"0 5px 4px", gap:3 }}>
+      <HlBlock label="백스킨(좌)" color={C.amber} active={hl==="backskin"} style={{ width:26, borderRadius:5, padding:"10px 2px" }} />
+      <div style={{ flex:1 }}>
+        <HlBlock label="Emperor 채용관" sub="로고+공고3개 · 20분순환" color={C.blue} active={hl==="emperor"} style={{ marginBottom:3 }} />
+        {hl==="emperor" && (
+          <div style={{ display:"flex", gap:3 }}>
+            {[1,2,3].map(i => <div key={i} style={{ flex:1, height:14, background:`${C.blue}33`, borderRadius:3 }} />)}
+          </div>
+        )}
+      </div>
+      <HlBlock label="백스킨(우)" color={C.amber} active={hl==="backskin"} style={{ width:26, borderRadius:5, padding:"10px 2px" }} />
+    </div>
+    {/* 미들띠 */}
+    <HlBlock label="메인 미들띠" sub="1080×70px" color={C.purple} active={hl==="midstrip"} style={{ margin:"0 5px 4px", borderRadius:5 }} />
+    {/* Lord */}
+    <HlBlock label="Lord 채용관" sub="로고+공고2개 · 20분순환" color={C.green} active={hl==="lord"} style={{ margin:"0 5px 4px", borderRadius:5 }} />
+    {/* Knight */}
+    <HlBlock label="Knight 채용관" sub="로고+공고1개" color={C.amber} active={hl==="knight"} style={{ margin:"0 5px 8px", borderRadius:5 }} />
+  </div>
+);
 
-  const makeRows = (rows) => rows.map(r => {
-    if (mode === "combined") {
-      return [
-        r.period,
-        { value: won(r.original), muted: true, small: true },
-        { value: won(r.price), highlight: true },
-        r.topfix ? { value: won(r.topfix) } : { value: "—", muted: true },
-        r.topfixTotal ? { value: won(r.topfixTotal), highlight: true } : { value: "미제공", muted: true },
-      ];
-    } else {
-      return [
-        r.period,
-        { value: won(r.price), highlight: true },
-        r.topfix ? { value: won(r.topfix) } : { value: "—", muted: true },
-        r.topfixTotal ? { value: won(r.topfixTotal), highlight: true } : { value: "미제공", muted: true },
-      ];
-    }
+// ─── PC 서브 목업 ─────────────────────────────────────────
+const MockupPCSub = ({ hl }) => (
+  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+    <BrowserChrome />
+    <GNB />
+    <HlBlock label="커뮤니티 Pick" sub="1780×528px · 4구좌" color={C.teal} active={hl==="commPick"} style={{ margin:"5px 5px 4px", borderRadius:6 }} />
+    <div style={{ display:"flex", gap:3, margin:"0 5px 4px" }}>
+      <div style={{ width:26 }}>
+        <HlBlock label="날개" sub="90×154" color={C.pink} active={hl==="subwing"} style={{ borderRadius:4, marginBottom:3, padding:"8px 2px" }} />
+      </div>
+      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:3 }}>
+        <HlBlock label="Sword 채용관" sub="상단" color={C.blue} active={hl==="sword"} />
+        <HlBlock label="Shield 채용관" sub="중단" color={C.green} active={hl==="shield"} />
+        <HlBlock label="Armor 채용관" sub="하단" color={C.amber} active={hl==="armor"} />
+        <HlBlock label="커뮤니티 미들띠" color={C.teal} active={hl==="commMid"} />
+      </div>
+      <div style={{ width:30 }}>
+        <HlBlock label="서브스카이 120×600" color={C.pink} active={hl==="subsky"} style={{ height:"100%", minHeight:90, padding:"4px 2px", writingMode:"vertical-rl" }} />
+      </div>
+    </div>
+    <HlBlock label="서브 하단" sub="570×110px · 4구좌" color={C.gray} active={hl==="subbottom"} style={{ margin:"0 5px 8px", borderRadius:5 }} />
+  </div>
+);
+
+// ─── 모바일 목업 ──────────────────────────────────────────
+const MockupMobile = ({ hl }) => (
+  <div style={{ width:150, margin:"0 auto", background:"#1A2035", borderRadius:16, overflow:"hidden", border:"3px solid #2A3245" }}>
+    <div style={{ background:"#0F1A2E", padding:"6px", textAlign:"center" }}>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+    </div>
+    <div style={{ padding:"4px 5px", display:"flex", flexDirection:"column", gap:3 }}>
+      <HlBlock label="모바일 메인띠" sub="624×210px" color={C.teal} active={hl==="mobMain"} />
+      {["Emperor","Lord","Knight"].map((n,i) => (
+        <div key={n} style={{ background:["#1C3A5E","#1A3A28","#3A2A10"][i], borderRadius:4, padding:"5px 6px" }}>
+          <span style={{ fontSize:8, color:[C.blueMid,"#4CAF50","#FF9800"][i] }}>{n} 채용관</span>
+        </div>
+      ))}
+      <HlBlock label="커뮤니티 Pick" sub="640×240px" color={C.teal} active={hl==="commPick"} />
+      <HlBlock label="모바일 서브띠" color={C.purple} active={hl==="mobSub"} style={{ marginBottom:4 }} />
+    </div>
+  </div>
+);
+
+// ─── 이력서 목업 ──────────────────────────────────────────
+const MockupResume = () => (
+  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+    <BrowserChrome />
+    <GNB />
+    <div style={{ padding:"10px" }}>
+      <div style={{ background:"#1E2640", borderRadius:8, padding:"10px", border:`1.5px solid ${C.pink}` }}>
+        <div style={{ fontSize:9, color:"#F48FB1", fontWeight:700, marginBottom:8 }}>★ 이력서 열람 서비스</div>
+        {["이력서 / 자기소개서","포트폴리오","이메일 / 연락처"].map((item,i) => (
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:5, marginBottom:5, padding:"4px 6px", background:"#2A3245", borderRadius:4 }}>
+            <div style={{ width:14, height:14, borderRadius:"50%", background:`${C.pink}44`, display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <span style={{ fontSize:8, color:"#F48FB1" }}>✓</span>
+            </div>
+            <span style={{ fontSize:8, color:"#B0BEC5" }}>{item}</span>
+          </div>
+        ))}
+        <div style={{ marginTop:8, padding:"5px", background:C.pink, borderRadius:4, textAlign:"center" }}>
+          <span style={{ fontSize:8.5, color:"#fff", fontWeight:700 }}>입사제의 보내기</span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// ─── 슬라이드 데이터 빌드 ─────────────────────────────────
+
+const buildSlides = () => {
+  const slides = [];
+
+  // 메인 채용관
+  mainBooth.tiers.forEach((tier, ti) => {
+    const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
+    slides.push({
+      category: "메인 채용관",
+      id: tier.id,
+      mockup: <MockupPCMain hl={tier.id} />,
+      tag: tier.position + " 노출",
+      tagColor: colors[ti][0], tagBg: colors[ti][1],
+      title: tier.name,
+      features: tier.features,
+      priceTabs: [
+        {
+          label: "결합 (PC+M)",
+          rows: tier.combined.map(r => ({ label:r.period, value:fw(r.price), sub:fw(r.original) })),
+          note: "* 개별 합산 대비 35% 할인 / 최소 1주",
+        },
+        {
+          label: "개별 (PC/M)",
+          rows: tier.individual.map(r => ({ label:r.period, value:fw(r.price) })),
+          note: "* 최소 신청기간 1주",
+        },
+        ...(tier.combined[0].topfix ? [{
+          label: "상단고정 옵션",
+          rows: tier.combined.filter(r=>r.topfix).map(r => ({ label:r.period, value:fw(r.topfixTotal), sub:fw(r.topfix)+" (옵션만)" })),
+          note: "* 결합 기준 상단고정 포함가",
+        }] : []),
+      ],
+      startPrice: fw(tier.individual[0].price),
+      startLabel: "개별 1주 시작가",
+    });
   });
 
-  return (
-    <div>
-      {/* 채용관 등급 선택 */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 16 }}>
-        {mainBooth.tiers.map((t, i) => {
-          const c = TIER_COLOR[t.id];
-          const active = i === tierIdx;
-          return (
-            <Card key={t.id} featured={active}
-              style={{ cursor: "pointer", transition: "all .15s", borderColor: active ? BRAND.blue : "#E8ECF2" }}
-              onClick={() => setTierIdx(i)}>
-              <Badge label={t.position} color={c.text} bg={c.bg} />
-              <h3 style={{ fontSize: 14, fontWeight: 700, marginTop: 7, color: BRAND.navy }}>{t.name}</h3>
-              <ul style={{ listStyle: "none", marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
-                {t.features.map((f, fi) => (
-                  <li key={fi} style={{ fontSize: 11.5, color: "#6B7280", display: "flex", gap: 6 }}>
-                    <span style={{ color: c.text, fontWeight: 700, flexShrink: 0 }}>·</span>{f}
-                  </li>
-                ))}
-              </ul>
-              <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid #F0F3F8" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: c.text }}>
-                  결합 {won(t.combined[0].price)}~
-                </span>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+  // 채용정보 채용관
+  recruitBooth.tiers.forEach((tier, ti) => {
+    const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
+    slides.push({
+      category: "채용정보 채용관",
+      id: tier.id,
+      mockup: <MockupPCSub hl={tier.id} />,
+      tag: tier.position + " 노출",
+      tagColor: colors[ti][0], tagBg: colors[ti][1],
+      title: tier.name,
+      features: [
+        "채용정보 탭 " + tier.position + " 고정 노출",
+        "기업로고 + 기업명 + 채용제목 노출",
+        "최근 수정공고 순 상단 배치",
+        "메인채용관 구매 시 자동 포함",
+      ],
+      priceTabs: [{
+        label: "일 단가",
+        rows: [
+          { label: "결합 (PC+M)", value: tier.combined.toLocaleString() + "원/일" },
+          { label: "개별 (PC/M)", value: tier.individual.toLocaleString() + "원/일" },
+        ],
+        note: "* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함",
+      }],
+      startPrice: tier.individual.toLocaleString() + "원",
+      startLabel: "개별 일 단가",
+    });
+  });
 
-      {/* 모드 전환 */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-        {[["combined", "결합상품 (PC + Mobile)"], ["individual", "개별상품 (PC 또는 Mobile)"]].map(([v, l]) => (
-          <button key={v} onClick={() => setMode(v)} style={{
-            padding: "6px 16px", fontSize: 12.5, fontWeight: 600,
-            borderRadius: 7, cursor: "pointer", transition: "all .15s",
-            border: mode === v ? `1.5px solid ${BRAND.blue}` : "1px solid #E8ECF2",
-            background: mode === v ? BRAND.blueL : "#fff",
-            color: mode === v ? BRAND.blue : "#6B7280",
-          }}>{l}</button>
-        ))}
-      </div>
+  // 배너 광고
+  bannerAds.filter(b => b.price).forEach(b => {
+    const dColor = { "PC":[C.blue,C.blueL], "PC+M":[C.purple,C.purpleL], "Mobile":[C.teal,C.tealL] };
+    const dc = dColor[b.device] || dColor["PC"];
+    const mockupMap = {
+      "Mobile": <MockupMobile hl={b.id} />,
+      "sub":    <MockupPCSub hl={b.id} />,
+      "main":   <MockupPCMain hl={b.id} />,
+    };
+    const isSub = ["subwing","subwing2","subsky","subbottom","commPick","commMid"].includes(b.id);
+    const mockup = b.device === "Mobile" ? mockupMap["Mobile"] : isSub ? mockupMap["sub"] : mockupMap["main"];
+    slides.push({
+      category: "배너 광고",
+      id: b.id,
+      mockup,
+      tag: b.device + " · " + b.zone,
+      tagColor: dc[0], tagBg: dc[1],
+      title: b.name,
+      features: [
+        "노출 사이즈: " + b.size,
+        "노출 방식: " + b.rolling,
+        b.device === "Mobile" ? "모바일 전용 지면" : b.device === "PC+M" ? "PC·모바일 동시 노출" : "PC 전용 지면",
+        "최소 신청: 1주 이상",
+      ],
+      priceTabs: [{
+        label: "1주 단가",
+        rows: [{ label:"1주 (7일)", value:fw(b.price) }],
+        note: "* VAT 포함 / 최소 1주 이상",
+      }],
+      startPrice: fw(b.price),
+      startLabel: "1주 기준",
+    });
+  });
 
-      <Card>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: BRAND.navy, marginBottom: 12 }}>
-          {tier.name} — {mode === "combined" ? "결합상품 (PC + Mobile · VAT포함)" : "개별상품 (PC 또는 Mobile · VAT포함)"}
-        </h3>
-        <PriceTable
-          headers={tableHeaders}
-          rows={makeRows(rows_data)}
-          note={mode === "combined" ? "* 결합상품: 개별 합산가 대비 35% 할인 / 최소 신청기간 1주일" : "* 최소 신청기간 1주일 / VAT 포함가"}
-        />
-      </Card>
-    </div>
-  );
-}
+  // 이력서 열람
+  slides.push({
+    category: "이력서 열람",
+    id: "resume",
+    mockup: <MockupResume />,
+    tag: "인재 DB",
+    tagColor: C.pink, tagBg: C.pinkL,
+    title: "이력서 열람 서비스",
+    features: resumeService.desc.split(". ").filter(Boolean).map(s => s + (s.endsWith(".") ? "" : ".")),
+    priceTabs: [{
+      label: "건수별 가격",
+      rows: resumeService.plans.map(p => ({
+        label: p.count + "건 · " + p.days + "일",
+        value: fw(p.price),
+        sub: Math.round(p.price/p.count).toLocaleString() + "원/건",
+      })),
+      note: "* " + resumeService.note,
+    }],
+    startPrice: fw(resumeService.plans[0].price),
+    startLabel: "10건 · 3일 시작가",
+  });
 
-// ── 3. 채용정보 채용관 ────────────────────────────────────
-function RecruitBooth() {
-  const color = [TIER_COLOR.sword, TIER_COLOR.shield, TIER_COLOR.armor];
-  return (
-    <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 16 }}>
-        {recruitBooth.tiers.map((t, i) => {
-          const c = color[i];
-          return (
-            <Card key={t.id}>
-              <Badge label={t.name} color={c.text} bg={c.bg} />
-              <p style={{ fontSize: 12, color: "#6B7280", marginTop: 6 }}>채용정보 탭 {t.position} 노출</p>
-              <div style={{ marginTop: 10 }}>
-                <div style={{ fontSize: 15, fontWeight: 700, color: c.text }}>{t.combined.toLocaleString()}원 <span style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 400 }}>결합/일</span></div>
-                <div style={{ fontSize: 12, color: "#9CA3AF" }}>{t.individual.toLocaleString()}원 <span style={{ fontSize: 11 }}>개별/일</span></div>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-      <Card>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: BRAND.navy, marginBottom: 12 }}>채용정보 채용관 가격표 (일 단가 · VAT포함)</h3>
-        <PriceTable
-          headers={["상품", "노출 위치", "결합 (PC+M)", "개별 (PC/M)"]}
-          rows={recruitBooth.tiers.map(t => [
-            t.name, `채용정보 ${t.position}`,
-            { value: `${t.combined.toLocaleString()}원/일`, highlight: true },
-            `${t.individual.toLocaleString()}원/일`,
-          ])}
-          note={`* ${recruitBooth.note}`}
-        />
-      </Card>
-    </div>
-  );
-}
+  return slides;
+};
 
-// ── 4. 배너 광고 ─────────────────────────────────────────
-function BannerAds() {
-  const [deviceFilter, setDeviceFilter] = useState("전체");
-  const devices = ["전체", "PC", "PC+M", "Mobile"];
-  const filtered = deviceFilter === "전체" ? bannerAds : bannerAds.filter(b => b.device === deviceFilter);
+// ─── 슬라이드 카드 ────────────────────────────────────────
 
-  const deviceColor = {
-    "PC":     { bg: BRAND.blueL,   text: BRAND.blue  },
-    "PC+M":   { bg: BRAND.purpleL, text: BRAND.purple },
-    "Mobile": { bg: BRAND.tealL,   text: BRAND.teal  },
-  };
+function SlideCard({ slide }) {
+  const [tabIdx, setTabIdx] = useState(0);
+  const tab = slide.priceTabs[tabIdx] || slide.priceTabs[0];
 
   return (
-    <div>
-      {/* 필터 */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        {devices.map(d => (
-          <button key={d} onClick={() => setDeviceFilter(d)} style={{
-            padding: "5px 14px", fontSize: 12.5, fontWeight: 600,
-            borderRadius: 7, cursor: "pointer", transition: "all .15s",
-            border: deviceFilter === d ? `1.5px solid ${BRAND.blue}` : "1px solid #E8ECF2",
-            background: deviceFilter === d ? BRAND.blueL : "#fff",
-            color: deviceFilter === d ? BRAND.blue : "#6B7280",
-          }}>{d}</button>
-        ))}
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 10, marginBottom: 16 }}>
-        {filtered.map(b => {
-          const dc = deviceColor[b.device] || deviceColor["PC"];
-          return (
-            <Card key={b.id}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-                <Badge label={`${b.device} · ${b.zone}`} color={dc.text} bg={dc.bg} />
-              </div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: BRAND.navy }}>{b.name}</div>
-              <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 3 }}>{b.size} · {b.rolling}</div>
-              <div style={{ marginTop: 9, paddingTop: 8, borderTop: "1px solid #F0F3F8" }}>
-                {b.price
-                  ? <span style={{ fontSize: 14, fontWeight: 700, color: BRAND.blue }}>{won(b.price)}<span style={{ fontSize: 11, fontWeight: 400, color: "#9CA3AF" }}>/주</span></span>
-                  : <span style={{ fontSize: 12, color: "#9CA3AF" }}>{b.note || "별도 문의"}</span>
-                }
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-
-      <Card>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: BRAND.navy, marginBottom: 12 }}>배너 광고 단가표 (1주 · VAT포함)</h3>
-        <PriceTable
-          headers={["디바이스", "지면", "상품명", "노출방식", "가격 (1주)"]}
-          rows={bannerAds.filter(b => b.price).map(b => [
-            b.device, b.zone, b.name, b.rolling,
-            { value: won(b.price), highlight: true },
-          ])}
-          note="* 최소 신청기간 1주 이상"
-        />
-      </Card>
-    </div>
-  );
-}
-
-// ── 5. 배너 패키지 ─────────────────────────────────────────
-function BannerPackage() {
-  const [selected, setSelected] = useState(null);
-  const allIds = (pkg) => pkg.includedIds;
-
-  return (
-    <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 12, marginBottom: 20 }}>
-        {bannerPackages.map(pkg => (
-          <div key={pkg.id} onClick={() => setSelected(selected === pkg.id ? null : pkg.id)}
-            style={{
-              background: "#fff",
-              border: selected === pkg.id
-                ? `2px solid ${BRAND.blue}`
-                : pkg.highlight ? `2px solid ${BRAND.navy}` : "1px solid #E8ECF2",
-              borderRadius: 14, padding: "1.2rem", cursor: "pointer",
-              transition: "all .15s", position: "relative", overflow: "hidden",
-            }}>
-            {pkg.highlight && (
-              <div style={{
-                position: "absolute", top: 12, right: -22, background: BRAND.navy,
-                color: "#fff", fontSize: 10, fontWeight: 700, padding: "3px 30px",
-                transform: "rotate(35deg)", letterSpacing: "0.1em",
-              }}>BEST</div>
-            )}
-            <div style={{ fontSize: 11, fontWeight: 700, color: BRAND.blue, letterSpacing: "0.08em", marginBottom: 6 }}>
-              {pkg.name.toUpperCase()}
-            </div>
-            <div style={{ fontSize: 13, color: "#6B7280", marginBottom: 12 }}>{pkg.tagline}</div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: BRAND.navy }}>{won(pkg.price)}</div>
-            <div style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 14 }}>{pkg.period} · VAT포함</div>
-            <p style={{ fontSize: 12, color: "#6B7280", lineHeight: 1.6, marginBottom: 12 }}>{pkg.desc}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-              {packageCompareRows.filter(r => allIds(pkg).includes(r.id)).map(r => (
-                <span key={r.id + pkg.id} style={{
-                  fontSize: 11, padding: "2px 8px", borderRadius: 4,
-                  background: BRAND.blueL, color: BRAND.blue, fontWeight: 500,
-                }}>{r.name}</span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* 비교표 */}
-      <Card>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: BRAND.navy, marginBottom: 12 }}>패키지별 포함 지면 비교</h3>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left", padding: "8px 10px", background: "#F7F9FC", color: "#6B7280", fontWeight: 600, fontSize: 11.5, borderBottom: "1px solid #E8ECF2" }}>노출 위치</th>
-                <th style={{ textAlign: "left", padding: "8px 10px", background: "#F7F9FC", color: "#6B7280", fontWeight: 600, fontSize: 11.5, borderBottom: "1px solid #E8ECF2" }}>배너명</th>
-                {bannerPackages.map(p => (
-                  <th key={p.id} style={{ textAlign: "center", padding: "8px 10px", background: "#F7F9FC", color: BRAND.blue, fontWeight: 700, fontSize: 11.5, borderBottom: "1px solid #E8ECF2", whiteSpace: "nowrap" }}>{p.name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {packageCompareRows.map((row, ri) => (
-                <tr key={ri} style={{ borderBottom: ri < packageCompareRows.length - 1 ? "1px solid #F0F3F8" : "none" }}>
-                  <td style={{ padding: "7px 10px", color: "#9CA3AF", fontSize: 11.5 }}>{row.zone}</td>
-                  <td style={{ padding: "7px 10px", color: "#374151", fontWeight: 500 }}>{row.name}</td>
-                  {bannerPackages.map(pkg => (
-                    <td key={pkg.id} style={{ padding: "7px 10px", textAlign: "center" }}>
-                      {pkg.includedIds.includes(row.id)
-                        ? <span style={{ color: BRAND.blue, fontSize: 15, fontWeight: 700 }}>●</span>
-                        : <span style={{ color: "#E5E7EB", fontSize: 14 }}>—</span>}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-              <tr style={{ background: "#F7F9FC", borderTop: "1px solid #E8ECF2" }}>
-                <td colSpan={2} style={{ padding: "10px 10px", fontWeight: 700, fontSize: 13, color: BRAND.navy }}>금액 (VAT포함 · 1주)</td>
-                {bannerPackages.map(p => (
-                  <td key={p.id} style={{ padding: "10px 10px", textAlign: "center", fontWeight: 700, fontSize: 14, color: BRAND.blue }}>{won(p.price)}</td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 8 }}>* 최소 신청기간 1주 이상</p>
-      </Card>
-    </div>
-  );
-}
-
-// ── 6. 이력서 열람 ────────────────────────────────────────
-function Resume() {
-  return (
-    <div>
-      <Card style={{ marginBottom: 14 }}>
-        <h3 style={{ fontSize: 14, fontWeight: 700, color: BRAND.navy, marginBottom: 6 }}>{resumeService.title}</h3>
-        <p style={{ fontSize: 12.5, color: "#6B7280", lineHeight: 1.7 }}>{resumeService.desc}</p>
-      </Card>
-      <Card>
-        <h3 style={{ fontSize: 13, fontWeight: 700, color: BRAND.navy, marginBottom: 12 }}>가격표 (VAT포함)</h3>
-        <PriceTable
-          headers={["건수", "기간", "가격", "건당 단가"]}
-          rows={resumeService.plans.map(p => [
-            `${p.count}건`, `${p.days}일`,
-            { value: won(p.price), highlight: true },
-            { value: `${Math.round(p.price / p.count).toLocaleString()}원`, muted: true },
-          ])}
-          note={`* ${resumeService.note}`}
-        />
-      </Card>
-    </div>
-  );
-}
-
-// ── 7. 지면 위치도 ────────────────────────────────────────
-function Position() {
-  const [view, setView] = useState("pc-main");
-  const views = [
-    { id: "pc-main",  label: "PC 메인" },
-    { id: "pc-sub",   label: "PC 서브" },
-    { id: "mobile",   label: "Mobile" },
-  ];
-
-  const ZoneBlock = ({ label, sublabel, color, bg, border, minH = 44, flex }) => (
     <div style={{
-      background: bg, border: `1.5px dashed ${border}`,
-      borderRadius: 8, padding: "8px 12px", textAlign: "center",
-      minHeight: minH, display: "flex", alignItems: "center", justifyContent: "center",
-      flexDirection: "column", gap: 2, flex,
+      display:"grid", gridTemplateColumns:"1fr 1fr", gap:0,
+      background:C.white, borderRadius:16, border:`1px solid ${C.border}`,
+      overflow:"hidden", minHeight:460,
     }}>
-      <span style={{ fontSize: 12, fontWeight: 700, color }}>{label}</span>
-      {sublabel && <span style={{ fontSize: 10, color, opacity: 0.7 }}>{sublabel}</span>}
-    </div>
-  );
-
-  const NavBar = () => (
-    <div style={{
-      background: BRAND.navy, borderRadius: 7, padding: "7px 14px",
-      color: "#fff", fontSize: 11, fontWeight: 700, marginBottom: 6, textAlign: "center",
-    }}>GAMEJOB 로고 · 채용정보 · 커뮤니티 · 기업정보 · 인재정보</div>
-  );
-
-  return (
-    <div>
-      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        {views.map(v => (
-          <button key={v.id} onClick={() => setView(v.id)} style={{
-            padding: "5px 16px", fontSize: 12.5, fontWeight: 600,
-            borderRadius: 7, cursor: "pointer", transition: "all .15s",
-            border: view === v.id ? `1.5px solid ${BRAND.blue}` : "1px solid #E8ECF2",
-            background: view === v.id ? BRAND.blueL : "#fff",
-            color: view === v.id ? BRAND.blue : "#6B7280",
-          }}>{v.label}</button>
-        ))}
+      {/* 좌 — 목업 */}
+      <div style={{ background:"#141C2E", padding:"28px 22px", display:"flex", flexDirection:"column", justifyContent:"center", gap:14 }}>
+        <div>
+          <Tag label={slide.tag} color={slide.tagColor} bg={`${slide.tagColor}30`} />
+          <p style={{ fontSize:10.5, color:"rgba(255,255,255,0.35)", marginTop:5, marginBottom:0 }}>
+            {slide.category} — 지면 위치
+          </p>
+        </div>
+        {slide.mockup}
       </div>
 
-      <div style={{ background: "#F7F9FC", border: "1px solid #E8ECF2", borderRadius: 14, padding: 16 }}>
-        <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 12, textAlign: "center" }}>
-          {view === "pc-main" && "게임잡 PC 메인 페이지 — 지면 위치도"}
-          {view === "pc-sub"  && "게임잡 PC 서브(채용정보/커뮤니티) 페이지 — 지면 위치도"}
-          {view === "mobile"  && "게임잡 Mobile 페이지 — 지면 위치도"}
-        </p>
+      {/* 우 — 설명+가격 */}
+      <div style={{ padding:"28px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+        {/* 제목 */}
+        <div>
+          <Tag label={slide.category} color={C.gray} bg={C.grayL} />
+          <h2 style={{ fontSize:21, fontWeight:800, color:C.navy, margin:"8px 0 0", letterSpacing:"-0.03em" }}>
+            {slide.title}
+          </h2>
+        </div>
 
-        {view === "pc-main" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <ZoneBlock label="메인 커튼" sublabel="전면 팝업 오버레이 · 닫기 가능" color={BRAND.blue} bg="#E6F1FB" border="#B5D4F4" minH={36} />
-            <NavBar />
-            <div style={{ display: "flex", gap: 6 }}>
-              <ZoneBlock label="메인 탑" sublabel="2560×1000px · 3구좌" color={BRAND.green} bg={BRAND.greenL} border="#C0DD97" flex={2} minH={56} />
-              <ZoneBlock label="메인 우측" sublabel="커튼 패키지 연동" color={BRAND.amber} bg={BRAND.amberL} border="#FAC775" flex={1} minH={56} />
-            </div>
-            <ZoneBlock label="메인 상단띠" sublabel="1080×70px · 3구좌 롤링 — Emperor 채용관 상단" color={BRAND.purple} bg={BRAND.purpleL} border="#AFA9EC" minH={34} />
-            <div style={{ display: "flex", gap: 6 }}>
-              <ZoneBlock label="메인 백스킨 (좌)" color={BRAND.amber} bg={BRAND.amberL} border="#FAC775" flex="0 0 80px" minH={100} />
-              <ZoneBlock label="Emperor 채용관" sublabel="로고+공고3개 · 20분 순환" color={BRAND.blue} bg={BRAND.blueL} border="#B5D4F4" flex={1} minH={100} />
-              <ZoneBlock label="Emperor Edge" sublabel="258×532px" color={BRAND.blue} bg={BRAND.blueL} border="#B5D4F4" flex="0 0 80px" minH={100} />
-              <ZoneBlock label="메인 백스킨 (우)" color={BRAND.amber} bg={BRAND.amberL} border="#FAC775" flex="0 0 80px" minH={100} />
-            </div>
-            <ZoneBlock label="메인 미들띠" sublabel="1080×70px · 3구좌 롤링 — Lord 채용관 상단" color={BRAND.purple} bg={BRAND.purpleL} border="#AFA9EC" minH={34} />
-            <ZoneBlock label="Lord 채용관" sublabel="로고+공고2개 · 20분 순환" color={BRAND.green} bg={BRAND.greenL} border="#C0DD97" minH={70} />
-            <ZoneBlock label="Knight 채용관" sublabel="로고+공고1개 · 20분 순환" color={BRAND.amber} bg={BRAND.amberL} border="#FAC775" minH={55} />
+        {/* 특징 */}
+        <div>
+          <p style={{ fontSize:10.5, fontWeight:700, color:C.gray, letterSpacing:"0.08em", marginBottom:8, textTransform:"uppercase" }}>상품 특징</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+            {slide.features.map((f,i) => (
+              <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
+                <div style={{ width:17, height:17, borderRadius:"50%", background:slide.tagBg, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
+                  <span style={{ fontSize:9, fontWeight:800, color:slide.tagColor }}>✓</span>
+                </div>
+                <span style={{ fontSize:12.5, color:C.text, lineHeight:1.55 }}>{f}</span>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
-        {view === "pc-sub" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <NavBar />
-            <ZoneBlock label="커뮤니티 Pick" sublabel="PC 1780×528px · 4구좌 롤링" color={BRAND.teal} bg={BRAND.tealL} border="#5DCAA5" minH={50} />
-            <div style={{ display: "flex", gap: 6, alignItems: "stretch" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, width: 72, flexShrink: 0 }}>
-                <ZoneBlock label="서브 날개" sublabel="90×154px" color={BRAND.pink} bg={BRAND.pinkL} border="#F4C0D1" flex={1} minH={60} />
-                <ZoneBlock label="서브 날개2" sublabel="90×154px" color={BRAND.pink} bg={BRAND.pinkL} border="#F4C0D1" flex={1} minH={60} />
-              </div>
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-                <ZoneBlock label="Sword 채용관 (상단)" color={BRAND.blue} bg={BRAND.blueL} border="#B5D4F4" minH={44} />
-                <ZoneBlock label="Shield 채용관 (중단)" color={BRAND.green} bg={BRAND.greenL} border="#C0DD97" minH={44} />
-                <ZoneBlock label="Armor 채용관 (하단)" color={BRAND.amber} bg={BRAND.amberL} border="#FAC775" minH={44} />
-                <ZoneBlock label="커뮤니티 미들띠" sublabel="롤링 배너" color={BRAND.teal} bg={BRAND.tealL} border="#5DCAA5" minH={32} />
-              </div>
-              <div style={{ width: 90, flexShrink: 0 }}>
-                <ZoneBlock label="서브 스카이" sublabel="120×600px · 4구좌 스크롤 플로팅" color={BRAND.pink} bg={BRAND.pinkL} border="#F4C0D1" minH={240} />
-              </div>
+        {/* 가격 탭 */}
+        <div style={{ flex:1 }}>
+          {slide.priceTabs.length > 1 && (
+            <div style={{ display:"flex", gap:5, marginBottom:10 }}>
+              {slide.priceTabs.map((t,i) => (
+                <button key={i} onClick={() => setTabIdx(i)} style={{
+                  padding:"4px 11px", fontSize:11, fontWeight:600, borderRadius:6, cursor:"pointer",
+                  border: tabIdx===i ? `1.5px solid ${C.blue}` : `1px solid ${C.border}`,
+                  background: tabIdx===i ? C.blueL : C.white,
+                  color: tabIdx===i ? C.blue : C.gray,
+                }}>{t.label}</button>
+              ))}
             </div>
-            <ZoneBlock label="서브 하단" sublabel="570×110px · 4구좌" color={BRAND.gray} bg={BRAND.grayL} border="#B4B2A9" minH={36} />
-          </div>
-        )}
-
-        {view === "mobile" && (
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
-            {[
-              {
-                title: "메인",
-                zones: [
-                  { label: "모바일 메인띠", sub: "624×210px · 3구좌", color: BRAND.teal, bg: BRAND.tealL, border: "#5DCAA5", minH: 56 },
-                  { label: "Emperor 채용관", sub: "", color: BRAND.blue, bg: BRAND.blueL, border: "#B5D4F4", minH: 64 },
-                  { label: "Lord 채용관", sub: "", color: BRAND.green, bg: BRAND.greenL, border: "#C0DD97", minH: 48 },
-                  { label: "Knight 채용관", sub: "", color: BRAND.amber, bg: BRAND.amberL, border: "#FAC775", minH: 40 },
-                ],
-              },
-              {
-                title: "커뮤니티 (취업토크)",
-                zones: [
-                  { label: "커뮤니티 Pick", sub: "640×240px · 4구좌", color: BRAND.teal, bg: BRAND.tealL, border: "#5DCAA5", minH: 70 },
-                  { label: "모바일 서브띠", sub: "커뮤니티/서브 하단", color: BRAND.purple, bg: BRAND.purpleL, border: "#AFA9EC", minH: 44 },
-                ],
-              },
-              {
-                title: "MY 페이지",
-                zones: [
-                  { label: "모바일 서브띠", sub: "하단 배너 영역", color: BRAND.purple, bg: BRAND.purpleL, border: "#AFA9EC", minH: 44 },
-                ],
-              },
-            ].map(frame => (
-              <div key={frame.title} style={{
-                width: 190, background: "#fff", border: "1px solid #E8ECF2",
-                borderRadius: 16, padding: 12,
-              }}>
-                <div style={{
-                  fontSize: 11, fontWeight: 700, color: BRAND.navy,
-                  marginBottom: 10, textAlign: "center",
-                  padding: "4px 0", borderBottom: "1px solid #F0F3F8",
-                }}>{frame.title}</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {frame.zones.map((z, i) => (
-                    <ZoneBlock key={i} label={z.label} sublabel={z.sub}
-                      color={z.color} bg={z.bg} border={z.border} minH={z.minH} />
-                  ))}
+          )}
+          <div>
+            {tab.rows.map((r,i) => (
+              <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", padding:"7px 0", borderBottom:`1px solid ${C.border}` }}>
+                <span style={{ fontSize:12, color:i===0?C.text:C.gray }}>{r.label}</span>
+                <div style={{ textAlign:"right" }}>
+                  {r.sub && <div style={{ fontSize:10, color:C.gray, textDecoration:"line-through" }}>{r.sub}</div>}
+                  <span style={{ fontSize:i===0?14:12.5, fontWeight:i===0?700:500, color:i===0?C.blue:C.text }}>{r.value}</span>
                 </div>
               </div>
             ))}
           </div>
-        )}
+          {tab.note && <p style={{ fontSize:10.5, color:"#9CA3AF", marginTop:6 }}>{tab.note}</p>}
+        </div>
+
+        {/* 시작가 */}
+        <div style={{ background:C.navyD, borderRadius:10, padding:"13px 18px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <span style={{ fontSize:11.5, color:"rgba(255,255,255,0.55)" }}>{slide.startLabel}</span>
+          <span style={{ fontSize:20, fontWeight:800, color:C.white }}>{slide.startPrice}</span>
+        </div>
       </div>
     </div>
   );
 }
 
-// ══════════════════════════════════════════════════════════
-//  메인 앱
-// ══════════════════════════════════════════════════════════
-export default function AdCenter() {
-  const [activeTab, setActiveTab] = useState("overview");
+// ─── 패키지 카드 ──────────────────────────────────────────
 
-  const sectionMap = {
-    overview: <Overview />,
-    main:     <MainBooth />,
-    recruit:  <RecruitBooth />,
-    banner:   <BannerAds />,
-    package:  <BannerPackage />,
-    resume:   <Resume />,
-    position: <Position />,
-  };
+function PackageCard({ pkg }) {
+  const included = packageCompareRows.filter(r => pkg.includedIds.includes(r.id));
+  const byZone = included.reduce((acc,r) => { if(!acc[r.zone]) acc[r.zone]=[]; acc[r.zone].push(r.name); return acc; }, {});
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F8FAFD", fontFamily: "'Pretendard','Noto Sans KR',sans-serif" }}>
-      {/* 헤더 */}
-      <header style={{
-        background: BRAND.navy, color: "#fff",
-        padding: "0 clamp(16px,4vw,48px)",
-      }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "18px 0 0",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <div style={{
-                fontWeight: 900, fontSize: 20, letterSpacing: "-0.03em",
-                color: "#fff", borderRight: "1.5px solid rgba(255,255,255,0.2)",
-                paddingRight: 14, marginRight: 2,
-              }}>GAMEJOB</div>
+    <div style={{
+      display:"grid", gridTemplateColumns:"1fr 1fr", gap:0,
+      background:C.white, borderRadius:16, overflow:"hidden",
+      border: pkg.highlight ? `2px solid ${C.blue}` : `1px solid ${C.border}`,
+      minHeight:400,
+    }}>
+      <div style={{ background:"#141C2E", padding:"32px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+        {pkg.highlight && (
+          <span style={{ display:"inline-block", alignSelf:"flex-start", background:C.blue, borderRadius:4, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#fff", letterSpacing:"0.08em" }}>BEST</span>
+        )}
+        <div>
+          <h2 style={{ fontSize:24, fontWeight:900, color:C.white, margin:"0 0 6px", letterSpacing:"-0.03em" }}>{pkg.name}</h2>
+          <p style={{ fontSize:12.5, color:"rgba(255,255,255,0.45)", lineHeight:1.6, margin:0 }}>{pkg.tagline}</p>
+        </div>
+        <div>
+          <p style={{ fontSize:30, fontWeight:900, color:C.white, margin:0 }}>{fw(pkg.price)}</p>
+          <p style={{ fontSize:11, color:"rgba(255,255,255,0.35)", marginTop:4 }}>1주 · VAT포함</p>
+        </div>
+        <p style={{ fontSize:12.5, color:"rgba(255,255,255,0.55)", lineHeight:1.7, borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:16, margin:0 }}>
+          {pkg.desc}
+        </p>
+      </div>
+      <div style={{ padding:"28px", display:"flex", flexDirection:"column", gap:16 }}>
+        <p style={{ fontSize:10.5, fontWeight:700, color:C.gray, letterSpacing:"0.08em", margin:0, textTransform:"uppercase" }}>포함 지면</p>
+        {Object.entries(byZone).map(([zone,items]) => (
+          <div key={zone}>
+            <p style={{ fontSize:11, color:C.gray, marginBottom:6, fontWeight:600 }}>{zone}</p>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+              {items.map(item => <Chip key={item} color={C.blue} bg={C.blueL}>{item}</Chip>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PackageCompare() {
+  return (
+    <div style={{ background:C.white, borderRadius:16, border:`1px solid ${C.border}`, overflow:"hidden" }}>
+      <div style={{ padding:"18px 24px", borderBottom:`1px solid ${C.border}` }}>
+        <h3 style={{ fontSize:15, fontWeight:800, color:C.navy, margin:0 }}>패키지 포함 지면 비교</h3>
+      </div>
+      <div style={{ overflowX:"auto" }}>
+        <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
+          <thead>
+            <tr>
+              <th style={{ padding:"9px 14px", background:C.grayL, color:C.gray, fontWeight:600, fontSize:11, borderBottom:`1px solid ${C.border}`, textAlign:"left", whiteSpace:"nowrap" }}>위치</th>
+              <th style={{ padding:"9px 14px", background:C.grayL, color:C.gray, fontWeight:600, fontSize:11, borderBottom:`1px solid ${C.border}`, textAlign:"left" }}>배너명</th>
+              {bannerPackages.map(p => (
+                <th key={p.id} style={{ padding:"9px 14px", background:C.grayL, color:C.blue, fontWeight:700, fontSize:11, borderBottom:`1px solid ${C.border}`, textAlign:"center", whiteSpace:"nowrap" }}>{p.name}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {packageCompareRows.map((row,ri) => (
+              <tr key={ri} style={{ borderBottom:`1px solid ${C.border}` }}>
+                <td style={{ padding:"7px 14px", color:C.gray, fontSize:11, whiteSpace:"nowrap" }}>{row.zone}</td>
+                <td style={{ padding:"7px 14px", color:C.navy, fontWeight:500 }}>{row.name}</td>
+                {bannerPackages.map(pkg => (
+                  <td key={pkg.id} style={{ padding:"7px 14px", textAlign:"center" }}>
+                    {pkg.includedIds.includes(row.id)
+                      ? <span style={{ color:C.blue, fontSize:15, fontWeight:700 }}>●</span>
+                      : <span style={{ color:C.border }}>—</span>}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            <tr style={{ background:C.navyD }}>
+              <td colSpan={2} style={{ padding:"11px 14px", fontWeight:700, fontSize:13, color:C.white }}>금액 (VAT포함 · 1주)</td>
+              {bannerPackages.map(p => (
+                <td key={p.id} style={{ padding:"11px 14px", textAlign:"center", fontWeight:800, fontSize:14, color:C.white }}>{fw(p.price)}</td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style={{ fontSize:11, color:"#9CA3AF", padding:"8px 14px", margin:0 }}>* 최소 신청기간 1주 이상</p>
+    </div>
+  );
+}
+
+// ─── 슬라이더 ─────────────────────────────────────────────
+
+function Slider({ slides, renderSlide }) {
+  const [idx, setIdx] = useState(0);
+  const categories = [...new Set(slides.map(s => s.category || s.name))];
+  const activeCategory = slides[idx]?.category || slides[idx]?.name;
+
+  return (
+    <div>
+      {/* 카테고리 탭 */}
+      <div style={{ display:"flex", gap:7, marginBottom:20, flexWrap:"wrap" }}>
+        {categories.map(cat => {
+          const active = cat === activeCategory;
+          return (
+            <button key={cat} onClick={() => setIdx(slides.findIndex(s => (s.category||s.name)===cat))}
+              style={{
+                padding:"6px 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
+                border: active ? `1.5px solid ${C.blue}` : `1px solid ${C.border}`,
+                background: active ? C.blueL : C.white,
+                color: active ? C.blue : C.gray, transition:"all .15s",
+              }}>{cat}</button>
+          );
+        })}
+      </div>
+
+      {/* 슬라이드 */}
+      {renderSlide(slides[idx])}
+
+      {/* 네비게이션 */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:18 }}>
+        <NavBtn dir="prev" onClick={() => setIdx(i => Math.max(0,i-1))} disabled={idx===0} />
+        <div style={{ display:"flex", gap:5, alignItems:"center", flex:1, justifyContent:"center", padding:"0 10px", flexWrap:"wrap" }}>
+          {slides.map((_,i) => <DotBtn key={i} active={i===idx} onClick={() => setIdx(i)} />)}
+        </div>
+        <NavBtn dir="next" onClick={() => setIdx(i => Math.min(slides.length-1,i+1))} disabled={idx===slides.length-1} />
+      </div>
+      <p style={{ textAlign:"center", fontSize:12, color:C.gray, marginTop:8 }}>{idx+1} / {slides.length}</p>
+    </div>
+  );
+}
+
+// ─── 앱 ──────────────────────────────────────────────────
+
+const allSlides = buildSlides();
+const pkgSlides = bannerPackages.map(p => ({ ...p }));
+
+export default function AdCenter() {
+  const [tab, setTab] = useState("all");
+
+  return (
+    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif" }}>
+      <header style={{ background:C.navyD, borderBottom:"1px solid rgba(255,255,255,0.07)" }}>
+        <div style={{ maxWidth:1060, margin:"0 auto", padding:"0 clamp(16px,4vw,40px)" }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 0 0" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+              <span style={{ fontWeight:900, fontSize:19, color:C.white, letterSpacing:"-0.03em" }}>GAMEJOB</span>
+              <div style={{ width:1, height:20, background:"rgba(255,255,255,0.18)" }} />
               <div>
-                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.02em" }}>광고센터</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", marginTop: 1 }}>채용 마케팅 상품 안내</div>
+                <div style={{ fontSize:15, fontWeight:700, color:C.white }}>광고센터</div>
+                <div style={{ fontSize:10, color:"rgba(255,255,255,0.38)" }}>채용 마케팅 상품 안내</div>
               </div>
             </div>
             <a href="mailto:ad@gamejob.co.kr" style={{
-              display: "inline-flex", alignItems: "center", gap: 7,
-              background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: 8, padding: "7px 15px", color: "#fff",
-              fontSize: 12.5, fontWeight: 600, textDecoration: "none",
-              transition: "background .15s",
-            }}>
-              📧 광고 문의
-            </a>
+              display:"inline-flex", alignItems:"center", gap:6,
+              background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.15)",
+              borderRadius:8, padding:"7px 14px", color:C.white,
+              fontSize:12, fontWeight:600, textDecoration:"none",
+            }}>✉ 광고 문의</a>
           </div>
-
-          {/* 탭 */}
-          <nav style={{ display: "flex", gap: 2, marginTop: 16, overflowX: "auto" }}>
-            {TABS.map(tab => (
-              <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
-                padding: "10px 16px", fontSize: 13, fontWeight: 600,
-                background: "transparent", border: "none", cursor: "pointer",
-                color: activeTab === tab.id ? "#fff" : "rgba(255,255,255,0.5)",
-                borderBottom: activeTab === tab.id ? "2.5px solid #4A9FE8" : "2.5px solid transparent",
-                transition: "all .15s", whiteSpace: "nowrap", borderRadius: 0,
-              }}>{tab.label}</button>
+          <nav style={{ display:"flex", marginTop:16 }}>
+            {[["all","전체 상품 소개"],["package","패키지 상품 소개"]].map(([v,l]) => (
+              <button key={v} onClick={() => setTab(v)} style={{
+                padding:"12px 20px", fontSize:13.5, fontWeight:700,
+                background:"transparent", border:"none", cursor:"pointer",
+                color: tab===v ? C.white : "rgba(255,255,255,0.4)",
+                borderBottom: tab===v ? `2.5px solid ${C.blueMid}` : "2.5px solid transparent",
+                transition:"all .15s", whiteSpace:"nowrap",
+              }}>{l}</button>
             ))}
           </nav>
         </div>
       </header>
 
-      {/* 메인 콘텐츠 */}
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "28px clamp(16px,4vw,48px) 60px" }}>
-        {/* 탭 제목 */}
-        <div style={{ marginBottom: 20 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: BRAND.navy, letterSpacing: "-0.03em" }}>
-            {TABS.find(t => t.id === activeTab)?.label}
-          </h2>
-          <div style={{ width: 32, height: 3, background: BRAND.blue, borderRadius: 2, marginTop: 6 }} />
-        </div>
-
-        {sectionMap[activeTab]}
+      <main style={{ maxWidth:1060, margin:"0 auto", padding:"32px clamp(16px,4vw,40px) 80px" }}>
+        {tab === "all" && (
+          <Slider slides={allSlides} renderSlide={s => <SlideCard slide={s} />} />
+        )}
+        {tab === "package" && (
+          <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
+            <Slider slides={pkgSlides} renderSlide={p => <PackageCard pkg={p} />} />
+            <PackageCompare />
+          </div>
+        )}
       </main>
 
-      {/* 푸터 */}
-      <footer style={{
-        borderTop: "1px solid #E8ECF2", background: "#fff",
-        padding: "20px clamp(16px,4vw,48px)",
-        textAlign: "center", fontSize: 12, color: "#9CA3AF",
-      }}>
-        <p>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
-        <p style={{ marginTop: 4 }}>* 모든 가격은 VAT포함 / 최소 신청기간: 채용관 1주일, 배너 1주 이상</p>
+      <footer style={{ borderTop:`1px solid ${C.border}`, background:C.white, padding:"18px clamp(16px,4vw,40px)", textAlign:"center" }}>
+        <p style={{ fontSize:12, color:C.gray, margin:0 }}>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
+        <p style={{ fontSize:11, color:"#9CA3AF", margin:"4px 0 0" }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주, 배너 1주 이상</p>
       </footer>
     </div>
   );
