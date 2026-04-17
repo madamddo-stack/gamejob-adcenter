@@ -63,24 +63,24 @@ const DotBtn = ({ active, onClick }) => (
 // ─── 목업 공통 ────────────────────────────────────────────
 
 const BrowserChrome = () => (
-  <div style={{ background:"#2A3245", padding:"7px 12px", display:"flex", alignItems:"center", gap:8 }}>
+  <div style={{ background:"#E8EAED", padding:"7px 12px", display:"flex", alignItems:"center", gap:8, borderBottom:"1px solid #D1D5DB" }}>
     <div style={{ display:"flex", gap:5 }}>
       {["#FF5F57","#FEBC2E","#28C840"].map((c,i) => (
         <div key={i} style={{ width:9, height:9, borderRadius:"50%", background:c }} />
       ))}
     </div>
-    <div style={{ flex:1, background:"#1A2035", borderRadius:4, padding:"3px 10px", fontSize:9.5, color:"#8892A4", textAlign:"center" }}>
+    <div style={{ flex:1, background:"#fff", borderRadius:4, padding:"3px 10px", fontSize:9.5, color:"#6B7280", textAlign:"center", border:"1px solid #E5E7EB" }}>
       gamejob.co.kr
     </div>
   </div>
 );
 
 const GNB = () => (
-  <div style={{ background:"#0F1A2E", padding:"7px 14px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+  <div style={{ background:C.navy, padding:"7px 14px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
     <span style={{ color:"#fff", fontWeight:900, fontSize:12, letterSpacing:"-0.02em" }}>GAMEJOB</span>
     <div style={{ display:"flex", gap:10 }}>
       {["채용정보","커뮤니티","기업정보","인재정보"].map(m => (
-        <span key={m} style={{ color:"rgba(255,255,255,0.5)", fontSize:8.5 }}>{m}</span>
+        <span key={m} style={{ color:"rgba(255,255,255,0.6)", fontSize:8.5 }}>{m}</span>
       ))}
     </div>
   </div>
@@ -90,7 +90,7 @@ const GNB = () => (
 const HlBlock = ({ label, sub, color, active, style={} }) => (
   <div style={{
     borderRadius:6, padding:"7px 10px", textAlign:"center",
-    background: active ? `${color}25` : "#1E2640",
+
     border: active ? `1.5px solid ${color}` : "1.5px solid transparent",
     transition:"all .2s", ...style,
   }}>
@@ -103,7 +103,7 @@ const HlBlock = ({ label, sub, color, active, style={} }) => (
 
 // ─── PC 메인 목업 ─────────────────────────────────────────
 const MockupPCMain = ({ hl }) => (
-  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+  <div style={{ background:"#F8F9FA", borderRadius:10, overflow:"hidden", border:"1px solid #E5E9F0" }}>
     <BrowserChrome />
     {hl === "curtain" && (
       <div style={{ background:"rgba(0,0,0,0.75)", padding:"8px", textAlign:"center" }}>
@@ -144,7 +144,7 @@ const MockupPCMain = ({ hl }) => (
 
 // ─── PC 서브 목업 ─────────────────────────────────────────
 const MockupPCSub = ({ hl }) => (
-  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+  <div style={{ background:"#F8F9FA", borderRadius:10, overflow:"hidden" }}>
     <BrowserChrome />
     <GNB />
     <HlBlock label="커뮤니티 Pick" sub="1780×528px · 4구좌" color={C.teal} active={hl==="commPick"} style={{ margin:"5px 5px 4px", borderRadius:6 }} />
@@ -168,15 +168,15 @@ const MockupPCSub = ({ hl }) => (
 
 // ─── 모바일 목업 ──────────────────────────────────────────
 const MockupMobile = ({ hl }) => (
-  <div style={{ width:150, margin:"0 auto", background:"#1A2035", borderRadius:16, overflow:"hidden", border:"3px solid #2A3245" }}>
-    <div style={{ background:"#0F1A2E", padding:"6px", textAlign:"center" }}>
+  <div style={{ width:150, margin:"0 auto", background:"#F8F9FA", borderRadius:16, overflow:"hidden", border:"3px solid #E5E7EB" }}>
+    <div style={{ background:C.navy, padding:"6px", textAlign:"center" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
     </div>
     <div style={{ padding:"4px 5px", display:"flex", flexDirection:"column", gap:3 }}>
       <HlBlock label="모바일 메인띠" sub="624×210px" color={C.teal} active={hl==="mobMain"} />
       {["Emperor","Lord","Knight"].map((n,i) => (
-        <div key={n} style={{ background:["#1C3A5E","#1A3A28","#3A2A10"][i], borderRadius:4, padding:"5px 6px" }}>
-          <span style={{ fontSize:8, color:[C.blueMid,"#4CAF50","#FF9800"][i] }}>{n} 채용관</span>
+        <div key={n} style={{ background:[C.blueL,C.greenL,C.amberL][i], borderRadius:4, padding:"5px 6px", border:`1px solid ${[C.border,C.border,C.border][i]}` }}>
+          <span style={{ fontSize:8, color:[C.blue,C.green,C.amber][i], fontWeight:600 }}>{n} 채용관</span>
         </div>
       ))}
       <HlBlock label="커뮤니티 Pick" sub="640×240px" color={C.teal} active={hl==="commPick"} />
@@ -187,14 +187,14 @@ const MockupMobile = ({ hl }) => (
 
 // ─── 이력서 목업 ──────────────────────────────────────────
 const MockupResume = () => (
-  <div style={{ background:"#1A2035", borderRadius:10, overflow:"hidden" }}>
+  <div style={{ background:"#F8F9FA", borderRadius:10, overflow:"hidden" }}>
     <BrowserChrome />
     <GNB />
     <div style={{ padding:"10px" }}>
-      <div style={{ background:"#1E2640", borderRadius:8, padding:"10px", border:`1.5px solid ${C.pink}` }}>
+      <div style={{ background:"#F0F2F5", borderRadius:8, padding:"10px", border:`1.5px solid ${C.pink}` }}>
         <div style={{ fontSize:9, color:"#F48FB1", fontWeight:700, marginBottom:8 }}>★ 이력서 열람 서비스</div>
         {["이력서 / 자기소개서","포트폴리오","이메일 / 연락처"].map((item,i) => (
-          <div key={i} style={{ display:"flex", alignItems:"center", gap:5, marginBottom:5, padding:"4px 6px", background:"#2A3245", borderRadius:4 }}>
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:5, marginBottom:5, padding:"4px 6px", background:"#E5E7EB", borderRadius:4 }}>
             <div style={{ width:14, height:14, borderRadius:"50%", background:`${C.pink}44`, display:"flex", alignItems:"center", justifyContent:"center" }}>
               <span style={{ fontSize:8, color:"#F48FB1" }}>✓</span>
             </div>
@@ -348,10 +348,10 @@ function SlideCard({ slide }) {
       overflow:"hidden", minHeight:460,
     }}>
       {/* 좌 — 목업 */}
-      <div style={{ background:"#141C2E", padding:"28px 22px", display:"flex", flexDirection:"column", justifyContent:"center", gap:14 }}>
+      <div style={{ background:"#F0F4FF", padding:"28px 22px", display:"flex", flexDirection:"column", justifyContent:"center", gap:14 }}>
         <div>
           <Tag label={slide.tag} color={slide.tagColor} bg={`${slide.tagColor}30`} />
-          <p style={{ fontSize:10.5, color:"rgba(255,255,255,0.35)", marginTop:5, marginBottom:0 }}>
+          <p style={{ fontSize:10.5, color:C.gray, marginTop:5, marginBottom:0 }}>
             {slide.category} — 지면 위치
           </p>
         </div>
@@ -434,7 +434,7 @@ function PackageCard({ pkg }) {
       border: pkg.highlight ? `2px solid ${C.blue}` : `1px solid ${C.border}`,
       minHeight:400,
     }}>
-      <div style={{ background:"#141C2E", padding:"32px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+      <div style={{ background:C.navy, padding:"32px 28px", display:"flex", flexDirection:"column", gap:18 }}>
         {pkg.highlight && (
           <span style={{ display:"inline-block", alignSelf:"flex-start", background:C.blue, borderRadius:4, padding:"3px 10px", fontSize:10, fontWeight:800, color:"#fff", letterSpacing:"0.08em" }}>BEST</span>
         )}
@@ -444,7 +444,7 @@ function PackageCard({ pkg }) {
         </div>
         <div>
           <p style={{ fontSize:30, fontWeight:900, color:C.white, margin:0 }}>{fw(pkg.price)}</p>
-          <p style={{ fontSize:11, color:"rgba(255,255,255,0.35)", marginTop:4 }}>1주 · VAT포함</p>
+          <p style={{ fontSize:11, color:C.gray, marginTop:4 }}>1주 · VAT포함</p>
         </div>
         <p style={{ fontSize:12.5, color:"rgba(255,255,255,0.55)", lineHeight:1.7, borderTop:"1px solid rgba(255,255,255,0.08)", paddingTop:16, margin:0 }}>
           {pkg.desc}
@@ -518,7 +518,7 @@ function Slider({ slides, renderSlide }) {
   const activeCategory = slides[idx]?.category || slides[idx]?.name;
 
   return (
-    <div>
+    <div style={{ padding:"0 28px" }}>
       {/* 카테고리 탭 */}
       <div style={{ display:"flex", gap:7, marginBottom:20, flexWrap:"wrap" }}>
         {categories.map(cat => {
@@ -535,16 +535,28 @@ function Slider({ slides, renderSlide }) {
         })}
       </div>
 
-      {/* 슬라이드 */}
-      {renderSlide(slides[idx])}
-
-      {/* 네비게이션 */}
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginTop:18 }}>
-        <NavBtn dir="prev" onClick={() => setIdx(i => Math.max(0,i-1))} disabled={idx===0} />
-        <div style={{ display:"flex", gap:5, alignItems:"center", flex:1, justifyContent:"center", padding:"0 10px", flexWrap:"wrap" }}>
-          {slides.map((_,i) => <DotBtn key={i} active={i===idx} onClick={() => setIdx(i)} />)}
+      {/* 슬라이드 + 좌우 화살표 */}
+      <div style={{ position:"relative" }}>
+        {renderSlide(slides[idx])}
+        {/* 왼쪽 화살표 */}
+        <div style={{
+          position:"absolute", left:-22, top:"50%", transform:"translateY(-50%)",
+          zIndex:10,
+        }}>
+          <NavBtn dir="prev" onClick={() => setIdx(i => Math.max(0,i-1))} disabled={idx===0} />
         </div>
-        <NavBtn dir="next" onClick={() => setIdx(i => Math.min(slides.length-1,i+1))} disabled={idx===slides.length-1} />
+        {/* 오른쪽 화살표 */}
+        <div style={{
+          position:"absolute", right:-22, top:"50%", transform:"translateY(-50%)",
+          zIndex:10,
+        }}>
+          <NavBtn dir="next" onClick={() => setIdx(i => Math.min(slides.length-1,i+1))} disabled={idx===slides.length-1} />
+        </div>
+      </div>
+
+      {/* 점 네비게이션 */}
+      <div style={{ display:"flex", gap:5, alignItems:"center", justifyContent:"center", marginTop:16, flexWrap:"wrap" }}>
+        {slides.map((_,i) => <DotBtn key={i} active={i===idx} onClick={() => setIdx(i)} />)}
       </div>
       <p style={{ textAlign:"center", fontSize:12, color:C.gray, marginTop:8 }}>{idx+1} / {slides.length}</p>
     </div>
