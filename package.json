@@ -2,20 +2,20 @@
   "name": "gamejob-adcenter",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://madamddo.github.io/gamejob-adcenter",   ← 맨 위에 추가
+  "homepage": "https://madamddo-stack.github.io/gamejob-adcenter",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.0",
-    "vite": "^5.0.0",
-    "gh-pages": "..."
+    "gh-pages": "^6.0.0",
+    "vite": "^5.0.0"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist"   ← 이 줄 추가 (위 줄 끝에 쉼표 확인!)
+    "deploy": "vite build && gh-pages -d dist"
   }
 }
