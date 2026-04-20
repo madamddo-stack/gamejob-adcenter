@@ -295,9 +295,9 @@ function ProductCard({ mockup, tag, tagColor, tagBg, category, title, features, 
 }
 
 // ─── 카테고리 섹션 ────────────────────────────────────────
-function CategorySection({ title, sub, children }) {
+function CategorySection({ id, title, sub, children }) {
   return (
-    <section style={{ marginBottom:72 }}>
+    <section id={id} style={{ marginBottom:72, scrollMarginTop:120 }}>
       <SectionTitle label={title} sub={sub} />
       <div style={{ display:"flex", flexDirection:"column", gap:24 }}>
         {children}
@@ -312,6 +312,7 @@ function AllProducts() {
     <div>
       {/* 메인 채용관 */}
       <CategorySection
+        id="main"
         title="메인 채용관"
         sub="게임잡 메인화면 최상단 — 기업 로고 + 대표공고를 직접 게재. Emperor · Lord · Knight 3단계 선택."
       >
@@ -354,6 +355,7 @@ function AllProducts() {
 
       {/* 채용정보 채용관 */}
       <CategorySection
+        id="recruit"
         title="채용정보 채용관"
         sub="채용정보 탭 내 직종·지역·경력 조건 기반 타깃 노출. 메인채용관 구매 시 자동 포함."
       >
@@ -392,6 +394,7 @@ function AllProducts() {
 
       {/* 배너 광고 */}
       <CategorySection
+        id="banner"
         title="배너 광고"
         sub="메인·서브·모바일·커뮤니티 전 지면 배너. 목적에 맞는 지면을 개별 선택."
       >
@@ -430,6 +433,7 @@ function AllProducts() {
 
       {/* 이력서 열람 */}
       <CategorySection
+        id="resume"
         title="이력서 열람 서비스"
         sub="게임잡 회원의 이력서·포트폴리오·연락처를 열람하고 직접 입사제의."
       >
@@ -619,14 +623,17 @@ export default function AdCenter() {
               ["banner","배너 광고"],
               ["resume","이력서 열람"],
             ].map(([id,label]) => (
-              <button key={id} onClick={() => scrollTo(id)} style={{
+              <button key={id} onClick={() => {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+              }} style={{
                 padding:"12px 18px", fontSize:13, fontWeight:600,
-                background:"transparent", border:"none", borderBottom:`2px solid transparent`,
+                background:"transparent", border:"none", borderBottom:"2px solid transparent",
                 cursor:"pointer", color:C.gray, whiteSpace:"nowrap",
                 transition:"all .15s",
               }}
-              onMouseEnter={e => { e.target.style.color = C.blue; e.target.style.borderBottomColor = C.blue; }}
-              onMouseLeave={e => { e.target.style.color = C.gray; e.target.style.borderBottomColor = "transparent"; }}
+              onMouseEnter={e => { e.currentTarget.style.color = C.blue; e.currentTarget.style.borderBottomColor = C.blue; }}
+              onMouseLeave={e => { e.currentTarget.style.color = C.gray; e.currentTarget.style.borderBottomColor = "transparent"; }}
               >{label}</button>
             ))}
           </div>
