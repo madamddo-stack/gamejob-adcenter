@@ -320,7 +320,7 @@ function AllProducts() {
           return (
             <ProductCard
               key={tier.id}
-              reverse={ti % 2 === 1}
+              reverse={false}
               mockup={<MockMain hl={tier.id} />}
               tag={tier.position + " 노출"}
               tagColor={colors[ti][0]}
@@ -362,7 +362,7 @@ function AllProducts() {
           return (
             <ProductCard
               key={tier.id}
-              reverse={ti % 2 === 1}
+              reverse={false}
               mockup={<MockSub hl={tier.id} />}
               tag={tier.position + " 노출"}
               tagColor={colors[ti][0]}
@@ -403,7 +403,7 @@ function AllProducts() {
           return (
             <ProductCard
               key={b.id}
-              reverse={bi % 2 === 1}
+              reverse={false}
               mockup={mockup}
               tag={b.device + " · " + b.zone}
               tagColor={dc[0]}
