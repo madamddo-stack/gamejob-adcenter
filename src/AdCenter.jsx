@@ -1,32 +1,33 @@
 import { useState, useEffect, useRef } from "react";
+import gamejobLogo from "./bi_gamejob.svg";
 import {
   mainBooth, recruitBooth, bannerAds, bannerPackages,
   packageCompareRows, resumeService,
 } from "./data/products";
 
 const C = {
-  navy:    "#1B2B4B",
-  blue:    "#2563EB",
-  blueL:   "#EFF6FF",
-  green:   "#1E6B3C",
-  greenL:  "#E8F5EE",
-  amber:   "#7A4400",
-  amberL:  "#FFF4E6",
-  purple:  "#3D2FA0",
-  purpleL: "#EFEDFC",
-  pink:    "#8B1A4A",
-  pinkL:   "#FCEEF4",
-  teal:    "#0B6657",
-  tealL:   "#E4F4F1",
-  gray:    "#64748B",
-  gray2:   "#94A3B8",
-  grayL:   "#F8FAFC",
-  border:  "#E2E8F0",
-  border2: "#CBD5E1",
+  navy:    "#004F6B",  // Primary/900
+  blue:    "#00A6E2",  // Primary/500
+  blueL:   "#EBFAFF",  // Primary/50
+  green:   "#256533",  // Green/800
+  greenL:  "#ECF8EF",  // Green/50
+  amber:   "#6B4700",  // Yellow/900
+  amberL:  "#FFF7E6",  // Yellow/50
+  purple:  "#0085B5",  // Primary/700
+  purpleL: "#D6F4FF",  // Primary/100
+  pink:    "#EE443F",  // Red/500
+  pinkL:   "#FDECEC",  // Red/50
+  teal:    "#308242",  // Green/700
+  tealL:   "#ECF8EF",  // Green/50
+  gray:    "#6D717F",  // Grey/500
+  gray2:   "#9EA2AE",  // Grey/400
+  grayL:   "#F9FAFB",  // Grey/50
+  border:  "#E5E7EA",  // Grey/200
+  border2: "#D2D5DB",  // Grey/300
   white:   "#FFFFFF",
-  bg:      "#F1F5F9",
-  text:    "#1E293B",
-  sub:     "#475569",
+  bg:      "#F3F4F6",  // Grey/100
+  text:    "#131927",  // Grey/900
+  sub:     "#4D5461",  // Grey/600
 };
 
 const fw = (n) => n?.toLocaleString("ko-KR") + "원";
@@ -47,7 +48,7 @@ const BrowserBar = () => (
 );
 
 const GNB = () => (
-  <div style={{ background:C.navy, padding:"7px 12px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+  <div style={{ background:"#212936", padding:"7px 12px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
     <span style={{ color:"#fff", fontWeight:900, fontSize:11, letterSpacing:"-0.02em" }}>GAMEJOB</span>
     <div style={{ display:"flex", gap:10 }}>
       {["채용정보","커뮤니티","기업정보","인재정보"].map(m => (
@@ -66,11 +67,11 @@ const SkeletonRow = ({ w="100%", h=8, mb=4 }) => (
 const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
   <div style={{
     borderRadius:5, padding:"7px 9px",
-    background: active ? `${color}12` : "#F1F5F9",
-    border: active ? `1.5px solid ${color}` : "1px solid #E2E8F0",
+    background: active ? `${color}12` : "#EAECF0",
+    border: active ? `1.5px solid ${color}` : `1px solid ${C.border2}`,
     transition:"all .18s", ...style,
   }}>
-    <div style={{ fontSize:9, fontWeight:active?700:400, color:active?color:"#CBD5E1", marginBottom:(active&&slots)?6:0 }}>
+    <div style={{ fontSize:9, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0 }}>
       {active ? `▶ ${label}` : label}
       {sub && <span style={{ fontSize:8, fontWeight:400, marginLeft:4, opacity:0.7 }}>{sub}</span>}
       {active && rolling && (
@@ -94,7 +95,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
 // ─── 모바일 채용관 목업 ───────────────────────────────────
 const MockBoothMobile = ({ hl }) => (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
-    <div style={{ background:C.navy, padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+    <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
         {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
@@ -113,12 +114,12 @@ const MockBoothMobile = ({ hl }) => (
       </div>
       {/* Lord */}
       <div style={{ marginBottom:3 }}>
-        <Zone label="Lord 채용관" sub="중단 · 공고2개" color={C.green}
+        <Zone label="Lord 채용관" sub="중단 · 공고2개" color={C.blue}
           active={hl==="lord"} slots={hl==="lord"?2:null} rolling={hl==="lord"?"20분순환":null} />
       </div>
       {/* Knight */}
       <div style={{ marginBottom:3 }}>
-        <Zone label="Knight 채용관" sub="하단 · 공고1개" color={C.amber}
+        <Zone label="Knight 채용관" sub="하단 · 공고1개" color={C.blue}
           active={hl==="knight"} slots={hl==="knight"?1:null} rolling={hl==="knight"?"20분순환":null} />
       </div>
       {/* 하단 스켈레톤 */}
@@ -152,25 +153,18 @@ const MockBoothPC = ({ hl }) => (
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
           <SkeletonRow w="50%" h={4} mb={0} />
         </div>
-        {/* Emperor + Emperor Edge 나란히 */}
-        <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
-          <div style={{ flex:1 }}>
-            <Zone label="Emperor 채용관" sub="상단 · 로고+공고3개" color={C.blue}
-              active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
-          </div>
-          <Zone label="Emperor Edge" sub="258×532" color={C.blue}
-            active={hl==="emperiredge"}
-            style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
-        </div>
+        {/* Emperor */}
+        <Zone label="Emperor 채용관" sub="상단 · 로고+공고3개" color={C.blue}
+          active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
         {/* 미들띠 스켈레톤 */}
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
           <SkeletonRow w="50%" h={4} mb={0} />
         </div>
         {/* Lord */}
-        <Zone label="Lord 채용관" sub="중단 · 로고+공고2개" color={C.green}
+        <Zone label="Lord 채용관" sub="중단 · 로고+공고2개" color={C.blue}
           active={hl==="lord"} slots={hl==="lord"?3:null} rolling={hl==="lord"?"20분순환":null} />
         {/* Knight */}
-        <Zone label="Knight 채용관" sub="하단 · 로고+공고1개" color={C.amber}
+        <Zone label="Knight 채용관" sub="하단 · 로고+공고1개" color={C.blue}
           active={hl==="knight"} slots={hl==="knight"?2:null} rolling={hl==="knight"?"20분순환":null} />
       </div>
 
@@ -204,12 +198,12 @@ const MockRecruitPC = ({ hl }) => (
     </div>
     {/* Shield */}
     <div style={{ padding:"2px 5px" }}>
-      <Zone label="Shield 채용관" sub="중단 · 최근수정순" color={C.green}
+      <Zone label="Shield 채용관" sub="중단 · 최근수정순" color={C.blue}
         active={hl==="shield"} slots={hl==="shield"?3:null} rolling={hl==="shield"?"매일갱신":null} />
     </div>
     {/* Armor */}
     <div style={{ padding:"2px 5px" }}>
-      <Zone label="Armor 채용관" sub="하단 · 최근수정순" color={C.amber}
+      <Zone label="Armor 채용관" sub="하단 · 최근수정순" color={C.blue}
         active={hl==="armor"} slots={hl==="armor"?3:null} rolling={hl==="armor"?"매일갱신":null} />
     </div>
     {/* 하단 스켈레톤 */}
@@ -225,7 +219,7 @@ const MockRecruitPC = ({ hl }) => (
 // ─── 모바일 서브(채용정보) 목업 — 채용관 전용 ────────────
 const MockRecruitMobile = ({ hl }) => (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
-    <div style={{ background:C.navy, padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+    <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
     </div>
@@ -245,12 +239,12 @@ const MockRecruitMobile = ({ hl }) => (
       </div>
       {/* Shield */}
       <div style={{ marginBottom:3 }}>
-        <Zone label="Shield 채용관" sub="중단" color={C.green}
+        <Zone label="Shield 채용관" sub="중단" color={C.blue}
           active={hl==="shield"} slots={hl==="shield"?2:null} rolling={hl==="shield"?"매일갱신":null} />
       </div>
       {/* Armor */}
       <div style={{ marginBottom:3 }}>
-        <Zone label="Armor 채용관" sub="하단" color={C.amber}
+        <Zone label="Armor 채용관" sub="하단" color={C.blue}
           active={hl==="armor"} slots={hl==="armor"?2:null} rolling={hl==="armor"?"매일갱신":null} />
       </div>
       {/* 하단 스켈레톤 */}
@@ -278,13 +272,13 @@ const MockSub = ({ hl }) => (
     )}
     {/* 커뮤니티 Pick */}
     <div style={{ padding:"5px 5px 2px" }}>
-      <Zone label="커뮤니티 Pick" sub="1780×528" color={C.teal} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
+      <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
     </div>
     <div style={{ padding:"0 5px 2px", display:"flex", gap:3 }}>
       {/* 날개 */}
       <div style={{ width:24, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
-        <Zone label="날개" sub="90×154" color={C.pink} active={hl==="subwing"} style={{ padding:"7px 2px" }} />
-        <Zone label="날개2" color={C.pink} active={hl==="subwing2"} style={{ padding:"7px 2px" }} />
+        <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"} style={{ padding:"7px 2px" }} />
+        <Zone label="날개2" color={C.blue} active={hl==="subwing2"} style={{ padding:"7px 2px" }} />
       </div>
       {/* 채용관 스켈레톤 */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
@@ -303,11 +297,11 @@ const MockSub = ({ hl }) => (
       </div>
       {/* 스카이 */}
       <div style={{ width:28, flexShrink:0 }}>
-        <Zone label="서브스카이 120×600" color={C.pink} active={hl==="subsky"} rolling={hl==="subsky"?"4구좌":null} style={{ height:"100%", minHeight:90, padding:"4px 2px" }} />
+        <Zone label="서브스카이 120×600" color={C.blue} active={hl==="subsky"} rolling={hl==="subsky"?"4구좌":null} style={{ height:"100%", minHeight:90, padding:"4px 2px" }} />
       </div>
     </div>
     <div style={{ padding:"0 5px 5px" }}>
-      <Zone label="서브 하단" sub="570×110" color={C.gray} active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+      <Zone label="서브 하단" sub="570×110" color={C.blue} active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
     </div>
   </div>
 );
@@ -315,7 +309,7 @@ const MockSub = ({ hl }) => (
 // ─── PC 메인 배너 목업 ────────────────────────────────────
 const MockMainBanner = ({ hl }) => {
   const isSkin = hl === "backskin";
-  const skinColor = C.amber;
+  const skinColor = C.blue;
   const skinStyle = (side) => ({
     width: 56, flexShrink:0,
     background: isSkin ? `${skinColor}12` : "#F1F5F9",
@@ -328,11 +322,11 @@ const MockMainBanner = ({ hl }) => {
   const skinText = (side) => (
     <span style={{
       fontSize:8, fontWeight:isSkin?700:400,
-      color:isSkin?skinColor:"#CBD5E1",
-      writingMode:"vertical-rl", whiteSpace:"pre",
-      overflow:"hidden", textAlign:"center",
+      color:isSkin?skinColor:C.gray2,
+      writingMode:"vertical-rl",
+      textAlign:"center",
     }}>
-      {isSkin ? `▶ 백스킨\n(${side==="left"?"좌":"우"})` : `백스킨\n(${side==="left"?"좌":"우"})`}
+      {isSkin ? `▶ 백스킨(${side==="left"?"좌":"우"})` : `백스킨(${side==="left"?"좌":"우"})`}
     </span>
   );
 
@@ -350,9 +344,22 @@ const MockMainBanner = ({ hl }) => {
         {/* 중앙 콘텐츠 */}
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
 
-          {/* 메인 탑 */}
-          <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.green}
-            active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null} />
+          {/* 메인 탑 + 우측 콘텐츠 스켈레톤 */}
+          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
+            <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
+              active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
+              style={{ flex:2 }} />
+            <div style={{ flex:1, display:"flex", gap:2 }}>
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5, padding:"6px 5px" }}>
+                <SkeletonRow w="80%" h={4} mb={2} />
+                <SkeletonRow w="60%" h={3} mb={0} />
+              </div>
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5, padding:"6px 5px" }}>
+                <SkeletonRow w="80%" h={4} mb={2} />
+                <SkeletonRow w="60%" h={3} mb={0} />
+              </div>
+            </div>
+          </div>
 
           {/* 콘텐츠 스켈레톤 (탑~상단띠 사이) */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
@@ -373,10 +380,10 @@ const MockMainBanner = ({ hl }) => {
           </div>
 
           {/* 메인 상단띠 */}
-          <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.purple}
+          <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.blue}
             active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
 
-          {/* Emperor Edge + Emperor 채용관 스켈레톤 나란히 */}
+          {/* Emperor 채용관 스켈레톤 + Emperor Edge */}
           <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
             <div style={{ flex:1, background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
               <SkeletonRow w="45%" h={5} mb={3} />
@@ -409,7 +416,7 @@ const MockMainBanner = ({ hl }) => {
           </div>
 
           {/* 메인 미들띠 */}
-          <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.purple}
+          <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
             active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
 
         </div>
@@ -425,21 +432,21 @@ const MockMainBanner = ({ hl }) => {
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl }) => (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
-    <div style={{ background:C.navy, padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+    <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
         {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
       </div>
     </div>
     <div style={{ padding:"5px" }}>
-      <Zone label="모바일 메인띠" sub="624×210" color={C.teal} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
+      <Zone label="모바일 메인띠" sub="624×210" color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
       {/* 채용관 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3 }}>
         <SkeletonRow w="70%" h={6} mb={2} />
         <SkeletonRow w="50%" h={5} mb={0} />
       </div>
-      <Zone label="커뮤니티 Pick" sub="640×240" color={C.teal} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
-      <Zone label="모바일 서브띠" color={C.purple} active={hl==="mobSub"} style={{ marginBottom:2 }} />
+      <Zone label="커뮤니티 Pick" sub="640×240" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
+      <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
     </div>
   </div>
 );
@@ -450,17 +457,17 @@ const MockResume = () => (
     <BrowserBar />
     <GNB />
     <div style={{ padding:"10px" }}>
-      <div style={{ background:"#fff", borderRadius:7, padding:"11px", border:`1.5px solid ${C.pink}` }}>
-        <div style={{ fontSize:9.5, color:C.pink, fontWeight:700, marginBottom:7 }}>▶ 이력서 열람 서비스</div>
+      <div style={{ background:"#fff", borderRadius:7, padding:"11px", border:`1.5px solid ${C.blue}` }}>
+        <div style={{ fontSize:9.5, color:C.blue, fontWeight:700, marginBottom:7 }}>▶ 이력서 열람 서비스</div>
         {["이력서 / 자기소개서","포트폴리오","이메일 / 연락처"].map((item,i) => (
-          <div key={i} style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5, padding:"4px 7px", background:C.pinkL, borderRadius:4 }}>
-            <div style={{ width:13, height:13, borderRadius:"50%", background:C.pink, display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5, padding:"4px 7px", background:C.blueL, borderRadius:4 }}>
+            <div style={{ width:13, height:13, borderRadius:"50%", background:C.blue, display:"flex", alignItems:"center", justifyContent:"center" }}>
               <span style={{ fontSize:8, color:"#fff", fontWeight:800 }}>✓</span>
             </div>
             <span style={{ fontSize:9, color:C.text, fontWeight:500 }}>{item}</span>
           </div>
         ))}
-        <div style={{ marginTop:7, padding:"6px", background:C.pink, borderRadius:4, textAlign:"center" }}>
+        <div style={{ marginTop:7, padding:"6px", background:C.blue, borderRadius:4, textAlign:"center" }}>
           <span style={{ fontSize:9, color:"#fff", fontWeight:700 }}>입사제의 보내기</span>
         </div>
       </div>
@@ -552,9 +559,9 @@ function ProductCard({ item }) {
                 <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>노출</p>
                 <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
                   {item.exposure.map((row,i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"center", padding:"8px 12px", borderBottom: i < item.exposure.length-1 ? `1px solid ${C.border}` : "none", background: i%2===0 ? C.grayL : C.white }}>
-                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:80, flexShrink:0 }}>{row.label}</span>
-                      <span style={{ fontSize:12.5, color:C.text }}>{row.value}</span>
+                    <div key={i} style={{ display:"flex", alignItems:"center", borderBottom: i < item.exposure.length-1 ? `1px solid ${C.border}` : "none" }}>
+                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
+                      <span style={{ fontSize:12.5, color:C.text, padding:"8px 12px" }}>{row.value}</span>
                     </div>
                   ))}
                 </div>
@@ -563,9 +570,9 @@ function ProductCard({ item }) {
                 <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>제작 가이드</p>
                 <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
                   {item.guide.map((row,i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"center", padding:"8px 12px", borderBottom: i < item.guide.length-1 ? `1px solid ${C.border}` : "none", background: i%2===0 ? C.grayL : C.white }}>
-                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:80, flexShrink:0 }}>{row.label}</span>
-                      <span style={{ fontSize:12.5, color:C.text }}>{row.value}</span>
+                    <div key={i} style={{ display:"flex", alignItems:"center", borderBottom: i < item.guide.length-1 ? `1px solid ${C.border}` : "none" }}>
+                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
+                      <span style={{ fontSize:12.5, color:C.text, padding:"8px 12px" }}>{row.value}</span>
                     </div>
                   ))}
                 </div>
@@ -756,7 +763,7 @@ const buildAllItems = () => {
       tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
       zoneLabel:b.zone, mockup,
       exposure:[
-        { label:"노출 위치", value:b.zone+" ("+deviceLabel+")" },
+        { label:"노출 위치", value:b.location || b.zone+" ("+deviceLabel+")" },
         { label:"노출 방식", value:b.rolling },
       ],
       guide:[
@@ -872,31 +879,35 @@ export default function AdCenter() {
   }, [tab]);
 
   return (
-    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif", color:C.text }}>
+    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif", color:C.text, fontSize:14, fontWeight:400, lineHeight:"20px" }}>
 
       {/* ── 헤더 ── */}
       <header style={{ background:C.white, borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 3px rgba(15,23,42,0.05)" }}>
         <div style={{ width:"100%", padding:"0 40px", boxSizing:"border-box" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"13px 0 0" }}>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <span style={{ fontWeight:900, fontSize:20, color:C.blue, letterSpacing:"-0.04em", fontStyle:"italic" }}>GAMEJOB</span>
+              <img src={gamejobLogo} alt="GAMEJOB" style={{ height:28 }} />
               <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
               {[["all","전체상품 소개서"],["package","배너패키지 상품 소개서"]].map(([v,l]) => (
                 <button key={v} onClick={() => handleTabChange(v)} style={{
-                  padding:"6px 14px", fontSize:12, fontWeight:600, borderRadius:6, cursor:"pointer",
+                  padding:"7px 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
                   border:`1px solid ${C.border2}`,
                   background:C.white, color:C.gray,
                   display:"flex", alignItems:"center", gap:5,
                 }}>
-                  <span style={{ fontSize:11 }}>↓</span>{l}
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M6.5 1.5v7M3.5 6l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 10.5h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  {l}
                 </button>
               ))}
               <a href="mailto:ad@gamejob.co.kr" style={{
                 display:"inline-flex", alignItems:"center", gap:5,
-                background:C.navy, borderRadius:7, padding:"7px 16px",
-                color:"#fff", fontSize:12.5, fontWeight:700, textDecoration:"none", marginLeft:2,
+                background:C.text, borderRadius:7, padding:"7px 16px",
+                color:"#fff", fontSize:12, fontWeight:700, textDecoration:"none", marginLeft:2,
               }}>☎ 광고문의</a>
             </div>
           </div>

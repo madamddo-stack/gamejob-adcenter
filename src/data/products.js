@@ -104,12 +104,12 @@ export const recruitBooth = {
 export const bannerAds = [
   // PC 메인
   { id: "backskin",     device: "PC",     zone: "메인",        name: "메인 백스킨",    size: "2560×1000px", capacity: "500KB 이하", rolling: "고정",     price: 3300000 },
+  { id: "emperiredge",  device: "PC",     zone: "메인",        name: "Emperor Edge",   size: "258×532px",   capacity: "10MB 이하",  rolling: "최상단 우측 1번째, 2번째 줄", location: "PC 메인 채용관 상단 우측", price: 2750000 },
   { id: "maintop",      device: "PC",     zone: "메인",        name: "메인 탑",        size: "2560×1000px", capacity: "500KB 이하", rolling: "3구좌 롤링",price: 2200000 },
   { id: "topstrip",     device: "PC",     zone: "메인",        name: "메인 상단띠",    size: "1080×70px",   capacity: "200KB 이하", rolling: "3구좌 롤링",price: 1815000 },
   { id: "midstrip",     device: "PC",     zone: "메인",        name: "메인 미들띠",    size: "1080×70px",   capacity: "200KB 이하", rolling: "3구좌 롤링",price: 1430000 },
   { id: "curtain",      device: "PC",     zone: "메인",        name: "메인 커튼",      size: "-",           capacity: "-",         rolling: "고정",     price: null,  note: "패키지 포함 상품" },
   { id: "mainright",    device: "PC",     zone: "메인",        name: "메인 우측",      size: "-",           capacity: "-",         rolling: "고정",     price: null,  note: "패키지 포함 상품" },
-  { id: "emperiredge",  device: "PC",     zone: "메인",        name: "Emperor Edge",   size: "258×532px",   capacity: "200KB 이하", rolling: "2구좌",    price: null,  note: "별도 문의" },
   // PC 서브
   { id: "subwing",      device: "PC",     zone: "서브",        name: "서브 날개",      size: "90×154px",    capacity: "100KB 이하", rolling: "3구좌 롤링",price: 2200000 },
   { id: "subwing2",     device: "PC",     zone: "서브",        name: "서브 날개2",     size: "90×154px",    capacity: "100KB 이하", rolling: "3구좌 롤링",price: null,  note: "패키지 포함 상품" },
