@@ -110,7 +110,107 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
   </div>
 );
 
-// ─── PC 메인 목업 ─────────────────────────────────────────
+// ─── PC 메인 목업 (채용관 전용) ───────────────────────────
+const MockMainBooth = ({ hl }) => (
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+    <BrowserBar />
+    <GNB />
+    {/* 상단띠 */}
+    <div style={{ padding:"5px 5px 2px" }}>
+      <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px", fontSize:8, color:"#CBD5E1", textAlign:"center" }}>메인 상단띠</div>
+    </div>
+    {/* Emperor */}
+    <div style={{ padding:"2px 5px" }}>
+      <Zone
+        label="Emperor 채용관"
+        sub="상단 · 로고+공고3개"
+        color={C.blue}
+        active={hl==="emperor"}
+        slots={hl==="emperor" ? 4 : null}
+        rolling={hl==="emperor" ? "20분순환" : null}
+      />
+    </div>
+    {/* 미들띠 */}
+    <div style={{ padding:"2px 5px" }}>
+      <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px", fontSize:8, color:"#CBD5E1", textAlign:"center" }}>메인 미들띠</div>
+    </div>
+    {/* Lord */}
+    <div style={{ padding:"2px 5px" }}>
+      <Zone
+        label="Lord 채용관"
+        sub="중단 · 로고+공고2개"
+        color={C.green}
+        active={hl==="lord"}
+        slots={hl==="lord" ? 3 : null}
+        rolling={hl==="lord" ? "20분순환" : null}
+      />
+    </div>
+    {/* Knight */}
+    <div style={{ padding:"2px 5px 5px" }}>
+      <Zone
+        label="Knight 채용관"
+        sub="하단 · 로고+공고1개"
+        color={C.amber}
+        active={hl==="knight"}
+        slots={hl==="knight" ? 2 : null}
+        rolling={hl==="knight" ? "20분순환" : null}
+      />
+    </div>
+  </div>
+);
+
+// ─── 모바일 메인 목업 (채용관 전용) ──────────────────────
+const MockMainBoothMobile = ({ hl }) => (
+  <div style={{ width:160, margin:"0 auto", background:"#FAFAFA", borderRadius:16, overflow:"hidden", border:"2.5px solid #DDE1E7" }}>
+    <div style={{ background:C.navy, padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:10, letterSpacing:"-0.02em" }}>GAMEJOB</span>
+      <div style={{ display:"flex", gap:6 }}>
+        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.45)", fontSize:7 }}>{m}</span>)}
+      </div>
+    </div>
+    <div style={{ padding:"5px" }}>
+      {/* 모바일 메인띠 */}
+      <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px 6px", textAlign:"center", marginBottom:3 }}>
+        <span style={{ fontSize:8, color:"#CBD5E1" }}>모바일 메인띠</span>
+      </div>
+      {/* Emperor */}
+      <div style={{ marginBottom:3 }}>
+        <Zone
+          label="Emperor 채용관"
+          sub="상단 · 공고3개"
+          color={C.blue}
+          active={hl==="emperor"}
+          slots={hl==="emperor" ? 2 : null}
+          rolling={hl==="emperor" ? "20분순환" : null}
+        />
+      </div>
+      {/* Lord */}
+      <div style={{ marginBottom:3 }}>
+        <Zone
+          label="Lord 채용관"
+          sub="중단 · 공고2개"
+          color={C.green}
+          active={hl==="lord"}
+          slots={hl==="lord" ? 2 : null}
+          rolling={hl==="lord" ? "20분순환" : null}
+        />
+      </div>
+      {/* Knight */}
+      <div style={{ marginBottom:3 }}>
+        <Zone
+          label="Knight 채용관"
+          sub="하단 · 공고1개"
+          color={C.amber}
+          active={hl==="knight"}
+          slots={hl==="knight" ? 1 : null}
+          rolling={hl==="knight" ? "20분순환" : null}
+        />
+      </div>
+    </div>
+  </div>
+);
+
+// ─── PC 메인 목업 (배너 전용) ─────────────────────────────
 const MockMain = ({ hl }) => (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
     <BrowserBar />
@@ -132,7 +232,7 @@ const MockMain = ({ hl }) => (
     <div style={{ padding:"0 5px 2px", display:"flex", gap:3 }}>
       <Zone label="백스킨(좌)" color={C.amber} active={hl==="backskin"} style={{ width:24, flexShrink:0, padding:"10px 2px" }} />
       <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
-        <Zone label="Emperor 채용관" sub="로고+공고3개" color={C.blue} active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
+        <Zone label="Emperor 채용관" sub="상단" color={C.blue} active={false} />
         <Zone label="Emperor Edge" sub="258×532" color={C.blue} active={hl==="emperiredge"} />
       </div>
       <Zone label="백스킨(우)" color={C.amber} active={hl==="backskin"} style={{ width:24, flexShrink:0, padding:"10px 2px" }} />
@@ -141,10 +241,10 @@ const MockMain = ({ hl }) => (
       <Zone label="메인 미들띠" sub="1080×70" color={C.purple} active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
     </div>
     <div style={{ padding:"0 5px 2px" }}>
-      <Zone label="Lord 채용관" sub="로고+공고2개" color={C.green} active={hl==="lord"} slots={hl==="lord"?3:null} rolling={hl==="lord"?"20분순환":null} />
+      <Zone label="Lord 채용관" sub="중단" color={C.green} active={false} />
     </div>
     <div style={{ padding:"0 5px 5px" }}>
-      <Zone label="Knight 채용관" sub="로고+공고1개" color={C.amber} active={hl==="knight"} slots={hl==="knight"?2:null} rolling={hl==="knight"?"20분순환":null} />
+      <Zone label="Knight 채용관" sub="하단" color={C.amber} active={false} />
     </div>
   </div>
 );
@@ -227,13 +327,25 @@ const buildAllItems = () => {
 
   mainBooth.tiers.forEach((tier, ti) => {
     const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
+    const boothMockup = (
+      <div style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
+        <div style={{ flex:1 }}>
+          <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:5, textAlign:"center" }}>PC</p>
+          <MockMainBooth hl={tier.id} />
+        </div>
+        <div style={{ width:160, flexShrink:0 }}>
+          <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:5, textAlign:"center" }}>Mobile</p>
+          <MockMainBoothMobile hl={tier.id} />
+        </div>
+      </div>
+    );
     items.push({
       id: tier.id, section:"전체 상품 안내", category:"메인 채용관",
       title: tier.name, tag: tier.position+" 노출",
       tagColor: colors[ti][0], tagBg: colors[ti][1],
       desc: `게임잡 메인화면 최상단 — 기업 로고 + 대표공고를 직접게재.\nEmperor · Lord · Knight 3단계 중 ${["최상위","중단","하단"][ti]} 노출.`,
       zoneLabel:"메인",
-      mockup: <MockMain hl={tier.id} />,
+      mockup: boothMockup,
       features: tier.features,
       priceTabs: [
         { label:"결합 (PC+M)", rows: tier.combined.map(r => ({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
@@ -369,7 +481,7 @@ function ProductDetail({ item }) {
           )}
         </div>
 
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }}>
+        <div style={{ display:"grid", gridTemplateColumns: item.category==="메인 채용관" ? "3fr 2fr" : "1fr 1fr" }}>
           {/* 좌 — 목업 */}
           <div style={{ padding:"28px 24px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF" }}>
             {item.mockup}
@@ -551,17 +663,19 @@ export default function AdCenter() {
     window.scrollTo({ top:0, behavior:"smooth" });
   };
 
+  const HEADER_H = 93; // sticky 헤더 높이
+
   return (
     <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif", color:C.text }}>
 
-      {/* ── 헤더 ── */}
-      <header style={{ background:C.white, borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 3px rgba(15,23,42,0.06)" }}>
-        <div style={{ maxWidth:1280, margin:"0 auto", padding:"0 32px" }}>
+      {/* ── 헤더 (풀 너비) ── */}
+      <header style={{ background:C.white, borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 3px rgba(15,23,42,0.05)" }}>
+        <div style={{ maxWidth:1440, margin:"0 auto", padding:"0 40px" }}>
 
           {/* 1행: 로고 + 버튼 */}
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 0 0" }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"13px 0 0" }}>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <span style={{ fontWeight:900, fontSize:19, color:C.blue, letterSpacing:"-0.04em", fontStyle:"italic" }}>GAMEJOB</span>
+              <span style={{ fontWeight:900, fontSize:20, color:C.blue, letterSpacing:"-0.04em", fontStyle:"italic" }}>GAMEJOB</span>
               <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
@@ -578,7 +692,7 @@ export default function AdCenter() {
               ))}
               <a href="mailto:ad@gamejob.co.kr" style={{
                 display:"inline-flex", alignItems:"center", gap:5,
-                background:C.navy, borderRadius:7, padding:"7px 15px",
+                background:C.navy, borderRadius:7, padding:"7px 16px",
                 color:"#fff", fontSize:12.5, fontWeight:700, textDecoration:"none", marginLeft:2,
               }}>☎ 광고문의</a>
             </div>
@@ -602,32 +716,46 @@ export default function AdCenter() {
         </div>
       </header>
 
-      {/* ── 바디 ── */}
-      <div style={{ maxWidth:1280, margin:"0 auto", padding:"24px 32px 80px", display:"flex", gap:0, alignItems:"flex-start" }}>
+      {/* ── 바디 (풀 너비, 내용은 1440 제한) ── */}
+      <div style={{ display:"flex", minHeight:`calc(100vh - ${HEADER_H}px)` }}>
 
-        {/* LNB */}
-        <div style={{ width:180, flexShrink:0, position:"sticky", top:96, background:C.white, borderRight:`1px solid ${C.border}`, minHeight:"calc(100vh - 120px)", paddingTop:16, marginRight:24 }}>
-          <LNB
-            groups={tab === "all" ? LNB_ALL : LNB_PKG}
-            activeId={activeId}
-            onSelect={handleSelect}
-          />
+        {/* LNB — 고정 사이드바 */}
+        <div style={{
+          width:200, flexShrink:0,
+          position:"sticky", top:HEADER_H,
+          height:`calc(100vh - ${HEADER_H}px)`,
+          overflowY:"auto",
+          background:C.white,
+          borderRight:`1px solid ${C.border}`,
+          paddingTop:20,
+        }}>
+          {/* LNB 내용을 1440 기준 왼쪽 여백에 맞게 들여쓰기 */}
+          <div style={{ paddingLeft: "max(16px, calc((100vw - 1440px) / 2))" }}>
+            <LNB
+              groups={tab === "all" ? LNB_ALL : LNB_PKG}
+              activeId={activeId}
+              onSelect={handleSelect}
+            />
+          </div>
         </div>
 
-        {/* 콘텐츠 */}
-        <div style={{ flex:1, minWidth:0, paddingTop:4 }}>
-          {tab === "all" && currentItem && <ProductDetail item={currentItem} />}
-          {tab === "package" && (
-            <div>
-              {currentPkg && <PackageDetail pkg={currentPkg} />}
-              <PackageCompare />
-            </div>
-          )}
+        {/* 콘텐츠 영역 */}
+        <div style={{ flex:1, minWidth:0, overflowX:"hidden" }}>
+          {/* 내부 최대 너비 1440 - LNB(200) */}
+          <div style={{ maxWidth: 1240, padding:"28px 40px 80px" }}>
+            {tab === "all" && currentItem && <ProductDetail item={currentItem} />}
+            {tab === "package" && (
+              <div>
+                {currentPkg && <PackageDetail pkg={currentPkg} />}
+                <PackageCompare />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ── 푸터 ── */}
-      <footer style={{ borderTop:`1px solid ${C.border}`, background:C.white, padding:"16px 32px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+      {/* ── 푸터 (풀 너비) ── */}
+      <footer style={{ borderTop:`1px solid ${C.border}`, background:C.white, padding:"16px 40px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <p style={{ fontSize:12, color:C.gray2, margin:0 }}>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
         <p style={{ fontSize:11.5, color:C.gray2, margin:0 }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주, 배너 1주 이상</p>
       </footer>
