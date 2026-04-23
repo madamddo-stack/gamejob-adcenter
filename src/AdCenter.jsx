@@ -291,39 +291,119 @@ const MockSub = ({ hl }) => (
 );
 
 // ─── PC 메인 배너 목업 ────────────────────────────────────
-const MockMainBanner = ({ hl }) => (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
-    <BrowserBar />
-    <GNB />
-    {/* 백스킨 */}
-    <div style={{ padding:"5px 5px 2px", display:"flex", gap:3 }}>
-      <Zone label="백스킨(좌)" sub="2560×1000" color={C.amber} active={hl==="backskin"} style={{ width:26, flexShrink:0, padding:"14px 2px" }} />
-      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
-        {/* 탑 */}
-        <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.green} active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null} />
-        {/* 상단띠 */}
-        <Zone label="메인 상단띠" sub="1080×70" color={C.purple} active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
-        {/* Emperor Edge */}
-        <Zone label="Emperor Edge" sub="258×532" color={C.blue} active={hl==="emperiredge"} />
-        {/* Emperor 채용관 스켈레톤 */}
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
-          <SkeletonRow w="55%" h={6} mb={2} />
-          <div style={{ display:"flex", gap:3 }}>
-            {[1,2,3,4].map(i => <div key={i} style={{ flex:1, height:18, background:"#E2E8F0", borderRadius:3 }} />)}
+const MockMainBanner = ({ hl }) => {
+  const isSkin = hl === "backskin";
+  return (
+    <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+      <BrowserBar />
+      {/* 커튼 영역 스켈레톤 */}
+      <div style={{ background:"#E9EEF4", padding:"5px 8px" }}>
+        <SkeletonRow w="60%" h={6} mb={0} />
+      </div>
+      <GNB />
+
+      {/* 메인 탑 */}
+      <div style={{ padding:"4px 4px 2px" }}>
+        <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.green}
+          active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null} />
+      </div>
+
+      {/* 상단띠 */}
+      <div style={{ padding:"0 4px 2px" }}>
+        <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.purple}
+          active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
+      </div>
+
+      {/* 백스킨(좌) + 콘텐츠 + 백스킨(우) */}
+      <div style={{ display:"flex", gap:0, padding:"0 0 2px" }}>
+        {/* 백스킨 좌 */}
+        <div style={{
+          width: isSkin ? 70 : 28, flexShrink:0,
+          background: isSkin ? `${C.amber}12` : "#F1F5F9",
+          border: isSkin ? `1.5px solid ${C.amber}` : "1px solid #E2E8F0",
+          margin:"0 2px",
+          borderRadius:5,
+          display:"flex", alignItems:"center", justifyContent:"center",
+          minHeight: 90,
+          transition:"all .2s",
+        }}>
+          <span style={{ fontSize:8, fontWeight:isSkin?700:400, color:isSkin?C.amber:"#CBD5E1", writingMode:"vertical-rl", textAlign:"center", whiteSpace:"nowrap" }}>
+            {isSkin ? "▶ 백스킨(좌)" : "백스킨(좌)"}
+          </span>
+        </div>
+
+        {/* 가운데 콘텐츠 */}
+        <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
+          {/* Emperor Edge */}
+          <Zone label="Emperor Edge" sub="258×532" color={C.blue}
+            active={hl==="emperiredge"} />
+          {/* Emperor 채용관 스켈레톤 */}
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
+            <SkeletonRow w="50%" h={5} mb={3} />
+            <div style={{ display:"flex", gap:2 }}>
+              {[1,2,3,4].map(i => (
+                <div key={i} style={{ flex:1, background:"#E2E8F0", borderRadius:3, padding:"5px 3px" }}>
+                  <div style={{ width:"40%", height:8, background:"#D1D5DB", borderRadius:2, margin:"0 auto 3px" }} />
+                  <SkeletonRow w="90%" h={4} mb={2} />
+                  <SkeletonRow w="70%" h={4} mb={0} />
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Lord 스켈레톤 */}
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
+            <SkeletonRow w="50%" h={5} mb={3} />
+            <div style={{ display:"flex", gap:2 }}>
+              {[1,2,3].map(i => (
+                <div key={i} style={{ flex:1, background:"#E2E8F0", borderRadius:3, padding:"4px 3px" }}>
+                  <SkeletonRow w="90%" h={4} mb={2} />
+                  <SkeletonRow w="70%" h={4} mb={0} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        {/* 미들띠 */}
-        <Zone label="메인 미들띠" sub="1080×70" color={C.purple} active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
-        {/* Lord/Knight 스켈레톤 */}
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
-          <SkeletonRow w="60%" h={5} mb={2} />
-          <SkeletonRow w="45%" h={5} mb={0} />
+
+        {/* 백스킨 우 */}
+        <div style={{
+          width: isSkin ? 70 : 28, flexShrink:0,
+          background: isSkin ? `${C.amber}12` : "#F1F5F9",
+          border: isSkin ? `1.5px solid ${C.amber}` : "1px solid #E2E8F0",
+          margin:"0 2px",
+          borderRadius:5,
+          display:"flex", alignItems:"center", justifyContent:"center",
+          minHeight: 90,
+          transition:"all .2s",
+        }}>
+          <span style={{ fontSize:8, fontWeight:isSkin?700:400, color:isSkin?C.amber:"#CBD5E1", writingMode:"vertical-rl", textAlign:"center", whiteSpace:"nowrap" }}>
+            {isSkin ? "▶ 백스킨(우)" : "백스킨(우)"}
+          </span>
         </div>
       </div>
-      <Zone label="백스킨(우)" sub="" color={C.amber} active={hl==="backskin"} style={{ width:26, flexShrink:0, padding:"14px 2px" }} />
+
+      {/* 미들띠 */}
+      <div style={{ padding:"0 4px 2px" }}>
+        <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.purple}
+          active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
+      </div>
+
+      {/* Knight 스켈레톤 */}
+      <div style={{ padding:"0 4px 5px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 7px" }}>
+          <SkeletonRow w="45%" h={5} mb={2} />
+          <div style={{ display:"flex", gap:2 }}>
+            {[1,2].map(i => (
+              <div key={i} style={{ flex:1, background:"#E2E8F0", borderRadius:3, padding:"4px 3px" }}>
+                <SkeletonRow w="90%" h={4} mb={2} />
+                <SkeletonRow w="70%" h={4} mb={0} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl }) => (
