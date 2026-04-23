@@ -160,7 +160,87 @@ const MockBoothPC = ({ hl }) => (
   </div>
 );
 
-// ─── PC 서브 목업 ─────────────────────────────────────────
+// ─── PC 서브(채용정보) 목업 — 채용관 전용 ────────────────
+const MockRecruitPC = ({ hl }) => (
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+    <BrowserBar />
+    <GNB />
+    {/* 상단 스켈레톤 */}
+    <div style={{ padding:"5px 5px 3px" }}>
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px", display:"flex", gap:6 }}>
+        {["직종","지역","경력","직급"].map(f => (
+          <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"3px 8px" }}>
+            <span style={{ fontSize:8, color:"#94A3B8" }}>{f}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    {/* Sword */}
+    <div style={{ padding:"2px 5px" }}>
+      <Zone label="Sword 채용관" sub="상단 · 최근수정순" color={C.blue}
+        active={hl==="sword"} slots={hl==="sword"?3:null} rolling={hl==="sword"?"매일갱신":null} />
+    </div>
+    {/* Shield */}
+    <div style={{ padding:"2px 5px" }}>
+      <Zone label="Shield 채용관" sub="중단 · 최근수정순" color={C.green}
+        active={hl==="shield"} slots={hl==="shield"?3:null} rolling={hl==="shield"?"매일갱신":null} />
+    </div>
+    {/* Armor */}
+    <div style={{ padding:"2px 5px" }}>
+      <Zone label="Armor 채용관" sub="하단 · 최근수정순" color={C.amber}
+        active={hl==="armor"} slots={hl==="armor"?3:null} rolling={hl==="armor"?"매일갱신":null} />
+    </div>
+    {/* 하단 스켈레톤 */}
+    <div style={{ padding:"3px 5px 5px" }}>
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
+        <SkeletonRow w="80%" h={6} mb={3} />
+        <SkeletonRow w="55%" h={5} mb={0} />
+      </div>
+    </div>
+  </div>
+);
+
+// ─── 모바일 서브(채용정보) 목업 — 채용관 전용 ────────────
+const MockRecruitMobile = ({ hl }) => (
+  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ background:C.navy, padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+      <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
+    </div>
+    <div style={{ padding:"5px" }}>
+      {/* 필터 스켈레톤 */}
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3, display:"flex", gap:3, flexWrap:"wrap" }}>
+        {["직종","지역","경력"].map(f => (
+          <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"2px 6px" }}>
+            <span style={{ fontSize:7.5, color:"#94A3B8" }}>{f}</span>
+          </div>
+        ))}
+      </div>
+      {/* Sword */}
+      <div style={{ marginBottom:3 }}>
+        <Zone label="Sword 채용관" sub="상단" color={C.blue}
+          active={hl==="sword"} slots={hl==="sword"?2:null} rolling={hl==="sword"?"매일갱신":null} />
+      </div>
+      {/* Shield */}
+      <div style={{ marginBottom:3 }}>
+        <Zone label="Shield 채용관" sub="중단" color={C.green}
+          active={hl==="shield"} slots={hl==="shield"?2:null} rolling={hl==="shield"?"매일갱신":null} />
+      </div>
+      {/* Armor */}
+      <div style={{ marginBottom:3 }}>
+        <Zone label="Armor 채용관" sub="하단" color={C.amber}
+          active={hl==="armor"} slots={hl==="armor"?2:null} rolling={hl==="armor"?"매일갱신":null} />
+      </div>
+      {/* 하단 스켈레톤 */}
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"4px", marginTop:2 }}>
+        <SkeletonRow w="85%" h={5} mb={2} />
+        <SkeletonRow w="60%" h={5} mb={0} />
+      </div>
+    </div>
+  </div>
+);
+
+// ─── PC 서브 목업 (배너 전용) ─────────────────────────────
 const MockSub = ({ hl }) => (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
     <BrowserBar />
@@ -239,7 +319,39 @@ const MockResume = () => (
 function ProductCard({ item }) {
   const [tabIdx, setTabIdx] = useState(0);
   const tab = item.priceTabs[Math.min(tabIdx, item.priceTabs.length-1)];
-  const isBooth = item.category === "메인 채용관";
+  const isBoothType = item.category === "메인 채용관" || item.category === "채용정보 채용관";
+
+  const renderMockup = () => {
+    if (item.category === "메인 채용관") {
+      return (
+        <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
+          <div style={{ width:155, flexShrink:0 }}>
+            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+            <MockBoothMobile hl={item.id} />
+          </div>
+          <div style={{ flex:1 }}>
+            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+            <MockBoothPC hl={item.id} />
+          </div>
+        </div>
+      );
+    }
+    if (item.category === "채용정보 채용관") {
+      return (
+        <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
+          <div style={{ width:155, flexShrink:0 }}>
+            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+            <MockRecruitMobile hl={item.id} />
+          </div>
+          <div style={{ flex:1 }}>
+            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+            <MockRecruitPC hl={item.id} />
+          </div>
+        </div>
+      );
+    }
+    return item.mockup;
+  };
 
   return (
     <div
@@ -264,25 +376,11 @@ function ProductCard({ item }) {
       </div>
 
       {/* 카드 바디 */}
-      <div style={{ display:"grid", gridTemplateColumns: isBooth ? "3fr 2fr" : "1fr 1fr" }}>
+      <div style={{ display:"grid", gridTemplateColumns: isBoothType ? "3fr 2fr" : "1fr 1fr" }}>
 
         {/* 좌 — 목업 */}
         <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF" }}>
-          {isBooth ? (
-            // 메인 채용관: 모바일(왼쪽) + PC(오른쪽)
-            <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
-              <div style={{ width:160, flexShrink:0 }}>
-                <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-                <MockBoothMobile hl={item.id} />
-              </div>
-              <div style={{ flex:1 }}>
-                <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
-                <MockBoothPC hl={item.id} />
-              </div>
-            </div>
-          ) : (
-            item.mockup
-          )}
+          {renderMockup()}
         </div>
 
         {/* 우 — 설명+가격 */}
@@ -582,7 +680,7 @@ export default function AdCenter() {
 
       {/* ── 헤더 ── */}
       <header style={{ background:C.white, borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 3px rgba(15,23,42,0.05)" }}>
-        <div style={{ maxWidth:1440, margin:"0 auto", padding:"0 40px" }}>
+        <div style={{ width:"100%", padding:"0 40px", boxSizing:"border-box" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"13px 0 0" }}>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
               <span style={{ fontWeight:900, fontSize:20, color:C.blue, letterSpacing:"-0.04em", fontStyle:"italic" }}>GAMEJOB</span>
@@ -606,17 +704,15 @@ export default function AdCenter() {
               }}>☎ 광고문의</a>
             </div>
           </div>
+          {/* 2depth 탭 — 전체상품안내 / 배너패키지 상품 안내 */}
           <nav style={{ display:"flex", gap:0, marginTop:10 }}>
-            {(tab==="all"
-              ? [["포지션 노출","포지션 노출"],["브랜딩 노출","브랜딩 노출"],["인재 확보","인재 확보"]]
-              : [["패키지","패키지 상품"]]
-            ).map(([v,l],i) => (
-              <button key={v} style={{
-                padding:"10px 18px", fontSize:13, fontWeight:600,
+            {[["all","전체 상품안내"],["package","배너패키지 상품 안내"]].map(([v,l]) => (
+              <button key={v} onClick={() => handleTabChange(v)} style={{
+                padding:"10px 20px", fontSize:13, fontWeight:600,
                 background:"transparent", border:"none", cursor:"pointer",
-                color:i===0?C.text:C.gray2,
-                borderBottom:i===0?`2px solid ${C.text}`:"2px solid transparent",
-                transition:"all .12s",
+                color: tab===v ? C.text : C.gray2,
+                borderBottom: tab===v ? `2px solid ${C.text}` : "2px solid transparent",
+                transition:"all .12s", whiteSpace:"nowrap",
               }}>{l}</button>
             ))}
           </nav>
