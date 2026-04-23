@@ -316,8 +316,25 @@ const MockSub = ({ hl }) => (
 const MockMainBanner = ({ hl }) => {
   const isSkin = hl === "backskin";
   const skinColor = C.amber;
-  const skinBg = isSkin ? `${skinColor}12` : "#F1F5F9";
-  const skinBorder = isSkin ? `1.5px solid ${skinColor}` : "1px solid #E8ECF2";
+  const skinStyle = (side) => ({
+    width: 56, flexShrink:0,
+    background: isSkin ? `${skinColor}12` : "#F1F5F9",
+    border: isSkin ? `1.5px solid ${skinColor}` : "1px solid #E8ECF2",
+    borderRadius:4,
+    margin: side === "left" ? "3px 2px 3px 3px" : "3px 3px 3px 2px",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    transition:"all .2s",
+  });
+  const skinText = (side) => (
+    <span style={{
+      fontSize:8, fontWeight:isSkin?700:400,
+      color:isSkin?skinColor:"#CBD5E1",
+      writingMode:"vertical-rl", whiteSpace:"pre",
+      overflow:"hidden", textAlign:"center",
+    }}>
+      {isSkin ? `▶ 백스킨\n(${side==="left"?"좌":"우"})` : `백스킨\n(${side==="left"?"좌":"우"})`}
+    </span>
+  );
 
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
@@ -327,22 +344,8 @@ const MockMainBanner = ({ hl }) => {
       {/* 전체 레이아웃: [백스킨좌] [중앙] [백스킨우] */}
       <div style={{ display:"flex", gap:0, alignItems:"stretch" }}>
 
-        {/* 백스킨 좌 — 전체 높이 세로 배너 */}
-        <div style={{
-          width: isSkin ? 56 : 22, flexShrink:0,
-          background: skinBg, border: skinBorder,
-          borderRadius:4, margin:"3px 2px 3px 3px",
-          display:"flex", alignItems:"center", justifyContent:"center",
-          transition:"all .2s",
-        }}>
-          <span style={{
-            fontSize:8, fontWeight:isSkin?700:400,
-            color:isSkin?skinColor:"#CBD5E1",
-            writingMode:"vertical-rl", whiteSpace:"nowrap", overflow:"hidden",
-          }}>
-            {isSkin ? "▶ 백스킨(좌)" : "백스킨(좌)"}
-          </span>
-        </div>
+        {/* 백스킨 좌 */}
+        <div style={skinStyle("left")}>{skinText("left")}</div>
 
         {/* 중앙 콘텐츠 */}
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
@@ -411,22 +414,8 @@ const MockMainBanner = ({ hl }) => {
 
         </div>
 
-        {/* 백스킨 우 — 전체 높이 세로 배너 */}
-        <div style={{
-          width: isSkin ? 56 : 22, flexShrink:0,
-          background: skinBg, border: skinBorder,
-          borderRadius:4, margin:"3px 3px 3px 2px",
-          display:"flex", alignItems:"center", justifyContent:"center",
-          transition:"all .2s",
-        }}>
-          <span style={{
-            fontSize:8, fontWeight:isSkin?700:400,
-            color:isSkin?skinColor:"#CBD5E1",
-            writingMode:"vertical-rl", whiteSpace:"nowrap", overflow:"hidden",
-          }}>
-            {isSkin ? "▶ 백스킨(우)" : "백스킨(우)"}
-          </span>
-        </div>
+        {/* 백스킨 우 */}
+        <div style={skinStyle("right")}>{skinText("right")}</div>
 
       </div>
     </div>
