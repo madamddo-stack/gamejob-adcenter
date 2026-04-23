@@ -152,9 +152,16 @@ const MockBoothPC = ({ hl }) => (
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
           <SkeletonRow w="50%" h={4} mb={0} />
         </div>
-        {/* Emperor */}
-        <Zone label="Emperor 채용관" sub="상단 · 로고+공고3개" color={C.blue}
-          active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
+        {/* Emperor + Emperor Edge 나란히 */}
+        <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
+          <div style={{ flex:1 }}>
+            <Zone label="Emperor 채용관" sub="상단 · 로고+공고3개" color={C.blue}
+              active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
+          </div>
+          <Zone label="Emperor Edge" sub="258×532" color={C.blue}
+            active={hl==="emperiredge"}
+            style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
+        </div>
         {/* 미들띠 스켈레톤 */}
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
           <SkeletonRow w="50%" h={4} mb={0} />
@@ -331,9 +338,9 @@ const MockMainBanner = ({ hl }) => {
           <span style={{
             fontSize:8, fontWeight:isSkin?700:400,
             color:isSkin?skinColor:"#CBD5E1",
-            writingMode:"vertical-rl", whiteSpace:"nowrap",
+            writingMode:"vertical-rl", whiteSpace:"nowrap", overflow:"hidden",
           }}>
-            {isSkin ? "▶ 메인 백스킨(좌)" : "메인 백스킨(좌)"}
+            {isSkin ? "▶ 백스킨(좌)" : "백스킨(좌)"}
           </span>
         </div>
 
@@ -366,11 +373,8 @@ const MockMainBanner = ({ hl }) => {
           <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.purple}
             active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
 
-          {/* Emperor Edge + Emperor 채용관 스켈레톤 */}
-          <div style={{ display:"flex", gap:2 }}>
-            <Zone label="Emperor Edge" sub="258×532" color={C.blue}
-              active={hl==="emperiredge"}
-              style={{ width:22, flexShrink:0, padding:"12px 2px", fontSize:7 }} />
+          {/* Emperor Edge + Emperor 채용관 스켈레톤 나란히 */}
+          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
             <div style={{ flex:1, background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
               <SkeletonRow w="45%" h={5} mb={3} />
               <div style={{ display:"flex", gap:2 }}>
@@ -383,6 +387,9 @@ const MockMainBanner = ({ hl }) => {
                 ))}
               </div>
             </div>
+            <Zone label="Emperor Edge" sub="258×532" color={C.blue}
+              active={hl==="emperiredge"}
+              style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
           </div>
 
           {/* Lord/Knight 스켈레톤 */}
@@ -415,9 +422,9 @@ const MockMainBanner = ({ hl }) => {
           <span style={{
             fontSize:8, fontWeight:isSkin?700:400,
             color:isSkin?skinColor:"#CBD5E1",
-            writingMode:"vertical-rl", whiteSpace:"nowrap",
+            writingMode:"vertical-rl", whiteSpace:"nowrap", overflow:"hidden",
           }}>
-            {isSkin ? "▶ 메인 백스킨(우)" : "메인 백스킨(우)"}
+            {isSkin ? "▶ 백스킨(우)" : "백스킨(우)"}
           </span>
         </div>
 
