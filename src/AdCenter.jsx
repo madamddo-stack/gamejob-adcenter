@@ -245,26 +245,82 @@ const MockSub = ({ hl }) => (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
     <BrowserBar />
     <GNB />
+    {/* 상단 스켈레톤 (커뮤니티Pick은 별도 처리) */}
+    {hl !== "commPick" && (
+      <div style={{ padding:"5px 5px 2px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
+          <SkeletonRow w="60%" h={6} mb={2} />
+          <SkeletonRow w="40%" h={5} mb={0} />
+        </div>
+      </div>
+    )}
+    {/* 커뮤니티 Pick */}
     <div style={{ padding:"5px 5px 2px" }}>
-      <Zone label="커뮤니티 Pick" sub="PC 1780×528" color={C.teal} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
+      <Zone label="커뮤니티 Pick" sub="1780×528" color={C.teal} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
     </div>
     <div style={{ padding:"0 5px 2px", display:"flex", gap:3 }}>
+      {/* 날개 */}
       <div style={{ width:24, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
         <Zone label="날개" sub="90×154" color={C.pink} active={hl==="subwing"} style={{ padding:"7px 2px" }} />
         <Zone label="날개2" color={C.pink} active={hl==="subwing2"} style={{ padding:"7px 2px" }} />
       </div>
+      {/* 채용관 스켈레톤 */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
-        <Zone label="Sword 채용관" sub="상단" color={C.blue} active={hl==="sword"} slots={hl==="sword"?3:null} />
-        <Zone label="Shield 채용관" sub="중단" color={C.green} active={hl==="shield"} slots={hl==="shield"?3:null} />
-        <Zone label="Armor 채용관" sub="하단" color={C.amber} active={hl==="armor"} slots={hl==="armor"?3:null} />
-        <Zone label="커뮤니티 미들띠" color={C.teal} active={hl==="commMid"} />
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
+          <SkeletonRow w="70%" h={6} mb={2} />
+          <SkeletonRow w="50%" h={5} mb={0} />
+        </div>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
+          <SkeletonRow w="65%" h={6} mb={2} />
+          <SkeletonRow w="45%" h={5} mb={0} />
+        </div>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
+          <SkeletonRow w="60%" h={6} mb={2} />
+          <SkeletonRow w="40%" h={5} mb={0} />
+        </div>
       </div>
+      {/* 스카이 */}
       <div style={{ width:28, flexShrink:0 }}>
         <Zone label="서브스카이 120×600" color={C.pink} active={hl==="subsky"} rolling={hl==="subsky"?"4구좌":null} style={{ height:"100%", minHeight:90, padding:"4px 2px" }} />
       </div>
     </div>
     <div style={{ padding:"0 5px 5px" }}>
       <Zone label="서브 하단" sub="570×110" color={C.gray} active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+    </div>
+  </div>
+);
+
+// ─── PC 메인 배너 목업 ────────────────────────────────────
+const MockMainBanner = ({ hl }) => (
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+    <BrowserBar />
+    <GNB />
+    {/* 백스킨 */}
+    <div style={{ padding:"5px 5px 2px", display:"flex", gap:3 }}>
+      <Zone label="백스킨(좌)" sub="2560×1000" color={C.amber} active={hl==="backskin"} style={{ width:26, flexShrink:0, padding:"14px 2px" }} />
+      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
+        {/* 탑 */}
+        <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.green} active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null} />
+        {/* 상단띠 */}
+        <Zone label="메인 상단띠" sub="1080×70" color={C.purple} active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
+        {/* Emperor Edge */}
+        <Zone label="Emperor Edge" sub="258×532" color={C.blue} active={hl==="emperiredge"} />
+        {/* Emperor 채용관 스켈레톤 */}
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
+          <SkeletonRow w="55%" h={6} mb={2} />
+          <div style={{ display:"flex", gap:3 }}>
+            {[1,2,3,4].map(i => <div key={i} style={{ flex:1, height:18, background:"#E2E8F0", borderRadius:3 }} />)}
+          </div>
+        </div>
+        {/* 미들띠 */}
+        <Zone label="메인 미들띠" sub="1080×70" color={C.purple} active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
+        {/* Lord/Knight 스켈레톤 */}
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
+          <SkeletonRow w="60%" h={5} mb={2} />
+          <SkeletonRow w="45%" h={5} mb={0} />
+        </div>
+      </div>
+      <Zone label="백스킨(우)" sub="" color={C.amber} active={hl==="backskin"} style={{ width:26, flexShrink:0, padding:"14px 2px" }} />
     </div>
   </div>
 );
@@ -280,11 +336,11 @@ const MockMobile = ({ hl }) => (
     </div>
     <div style={{ padding:"5px" }}>
       <Zone label="모바일 메인띠" sub="624×210" color={C.teal} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
-      {["emperor","lord","knight"].map((n,i) => (
-        <div key={n} style={{ background:[C.blueL,C.greenL,C.amberL][i], borderRadius:4, padding:"4px 6px", marginBottom:3, border:`1px solid ${C.border}` }}>
-          <span style={{ fontSize:8.5, color:[C.blue,C.green,C.amber][i], fontWeight:700 }}>{["Emperor","Lord","Knight"][i]} 채용관</span>
-        </div>
-      ))}
+      {/* 채용관 스켈레톤 */}
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3 }}>
+        <SkeletonRow w="70%" h={6} mb={2} />
+        <SkeletonRow w="50%" h={5} mb={0} />
+      </div>
       <Zone label="커뮤니티 Pick" sub="640×240" color={C.teal} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
       <Zone label="모바일 서브띠" color={C.purple} active={hl==="mobSub"} style={{ marginBottom:2 }} />
     </div>
@@ -560,8 +616,16 @@ const buildAllItems = () => {
   bannerAds.filter(b=>b.price).forEach(b => {
     const dColor = { "PC":[C.blue,C.blueL], "PC+M":[C.purple,C.purpleL], "Mobile":[C.teal,C.tealL] };
     const dc = dColor[b.device]||dColor["PC"];
-    const isSub = ["subwing","subwing2","subsky","subbottom","commPick","commMid"].includes(b.id);
-    const mockup = b.device==="Mobile" ? <MockMobile hl={b.id} /> : isSub ? <MockSub hl={b.id} /> : null;
+
+    // 지면에 따라 목업 결정
+    const MAIN_IDS = ["backskin","maintop","topstrip","midstrip","emperiredge"];
+    const SUB_IDS  = ["subwing","subwing2","subsky","subbottom","commPick","commMid"];
+    const MOB_IDS  = ["mobMain","mobSub"];
+    let mockup = null;
+    if (MAIN_IDS.includes(b.id))     mockup = <MockMainBanner hl={b.id} />;
+    else if (SUB_IDS.includes(b.id)) mockup = <MockSub hl={b.id} />;
+    else if (MOB_IDS.includes(b.id)) mockup = <MockMobile hl={b.id} />;
+
     items.push({
       id:b.id, category:"배너 광고", title:b.name,
       tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
