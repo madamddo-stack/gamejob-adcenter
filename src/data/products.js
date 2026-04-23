@@ -103,24 +103,24 @@ export const recruitBooth = {
 // ─────────────────────────────────────────
 export const bannerAds = [
   // PC 메인
-  { id: "backskin",     device: "PC",     zone: "메인",        name: "메인 백스킨",    size: "2560×1000px", rolling: "고정",     price: 3300000 },
-  { id: "maintop",      device: "PC",     zone: "메인",        name: "메인 탑",        size: "2560×1000px", rolling: "3구좌 롤링",price: 2200000 },
-  { id: "topstrip",     device: "PC",     zone: "메인",        name: "메인 상단띠",    size: "1080×70px",   rolling: "3구좌 롤링",price: 1815000 },
-  { id: "midstrip",     device: "PC",     zone: "메인",        name: "메인 미들띠",    size: "1080×70px",   rolling: "3구좌 롤링",price: 1430000 },
-  { id: "curtain",      device: "PC",     zone: "메인",        name: "메인 커튼",      size: "-",           rolling: "고정",     price: null,  note: "패키지 포함 상품" },
-  { id: "mainright",    device: "PC",     zone: "메인",        name: "메인 우측",      size: "-",           rolling: "고정",     price: null,  note: "패키지 포함 상품" },
-  { id: "emperiredge",  device: "PC",     zone: "메인",        name: "Emperor Edge",   size: "258×532px",   rolling: "2구좌",    price: null,  note: "별도 문의" },
+  { id: "backskin",     device: "PC",     zone: "메인",        name: "메인 백스킨",    size: "2560×1000px", capacity: "500KB 이하", rolling: "고정",     price: 3300000 },
+  { id: "maintop",      device: "PC",     zone: "메인",        name: "메인 탑",        size: "2560×1000px", capacity: "500KB 이하", rolling: "3구좌 롤링",price: 2200000 },
+  { id: "topstrip",     device: "PC",     zone: "메인",        name: "메인 상단띠",    size: "1080×70px",   capacity: "200KB 이하", rolling: "3구좌 롤링",price: 1815000 },
+  { id: "midstrip",     device: "PC",     zone: "메인",        name: "메인 미들띠",    size: "1080×70px",   capacity: "200KB 이하", rolling: "3구좌 롤링",price: 1430000 },
+  { id: "curtain",      device: "PC",     zone: "메인",        name: "메인 커튼",      size: "-",           capacity: "-",         rolling: "고정",     price: null,  note: "패키지 포함 상품" },
+  { id: "mainright",    device: "PC",     zone: "메인",        name: "메인 우측",      size: "-",           capacity: "-",         rolling: "고정",     price: null,  note: "패키지 포함 상품" },
+  { id: "emperiredge",  device: "PC",     zone: "메인",        name: "Emperor Edge",   size: "258×532px",   capacity: "200KB 이하", rolling: "2구좌",    price: null,  note: "별도 문의" },
   // PC 서브
-  { id: "subwing",      device: "PC",     zone: "서브",        name: "서브 날개",      size: "90×154px",    rolling: "3구좌 롤링",price: 2200000 },
-  { id: "subwing2",     device: "PC",     zone: "서브",        name: "서브 날개2",     size: "90×154px",    rolling: "3구좌 롤링",price: null,  note: "패키지 포함 상품" },
-  { id: "subsky",       device: "PC",     zone: "서브",        name: "서브 스카이",    size: "120×600px",   rolling: "4구좌",    price: 1100000 },
-  { id: "subbottom",    device: "PC",     zone: "서브",        name: "서브 하단",      size: "570×110px",   rolling: "4구좌",    price: 880000 },
+  { id: "subwing",      device: "PC",     zone: "서브",        name: "서브 날개",      size: "90×154px",    capacity: "100KB 이하", rolling: "3구좌 롤링",price: 2200000 },
+  { id: "subwing2",     device: "PC",     zone: "서브",        name: "서브 날개2",     size: "90×154px",    capacity: "100KB 이하", rolling: "3구좌 롤링",price: null,  note: "패키지 포함 상품" },
+  { id: "subsky",       device: "PC",     zone: "서브",        name: "서브 스카이",    size: "120×600px",   capacity: "100KB 이하", rolling: "4구좌",    price: 1100000 },
+  { id: "subbottom",    device: "PC",     zone: "서브",        name: "서브 하단",      size: "570×110px",   capacity: "200KB 이하", rolling: "4구좌",    price: 880000 },
   // PC+M
-  { id: "commPick",     device: "PC+M",   zone: "커뮤니티",    name: "커뮤니티 Pick",  size: "PC 1780×528 / M 640×240px", rolling: "4구좌", price: 2200000 },
-  { id: "commMid",      device: "PC+M",   zone: "커뮤니티",    name: "커뮤니티 미들띠",size: "-",           rolling: "롤링",     price: null,  note: "패키지 포함 상품" },
+  { id: "commPick",     device: "PC+M",   zone: "커뮤니티",    name: "커뮤니티 Pick",  size: "PC 1780×528 / M 640×240px", capacity: "300KB 이하", rolling: "4구좌", price: 2200000 },
+  { id: "commMid",      device: "PC+M",   zone: "커뮤니티",    name: "커뮤니티 미들띠",size: "-",           capacity: "-",         rolling: "롤링",     price: null,  note: "패키지 포함 상품" },
   // Mobile
-  { id: "mobMain",      device: "Mobile", zone: "메인",        name: "모바일 메인띠",  size: "624×210px",   rolling: "3구좌",    price: 3300000 },
-  { id: "mobSub",       device: "Mobile", zone: "서브",        name: "모바일 서브띠",  size: "-",           rolling: "롤링",     price: null,  note: "패키지 포함 상품" },
+  { id: "mobMain",      device: "Mobile", zone: "메인",        name: "모바일 메인띠",  size: "624×210px",   capacity: "300KB 이하", rolling: "3구좌",    price: 3300000 },
+  { id: "mobSub",       device: "Mobile", zone: "서브",        name: "모바일 서브띠",  size: "-",           capacity: "-",         rolling: "롤링",     price: null,  note: "패키지 포함 상품" },
 ];
 
 // ─────────────────────────────────────────

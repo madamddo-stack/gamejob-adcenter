@@ -545,22 +545,49 @@ function ProductCard({ item }) {
             <h3 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{item.title}</h3>
           </div>
 
-          {/* 특징 */}
-          <div>
-            <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>상품 특징</p>
-            <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
-              {item.features.map((f,i) => (
-                <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                  <div style={{ width:16, height:16, borderRadius:"50%", background:C.blueL, border:`1.5px solid ${C.blue}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                      <path d="M1.5 4L3.2 5.8L6.5 2.2" stroke={C.blue} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span style={{ fontSize:12.5, color:C.sub, lineHeight:1.55 }}>{f}</span>
+          {/* 특징 / 노출 */}
+          {item.exposure ? (
+            <>
+              <div>
+                <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>노출</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
+                  {item.exposure.map((row,i) => (
+                    <div key={i} style={{ display:"flex", alignItems:"center", padding:"8px 12px", borderBottom: i < item.exposure.length-1 ? `1px solid ${C.border}` : "none", background: i%2===0 ? C.grayL : C.white }}>
+                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:80, flexShrink:0 }}>{row.label}</span>
+                      <span style={{ fontSize:12.5, color:C.text }}>{row.value}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div>
+                <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>제작 가이드</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
+                  {item.guide.map((row,i) => (
+                    <div key={i} style={{ display:"flex", alignItems:"center", padding:"8px 12px", borderBottom: i < item.guide.length-1 ? `1px solid ${C.border}` : "none", background: i%2===0 ? C.grayL : C.white }}>
+                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:80, flexShrink:0 }}>{row.label}</span>
+                      <span style={{ fontSize:12.5, color:C.text }}>{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div>
+              <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>상품 특징</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                {item.features.map((f,i) => (
+                  <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
+                    <div style={{ width:16, height:16, borderRadius:"50%", background:C.blueL, border:`1.5px solid ${C.blue}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
+                      <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path d="M1.5 4L3.2 5.8L6.5 2.2" stroke={C.blue} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <span style={{ fontSize:12.5, color:C.sub, lineHeight:1.55 }}>{f}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 가격 탭 */}
           <div style={{ flex:1 }}>
@@ -723,11 +750,19 @@ const buildAllItems = () => {
     else if (SUB_IDS.includes(b.id)) mockup = <MockSub hl={b.id} />;
     else if (MOB_IDS.includes(b.id)) mockup = <MockMobile hl={b.id} />;
 
+    const deviceLabel = b.device==="Mobile"?"모바일 전용":b.device==="PC+M"?"PC+모바일 동시":"PC 전용";
     items.push({
       id:b.id, category:"배너 광고", title:b.name,
       tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
       zoneLabel:b.zone, mockup,
-      features:["노출 사이즈: "+b.size,"노출 방식: "+b.rolling, b.device==="Mobile"?"모바일 전용":b.device==="PC+M"?"PC+모바일 동시":"PC 전용","최소 신청 1주 이상"],
+      exposure:[
+        { label:"노출 위치", value:b.zone+" ("+deviceLabel+")" },
+        { label:"노출 방식", value:b.rolling },
+      ],
+      guide:[
+        { label:"이미지 사이즈", value:b.size },
+        { label:"이미지 용량",   value:b.capacity },
+      ],
       priceTabs:[{ label:"1주 단가", rows:[{ label:"1주 (7일)", value:fw(b.price) }], note:"* VAT 포함 / 최소 1주 이상" }],
     });
   });
