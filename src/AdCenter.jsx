@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import gamejobLogo from "./bi_gamejob.svg";
 import {
-  mainBooth, recruitBooth, bannerAds, bannerPackages,
-  packageCompareRows, resumeService,
+  mainBooth as _mainBooth, recruitBooth as _recruitBooth,
+  bannerAds as _bannerAds, bannerPackages as _bannerPackages,
+  packageCompareRows, resumeService as _resumeService,
 } from "./data/products";
 
 const C = {
@@ -677,7 +678,7 @@ function PackageCard({ pkg }) {
   );
 }
 
-function PackageCompare() {
+function PackageCompare({ bannerPackages }) {
   return (
     <div style={{ background:C.white, borderRadius:12, border:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)" }}>
       <div style={{ padding:"14px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL }}>
@@ -717,84 +718,7 @@ function PackageCompare() {
 }
 
 // ─── 상품 데이터 빌드 ─────────────────────────────────────
-const buildAllItems = () => {
-  const items = [];
-  mainBooth.tiers.forEach((tier, ti) => {
-    const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
-    items.push({
-      id:tier.id, category:"메인 채용관", title:tier.name,
-      tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
-      zoneLabel:"메인", mockup:null,
-      features:tier.features,
-      priceTabs:[
-        { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
-        { label:"개별 (PC/M)", rows:tier.individual.map(r=>({ label:r.period, value:fw(r.price) })), note:"* 최소 신청기간 1주" },
-        ...(tier.combined[0].topfix ? [{ label:"상단고정 옵션", rows:tier.combined.filter(r=>r.topfix).map(r=>({ label:r.period, value:fw(r.topfixTotal), sub:fw(r.topfix)+" (옵션)" })), note:"* 결합 기준 상단고정 포함가" }] : []),
-      ],
-    });
-  });
-  recruitBooth.tiers.forEach((tier, ti) => {
-    const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
-    items.push({
-      id:tier.id, category:"채용정보 채용관", title:tier.name,
-      tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
-      zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} />,
-      features:["채용정보 탭 "+tier.position+" 고정 노출","기업로고+기업명+채용제목 노출","최근 수정공고 순 상단 배치","메인채용관 구매 시 자동 포함"],
-      priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함" }],
-    });
-  });
-  bannerAds.filter(b=>b.price).forEach(b => {
-    const dColor = { "PC":[C.blue,C.blueL], "PC+M":[C.purple,C.purpleL], "Mobile":[C.teal,C.tealL] };
-    const dc = dColor[b.device]||dColor["PC"];
-
-    // 지면에 따라 목업 결정
-    const MAIN_IDS = ["backskin","maintop","topstrip","midstrip","emperiredge"];
-    const SUB_IDS  = ["subwing","subwing2","subsky","subbottom","commPick","commMid"];
-    const MOB_IDS  = ["mobMain","mobSub"];
-    let mockup = null;
-    if (MAIN_IDS.includes(b.id))     mockup = <MockMainBanner hl={b.id} />;
-    else if (SUB_IDS.includes(b.id)) mockup = <MockSub hl={b.id} />;
-    else if (MOB_IDS.includes(b.id)) mockup = <MockMobile hl={b.id} />;
-
-    const deviceLabel = b.device==="Mobile"?"모바일 전용":b.device==="PC+M"?"PC+모바일 동시":"PC 전용";
-    items.push({
-      id:b.id, category:"배너 광고", title:b.name,
-      tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
-      zoneLabel:b.zone, mockup,
-      exposure:[
-        { label:"노출 위치", value:b.location || b.zone+" ("+deviceLabel+")" },
-        { label:"노출 방식", value:b.rolling },
-      ],
-      guide:[
-        { label:"이미지 사이즈", value:b.size },
-        { label:"이미지 용량",   value:b.capacity },
-      ],
-      priceTabs:[{ label:"1주 단가", rows:[{ label:"1주 (7일)", value:fw(b.price) }], note:"* VAT 포함 / 최소 1주 이상" }],
-    });
-  });
-  items.push({
-    id:"resume", category:"이력서 열람", title:"이력서 열람 서비스",
-    tag:"인재 DB", tagColor:C.pink, tagBg:C.pinkL,
-    zoneLabel:"", mockup:<MockResume />,
-    features:["이력서·자기소개서·포트폴리오 열람","이메일·연락처 확인 가능","게임잡 회원에게 직접 입사제의","메인채용관 구매 시 기본 건수 제공"],
-    priceTabs:[{ label:"건수별 가격", rows:resumeService.plans.map(p=>({ label:p.count+"건 · "+p.days+"일", value:fw(p.price), sub:Math.round(p.price/p.count).toLocaleString()+"원/건" })), note:"* VAT 포함 / 이력서 원본 열람 시 건수 차감" }],
-  });
-  return items;
-};
-
-const ALL_ITEMS = buildAllItems();
-
-// ─── LNB 데이터 ───────────────────────────────────────────
-const LNB_ALL = [
-  { group:"메인 채용관", sectionId:"sec-main", items:mainBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
-  { group:"채용정보 채용관", sectionId:"sec-recruit", items:recruitBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
-  { group:"배너 광고", sectionId:"sec-banner", items:bannerAds.filter(b=>b.price).map(b=>({ id:b.id, label:b.name })) },
-  { group:"이력서 열람", sectionId:"sec-resume", items:[{ id:"resume", label:"이력서 열람 서비스" }] },
-];
-
-const LNB_PKG = [
-  { group:"배너 패키지", sectionId:"sec-pkg", items:bannerPackages.map(p=>({ id:p.id, label:p.name })) },
-];
+// buildAllItems는 AdCenter 컴포넌트 내부에서 useMemo로 사용됨
 
 // ─── LNB 컴포넌트 ────────────────────────────────────────
 function LNB({ groups, activeId, onSelect }) {
@@ -835,8 +759,102 @@ function LNB({ groups, activeId, onSelect }) {
 // ─── 앱 ──────────────────────────────────────────────────
 export default function AdCenter() {
   const [tab, setTab] = useState("all");
-  const [activeId, setActiveId] = useState(ALL_ITEMS[0].id);
   const HEADER_H = 93;
+
+  // 상품 데이터: 정적 파일을 기본값으로, Notion API 응답으로 덮어씀
+  const [products, setProducts] = useState({
+    mainBooth: _mainBooth,
+    recruitBooth: _recruitBooth,
+    bannerAds: _bannerAds,
+    bannerPackages: _bannerPackages,
+    resumeService: _resumeService,
+  });
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data) setProducts(data); })
+      .catch(() => {});
+  }, []);
+
+  const { mainBooth, recruitBooth, bannerAds, bannerPackages, resumeService } = products;
+
+  // ALL_ITEMS: Notion 데이터 기반으로 재계산
+  const ALL_ITEMS = useMemo(() => {
+    const items = [];
+    mainBooth.tiers.forEach((tier, ti) => {
+      const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
+      items.push({
+        id:tier.id, category:"메인 채용관", title:tier.name,
+        tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
+        zoneLabel:"메인", mockup:null,
+        features:tier.features,
+        priceTabs:[
+          { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
+          { label:"개별 (PC/M)", rows:tier.individual.map(r=>({ label:r.period, value:fw(r.price) })), note:"* 최소 신청기간 1주" },
+          ...(tier.combined[0]?.topfix ? [{ label:"상단고정 옵션", rows:tier.combined.filter(r=>r.topfix).map(r=>({ label:r.period, value:fw(r.topfixTotal), sub:fw(r.topfix)+" (옵션)" })), note:"* 결합 기준 상단고정 포함가" }] : []),
+        ],
+      });
+    });
+    recruitBooth.tiers.forEach((tier, ti) => {
+      const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
+      items.push({
+        id:tier.id, category:"채용정보 채용관", title:tier.name,
+        tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
+        zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} />,
+        features:["채용정보 탭 "+tier.position+" 고정 노출","기업로고+기업명+채용제목 노출","최근 수정공고 순 상단 배치","메인채용관 구매 시 자동 포함"],
+        priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함" }],
+      });
+    });
+    bannerAds.filter(b=>b.price).forEach(b => {
+      const dColor = { "PC":[C.blue,C.blueL], "PC+M":[C.purple,C.purpleL], "Mobile":[C.teal,C.tealL] };
+      const dc = dColor[b.device]||dColor["PC"];
+      const MAIN_IDS = ["backskin","maintop","topstrip","midstrip","emperiredge"];
+      const SUB_IDS  = ["subwing","subwing2","subsky","subbottom","commPick","commMid"];
+      const MOB_IDS  = ["mobMain","mobSub"];
+      let mockup = null;
+      if (MAIN_IDS.includes(b.id))     mockup = <MockMainBanner hl={b.id} />;
+      else if (SUB_IDS.includes(b.id)) mockup = <MockSub hl={b.id} />;
+      else if (MOB_IDS.includes(b.id)) mockup = <MockMobile hl={b.id} />;
+      const deviceLabel = b.device==="Mobile"?"모바일 전용":b.device==="PC+M"?"PC+모바일 동시":"PC 전용";
+      items.push({
+        id:b.id, category:"배너 광고", title:b.name,
+        tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
+        zoneLabel:b.zone, mockup,
+        exposure:[
+          { label:"노출 위치", value:b.location || b.zone+" ("+deviceLabel+")" },
+          { label:"노출 방식", value:b.rolling },
+        ],
+        guide:[
+          { label:"이미지 사이즈", value:b.size },
+          { label:"이미지 용량",   value:b.capacity },
+        ],
+        priceTabs:[{ label:"1주 단가", rows:[{ label:"1주 (7일)", value:fw(b.price) }], note:"* VAT 포함 / 최소 1주 이상" }],
+      });
+    });
+    items.push({
+      id:"resume", category:"이력서 열람", title:"이력서 열람 서비스",
+      tag:"인재 DB", tagColor:C.pink, tagBg:C.pinkL,
+      zoneLabel:"", mockup:<MockResume />,
+      features:["이력서·자기소개서·포트폴리오 열람","이메일·연락처 확인 가능","게임잡 회원에게 직접 입사제의","메인채용관 구매 시 기본 건수 제공"],
+      priceTabs:[{ label:"건수별 가격", rows:resumeService.plans.map(p=>({ label:p.count+"건 · "+p.days+"일", value:fw(p.price), sub:Math.round(p.price/p.count).toLocaleString()+"원/건" })), note:"* VAT 포함 / 이력서 원본 열람 시 건수 차감" }],
+    });
+    return items;
+  }, [mainBooth, recruitBooth, bannerAds, resumeService]);
+
+  // LNB 데이터
+  const LNB_ALL = useMemo(() => [
+    { group:"메인 채용관",    sectionId:"sec-main",    items:mainBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
+    { group:"채용정보 채용관", sectionId:"sec-recruit", items:recruitBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
+    { group:"배너 광고",      sectionId:"sec-banner",  items:bannerAds.filter(b=>b.price).map(b=>({ id:b.id, label:b.name })) },
+    { group:"이력서 열람",    sectionId:"sec-resume",  items:[{ id:"resume", label:"이력서 열람 서비스" }] },
+  ], [mainBooth, recruitBooth, bannerAds]);
+
+  const LNB_PKG = useMemo(() => [
+    { group:"배너 패키지", sectionId:"sec-pkg", items:bannerPackages.map(p=>({ id:p.id, label:p.name })) },
+  ], [bannerPackages]);
+
+  const [activeId, setActiveId] = useState(ALL_ITEMS[0]?.id);
 
   // LNB 클릭 → 앵커 스크롤
   const handleSelect = (id) => {
@@ -970,7 +988,7 @@ export default function AdCenter() {
                 <CategorySection id="sec-pkg" title="배너 패키지" sub="여러 지면을 묶어 할인 혜택을 받을 수 있는 패키지 상품.">
                   {bannerPackages.map(pkg => <PackageCard key={pkg.id} pkg={pkg} />)}
                 </CategorySection>
-                <PackageCompare />
+                <PackageCompare bannerPackages={bannerPackages} />
               </div>
             )}
           </div>
