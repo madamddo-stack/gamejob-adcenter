@@ -892,7 +892,7 @@ export default function AdCenter() {
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
               {[["all","전체상품 소개서"],["package","배너패키지 상품 소개서"]].map(([v,l]) => (
                 <button key={v} onClick={() => handleTabChange(v)} style={{
-                  padding:"7px 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
+                  height:34, padding:"0 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
                   border:`1px solid ${C.border2}`,
                   background:C.white, color:C.gray,
                   display:"flex", alignItems:"center", gap:5,
@@ -906,7 +906,7 @@ export default function AdCenter() {
               ))}
               <a href="mailto:ad@gamejob.co.kr" style={{
                 display:"inline-flex", alignItems:"center", gap:5,
-                background:C.text, borderRadius:7, padding:"7px 16px",
+                height:34, background:C.text, borderRadius:7, padding:"0 16px",
                 color:"#fff", fontSize:12, fontWeight:700, textDecoration:"none", marginLeft:2,
               }}>☎ 광고문의</a>
             </div>
