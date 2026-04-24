@@ -526,13 +526,15 @@ function ProductCard({ item }) {
     >
       {/* 카드 헤더 */}
       <div style={{ padding:"11px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL, display:"flex", alignItems:"center", gap:8 }}>
-        <span style={{ fontSize:11.5, color:C.gray, fontWeight:500 }}>지면 위치</span>
-        {item.zoneLabel && (
-          <span style={{ fontSize:11, color:C.blue, background:C.blueL, padding:"2px 8px", borderRadius:4, fontWeight:600 }}>{item.zoneLabel}</span>
-        )}
-        <span style={{ marginLeft:"auto" }}>
-          <span style={{ fontSize:11, fontWeight:600, color:item.tagColor, background:item.tagBg, padding:"2px 9px", borderRadius:4 }}>{item.tag}</span>
-        </span>
+        <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+          <span style={{ fontSize:11.5, color:C.gray, fontWeight:500 }}>지면 위치</span>
+          {item.zoneLabel && (
+            <span style={{ fontSize:11, color:C.blue, background:C.blueL, padding:"2px 8px", borderRadius:4, fontWeight:600 }}>{item.zoneLabel}</span>
+          )}
+          {item.tag && (
+            <span style={{ fontSize:11, fontWeight:600, color:item.tagColor, background:item.tagBg, padding:"2px 9px", borderRadius:4 }}>{item.tag}</span>
+          )}
+        </div>
       </div>
 
       {/* 카드 바디 */}
@@ -546,9 +548,6 @@ function ProductCard({ item }) {
         {/* 우 — 설명+가격 */}
         <div style={{ padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
           <div>
-            <span style={{ display:"inline-block", fontSize:11, fontWeight:600, color:C.blue, background:C.blueL, padding:"2px 9px", borderRadius:4, marginBottom:8 }}>
-              {item.category}
-            </span>
             <h3 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{item.title}</h3>
           </div>
 
