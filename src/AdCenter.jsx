@@ -521,7 +521,7 @@ function ProductCard({ item }) {
 
         {/* 좌 — 목업 */}
         <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <div style={{ width:"100%", maxWidth: isBoothType ? "100%" : 480 }}>
+          <div style={{ width:"100%", maxWidth: (isBoothType || item.id === "commPick") ? "100%" : 480 }}>
             {renderMockup()}
           </div>
         </div>
@@ -790,12 +790,34 @@ export default function AdCenter() {
       const dColor = { "PC":[C.blue,C.blueL], "PC+M":[C.purple,C.purpleL], "Mobile":[C.teal,C.tealL] };
       const dc = dColor[b.device]||dColor["PC"];
       const MAIN_IDS = ["backskin","maintop","topstrip","midstrip","emperiredge"];
-      const SUB_IDS  = ["subwing","subwing2","subsky","subbottom","commPick","commMid"];
+      const SUB_IDS  = ["subwing","subwing2","subsky","subbottom","commMid"];
       const MOB_IDS  = ["mobMain","mobSub"];
       let mockup = null;
-      if (MAIN_IDS.includes(b.id))     mockup = <MockMainBanner hl={b.id} />;
-      else if (SUB_IDS.includes(b.id)) mockup = <MockSub hl={b.id} />;
-      else if (MOB_IDS.includes(b.id)) mockup = <MockMobile hl={b.id} />;
+      if (b.id === "commPick") {
+        mockup = (
+          <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+              <MockMobile hl="commPick" />
+            </div>
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+              <MockSub hl="commPick" />
+            </div>
+          </div>
+        );
+      } else if (MAIN_IDS.includes(b.id)) {
+        mockup = <MockMainBanner hl={b.id} />;
+      } else if (SUB_IDS.includes(b.id)) {
+        mockup = <MockSub hl={b.id} />;
+      } else if (MOB_IDS.includes(b.id)) {
+        mockup = (
+          <div>
+            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+            <MockMobile hl={b.id} />
+          </div>
+        );
+      }
       const deviceLabel = b.device==="Mobile"?"모바일 전용":b.device==="PC+M"?"PC+모바일 동시":"PC 전용";
       items.push({
         id:b.id, category:"배너 광고", title:b.name,
