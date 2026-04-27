@@ -807,7 +807,7 @@ export default function AdCenter() {
           { label:"이미지 사이즈", value:b.size },
           { label:"이미지 용량",   value:b.capacity },
         ],
-        priceTabs:[{ label:"1주 단가", rows:[{ label:"1주 (7일)", value:fw(b.price) }], note:"* VAT 포함 / 최소 1주 이상" }],
+        priceTabs:[{ label:"1주일 단가", rows:[{ label:"1주일(7일)", value:fw(b.price) }], note:"* VAT 포함 / 최소 1주 이상" }],
       });
     });
     items.push({
