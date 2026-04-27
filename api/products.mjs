@@ -1,5 +1,5 @@
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const NOTION_VERSION = "2025-09-03";
+const NOTION_VERSION = "2022-06-28";
 
 // Notion DB 전체 조회 (페이지네이션 포함)
 const queryAll = async (dbId) => {
@@ -46,20 +46,39 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=120");
 
   try {
-    const DB_ID = process.env.NOTION_DB_MAIN_TIERS;
+    // child DB 6개 각각 조회해서 속성명 확인
+    const CHILD_IDS = [
+      "34f97f290685802bac3a000bc87580ea",
+      "34f97f29068580c6941b000b2d313847",
+      "34f97f29068580b0b4fa000b2e2697cf",
+      "34f97f290685803e909a000b773b2950",
+      "34f97f2906858023917b000bc23c1307",
+      "34f97f290685801fbb7c000bd88e4f7e",
+    ];
 
-    // DEBUG: raw Notion 응답 확인
-    const rawResponse = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${NOTION_TOKEN}`,
-        "Notion-Version": NOTION_VERSION,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    }).then(r => r.json());
+    const results = await Promise.all(
+      CHILD_IDS.map(id =>
+        fetch(`https://api.notion.com/v1/databases/${id}/query`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${NOTION_TOKEN}`,
+            "Notion-Version": NOTION_VERSION,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }).then(r => r.json()).then(r => ({
+          id,
+          count: r.results?.length ?? 0,
+          error: r.message ?? null,
+          props: r.results?.[0] ? Object.keys(r.results[0].properties) : [],
+          sample: r.results?.[0]
+            ? Object.fromEntries(Object.entries(r.results[0].properties).map(([k, v]) => [k, prop(r.results[0], k)]))
+            : null,
+        }))
+      )
+    );
 
-    return res.json({ debug: true, DB_ID, rawResponse });
+    return res.json({ debug: true, results });
 
     const allPages = await queryAll(DB_ID);
 
