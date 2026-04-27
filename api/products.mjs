@@ -1,6 +1,27 @@
-import { Client } from "@notionhq/client";
+const NOTION_TOKEN = process.env.NOTION_TOKEN;
+const NOTION_VERSION = "2022-06-28";
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+// Notion DB 전체 조회 (페이지네이션 포함)
+const queryAll = async (dbId) => {
+  if (!dbId) return [];
+  const results = [];
+  let cursor;
+  do {
+    const body = cursor ? { start_cursor: cursor } : {};
+    const r = await fetch(`https://api.notion.com/v1/databases/${dbId}/query`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${NOTION_TOKEN}`,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).then(r => r.json());
+    if (r.results) results.push(...r.results);
+    cursor = r.has_more ? r.next_cursor : undefined;
+  } while (cursor);
+  return results;
+};
 
 // Notion 속성 값 추출 헬퍼
 const prop = (page, name) => {
@@ -14,22 +35,6 @@ const prop = (page, name) => {
     case "checkbox":  return p.checkbox;
     default:          return null;
   }
-};
-
-// 페이지네이션 처리해서 전체 rows 가져오기
-const queryAll = async (dbId) => {
-  if (!dbId) return [];
-  const results = [];
-  let cursor;
-  do {
-    const r = await notion.databases.query({
-      database_id: dbId,
-      start_cursor: cursor,
-    });
-    results.push(...r.results);
-    cursor = r.has_more ? r.next_cursor : undefined;
-  } while (cursor);
-  return results;
 };
 
 const PERIOD_ORDER = ["1주(7일)", "1개월(30일)", "3개월(90일)", "6개월(180일)"];
@@ -62,17 +67,17 @@ export default async function handler(req, res) {
         const prices = mainPrices.filter(p => prop(p, "티어ID") === tierId);
         return {
           id: tierId,
-          name:    prop(t, "상품명"),
-          position:prop(t, "위치"),
-          color:   prop(t, "색상"),
-          bgLight: prop(t, "배경색"),
-          features:(prop(t, "특징") || "").split("\n").filter(Boolean),
+          name:     prop(t, "상품명"),
+          position: prop(t, "위치"),
+          color:    prop(t, "색상"),
+          bgLight:  prop(t, "배경색"),
+          features: (prop(t, "특징") || "").split("\n").filter(Boolean),
           combined: prices.filter(p => prop(p, "유형") === "결합").sort(sortByPeriod).map(p => ({
-            period:       prop(p, "기간"),
-            price:        prop(p, "가격"),
-            original:     prop(p, "정가"),
-            topfix:       prop(p, "상단고정"),
-            topfixTotal:  prop(p, "상단고정합계"),
+            period:      prop(p, "기간"),
+            price:       prop(p, "가격"),
+            original:    prop(p, "정가"),
+            topfix:      prop(p, "상단고정"),
+            topfixTotal: prop(p, "상단고정합계"),
           })),
           individual: prices.filter(p => prop(p, "유형") === "개별").sort(sortByPeriod).map(p => ({
             period:      prop(p, "기간"),
@@ -133,13 +138,13 @@ export default async function handler(req, res) {
       if (!p) return null;
       return {
         id,
-        name:       prop(p, "패키지명"),
-        tagline:    prop(p, "태그라인"),
-        price:      prop(p, "가격"),
-        period:     prop(p, "기간"),
-        highlight:  prop(p, "추천여부") || false,
-        desc:       prop(p, "설명"),
-        includedIds:(prop(p, "포함상품ID") || "").split(",").map(s => s.trim()).filter(Boolean),
+        name:        prop(p, "패키지명"),
+        tagline:     prop(p, "태그라인"),
+        price:       prop(p, "가격"),
+        period:      prop(p, "기간"),
+        highlight:   prop(p, "추천여부") || false,
+        desc:        prop(p, "설명"),
+        includedIds: (prop(p, "포함상품ID") || "").split(",").map(s => s.trim()).filter(Boolean),
       };
     }).filter(Boolean);
 
