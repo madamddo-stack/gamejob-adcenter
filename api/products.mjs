@@ -1,7 +1,6 @@
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_VERSION = "2022-06-28";
 
-// Notion DB 전체 조회 (페이지네이션 포함)
 const queryAll = async (dbId) => {
   if (!dbId) return [];
   const results = [];
@@ -23,7 +22,6 @@ const queryAll = async (dbId) => {
   return results;
 };
 
-// Notion 속성 값 추출 헬퍼
 const prop = (page, name) => {
   const p = page.properties[name];
   if (!p) return null;
@@ -46,74 +44,25 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=120");
 
   try {
-    // child DB 6개 각각 조회해서 속성명 확인
-    const CHILD_IDS = [
-      "34f97f290685802bac3a000bc87580ea",
-      "34f97f29068580c6941b000b2d313847",
-      "34f97f29068580b0b4fa000b2e2697cf",
-      "34f97f290685803e909a000b773b2950",
-      "34f97f2906858023917b000bc23c1307",
-      "34f97f290685801fbb7c000bd88e4f7e",
-    ];
-
-    const results = await Promise.all(
-      CHILD_IDS.map(id =>
-        fetch(`https://api.notion.com/v1/databases/${id}/query`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${NOTION_TOKEN}`,
-            "Notion-Version": NOTION_VERSION,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        }).then(r => r.json()).then(r => ({
-          id,
-          count: r.results?.length ?? 0,
-          error: r.message ?? null,
-          props: r.results?.[0] ? Object.keys(r.results[0].properties) : [],
-          sample: r.results?.[0]
-            ? Object.fromEntries(Object.entries(r.results[0].properties).map(([k, v]) => [k, prop(r.results[0], k)]))
-            : null,
-        }))
-      )
-    );
-
-    return res.json({ debug: true, results });
-
-    const allPages = await queryAll(DB_ID);
-
-    // DEBUG: 실제 속성명 확인
-    return res.json({
-      debug: true,
-      total: allPages.length,
-      sample: allPages.slice(0, 3).map(p => ({
-        id: p.id,
-        props: Object.keys(p.properties),
-        values: Object.fromEntries(
-          Object.entries(p.properties).map(([k, v]) => [k, prop(p, k)])
-        ),
-      })),
-    });
-
-    const MAIN_IDS    = ["emperor", "lord", "knight"];
-    const RECRUIT_IDS = ["sword", "shield", "armor"];
-
-    const mainTiers    = allPages.filter(p => MAIN_IDS.includes(prop(p, "티어ID")) && prop(p, "기간") === null);
-    const mainPrices   = allPages.filter(p => MAIN_IDS.includes(prop(p, "티어ID")) && prop(p, "기간") !== null);
-    const recruitTiers = allPages.filter(p => RECRUIT_IDS.includes(prop(p, "티어ID")));
-    const banners      = allPages.filter(p => prop(p, "상품ID") !== null);
-    const packages     = allPages.filter(p => prop(p, "패키지ID") !== null);
-    const resumePlans  = allPages.filter(p => prop(p, "열람건수") !== null);
+    const [recruitPages, bannerPages, packagePages, resumePages] = await Promise.all([
+      queryAll(process.env.NOTION_DB_RECRUIT),
+      queryAll(process.env.NOTION_DB_BANNERS),
+      queryAll(process.env.NOTION_DB_PACKAGES),
+      queryAll(process.env.NOTION_DB_RESUME),
+    ]);
 
     // ── 메인 채용관 ──────────────────────────────────────────
     const TIER_ORDER = ["emperor", "lord", "knight"];
+    const mainTierPages  = recruitPages.filter(p => prop(p, "섹션") === "main_tier");
+    const mainPricePages = recruitPages.filter(p => prop(p, "섹션") === "main_price");
+
     const mainBooth = {
       title: "메인 채용관",
       desc: "게임잡 메인화면 최상단 노출 — 기업 로고 + 대표 공고를 직접 게재",
       tiers: TIER_ORDER.map(tierId => {
-        const t = mainTiers.find(p => prop(p, "티어ID") === tierId);
+        const t = mainTierPages.find(p => prop(p, "티어ID") === tierId);
         if (!t) return null;
-        const prices = mainPrices.filter(p => prop(p, "티어ID") === tierId);
+        const prices = mainPricePages.filter(p => prop(p, "티어ID") === tierId);
         return {
           id: tierId,
           name:     prop(t, "상품명"),
@@ -145,7 +94,7 @@ export default async function handler(req, res) {
       desc: "채용정보 탭 내 직종·지역·경력 조건 기반 타깃 노출 (일 단가 · VAT포함)",
       note: "메인채용관 구매 시 자동 포함 — Emperor→Sword / Lord→Shield / Knight→Armor",
       tiers: RECRUIT_ORDER.map(tierId => {
-        const p = recruitTiers.find(page => prop(page, "티어ID") === tierId);
+        const p = recruitPages.find(page => prop(page, "섹션") === "recruit" && prop(page, "티어ID") === tierId);
         if (!p) return null;
         return {
           id:         tierId,
@@ -164,30 +113,29 @@ export default async function handler(req, res) {
       "subbottom","commPick","commMid","mobMain","mobSub",
     ];
     const bannerAds = BANNER_ORDER.map(id => {
-      const p = banners.find(page => prop(page, "상품ID") === id);
+      const p = bannerPages.find(page => prop(page, "상품명ID") === id);
       if (!p) return null;
       return {
         id,
         device:   prop(p, "디바이스"),
         zone:     prop(p, "지면"),
-        name:     prop(p, "상품명"),
+        name:     prop(p, "이름"),
         size:     prop(p, "이미지사이즈") || "-",
-        capacity: prop(p, "이미지용량")  || "-",
+        capacity: prop(p, "이미지용량")   || "-",
         rolling:  prop(p, "노출방식"),
-        location: id === "emperiredge" ? "PC 메인 채용관 상단 우측" : null,
         price:    prop(p, "가격"),
-        note:     prop(p, "비고")       || null,
+        note:     prop(p, "비고") || null,
       };
     }).filter(Boolean);
 
     // ── 배너 패키지 ──────────────────────────────────────────
     const PKG_ORDER = ["allinone", "curtain", "value"];
     const bannerPackages = PKG_ORDER.map(id => {
-      const p = packages.find(page => prop(page, "패키지ID") === id);
+      const p = packagePages.find(page => prop(page, "패키지ID") === id);
       if (!p) return null;
       return {
         id,
-        name:        prop(p, "패키지명"),
+        name:        prop(p, "이름"),
         tagline:     prop(p, "태그라인"),
         price:       prop(p, "가격"),
         period:      prop(p, "기간"),
@@ -202,7 +150,7 @@ export default async function handler(req, res) {
       title: "이력서 열람 서비스",
       desc: "게임잡 회원의 이력서·자기소개서·포트폴리오·연락처를 열람하고 직접 입사제의 가능. 이력서 원본 열람 시 건수 차감.",
       note: "메인채용관 구매 시 신청 기간과 동일한 건수 기본 제공",
-      plans: resumePlans
+      plans: resumePages
         .map(p => ({
           count: prop(p, "열람건수"),
           days:  prop(p, "이용기간"),
