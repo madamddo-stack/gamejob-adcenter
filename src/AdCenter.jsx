@@ -796,7 +796,7 @@ export default function AdCenter() {
       if (b.id === "commPick") {
         mockup = (
           <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
-            <div style={{ flex:1 }}>
+            <div style={{ width:155, flexShrink:0 }}>
               <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
               <MockMobile hl="commPick" />
             </div>
