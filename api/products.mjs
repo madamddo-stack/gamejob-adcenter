@@ -46,6 +46,32 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=120");
 
   try {
+    // 디버그: 환경변수 확인
+    const dbIds = {
+      MAIN_TIERS:    process.env.NOTION_DB_MAIN_TIERS,
+      MAIN_PRICES:   process.env.NOTION_DB_MAIN_PRICES,
+      RECRUIT_TIERS: process.env.NOTION_DB_RECRUIT_TIERS,
+      BANNERS:       process.env.NOTION_DB_BANNERS,
+      PACKAGES:      process.env.NOTION_DB_PACKAGES,
+      RESUME:        process.env.NOTION_DB_RESUME,
+    };
+
+    // 첫 번째 DB만 테스트
+    const testResult = await fetch(
+      `https://api.notion.com/v1/databases/${process.env.NOTION_DB_MAIN_TIERS}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${NOTION_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    ).then(r => r.json());
+
+    return res.json({ debug: true, dbIds, testResult });
+
     const [mainTiers, mainPrices, recruitTiers, banners, packages, resumePlans] =
       await Promise.all([
         queryAll(process.env.NOTION_DB_MAIN_TIERS),
