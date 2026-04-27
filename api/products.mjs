@@ -1,5 +1,5 @@
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const NOTION_VERSION = "2022-06-28";
+const NOTION_VERSION = "2025-09-03";
 
 // Notion DB 전체 조회 (페이지네이션 포함)
 const queryAll = async (dbId) => {
