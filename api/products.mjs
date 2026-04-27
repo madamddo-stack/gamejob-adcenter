@@ -1,4 +1,4 @@
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -36,7 +36,7 @@ const PERIOD_ORDER = ["1주(7일)", "1개월(30일)", "3개월(90일)", "6개월
 const sortByPeriod = (a, b) =>
   PERIOD_ORDER.indexOf(prop(a, "기간")) - PERIOD_ORDER.indexOf(prop(b, "기간"));
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=120");
 
@@ -163,4 +163,4 @@ module.exports = async (req, res) => {
     console.error("[api/products]", e.message);
     res.status(500).json({ error: e.message });
   }
-};
+}
