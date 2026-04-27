@@ -716,7 +716,7 @@ function LNB({ groups, activeId, onSelect }) {
           {g.items.map(item => {
             const active = activeId === item.id;
             return (
-              <button key={item.id} onClick={() => onSelect(item.id)} style={{
+              <button key={item.id} onClick={() => onSelect(item.id, item.isAnchor)} style={{
                 display:"block", width:"100%", textAlign:"left",
                 padding:"5px 16px 5px 34px",
                 fontSize:12.5, fontWeight:active?600:400,
@@ -829,15 +829,21 @@ export default function AdCenter() {
   ], [mainBooth, recruitBooth, bannerAds]);
 
   const LNB_PKG = useMemo(() => [
-    { group:"배너 패키지", sectionId:"sec-pkg", items:bannerPackages.map(p=>({ id:p.id, label:p.name })) },
+    {
+      group:"배너 패키지", sectionId:"sec-pkg",
+      items:[
+        ...bannerPackages.map(p=>({ id:p.id, label:p.name })),
+        { id:"sec-pkg-compare", label:"패키지 지면 비교", isAnchor:true },
+      ],
+    },
   ], [bannerPackages]);
 
   const [activeId, setActiveId] = useState(ALL_ITEMS[0]?.id);
 
   // LNB 클릭 → 앵커 스크롤
-  const handleSelect = (id) => {
+  const handleSelect = (id, isAnchor) => {
     setActiveId(id);
-    const el = document.getElementById(anchorId(id));
+    const el = document.getElementById(isAnchor ? id : anchorId(id));
     if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
   };
 
@@ -966,7 +972,9 @@ export default function AdCenter() {
                 <CategorySection id="sec-pkg" title="배너 패키지" sub="여러 지면을 묶어 할인 혜택을 받을 수 있는 패키지 상품.">
                   {bannerPackages.map(pkg => <PackageCard key={pkg.id} pkg={pkg} />)}
                 </CategorySection>
-                <PackageCompare bannerPackages={bannerPackages} />
+                <div id="sec-pkg-compare" style={{ scrollMarginTop:110 }}>
+                  <PackageCompare bannerPackages={bannerPackages} />
+                </div>
               </div>
             )}
           </div>
