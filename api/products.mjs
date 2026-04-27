@@ -49,6 +49,19 @@ export default async function handler(req, res) {
     const DB_ID = process.env.NOTION_DB_MAIN_TIERS;
     const allPages = await queryAll(DB_ID);
 
+    // DEBUG: 실제 속성명 확인
+    return res.json({
+      debug: true,
+      total: allPages.length,
+      sample: allPages.slice(0, 3).map(p => ({
+        id: p.id,
+        props: Object.keys(p.properties),
+        values: Object.fromEntries(
+          Object.entries(p.properties).map(([k, v]) => [k, prop(p, k)])
+        ),
+      })),
+    });
+
     const MAIN_IDS    = ["emperor", "lord", "knight"];
     const RECRUIT_IDS = ["sword", "shield", "armor"];
 
