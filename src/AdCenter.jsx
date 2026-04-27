@@ -613,7 +613,7 @@ function ProductCard({ item }) {
                 ))}
               </div>
             )}
-            <div>
+            <div style={{ minHeight: Math.max(...item.priceTabs.map(t => t.rows.length * (t.rows.some(r => r.sub) ? 46 : 33))) }}>
               {tab.rows.map((r,i) => (
                 <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:`1px solid ${C.border}` }}>
                   <span style={{ fontSize:12.5, color:i===0?C.text:C.gray }}>{r.label}</span>
