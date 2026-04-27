@@ -97,7 +97,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
 const MockBoothMobile = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   return (
-    <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
         <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
         <div style={{ display:"flex", gap:6 }}>
@@ -206,7 +206,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
   return (
-    <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
         <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
         <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
@@ -410,7 +410,7 @@ const MockMainBanner = ({ hl }) => {
 
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl }) => (
-  <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
