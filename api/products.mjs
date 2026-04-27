@@ -47,6 +47,20 @@ export default async function handler(req, res) {
 
   try {
     const DB_ID = process.env.NOTION_DB_MAIN_TIERS;
+
+    // DEBUG: raw Notion 응답 확인
+    const rawResponse = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${NOTION_TOKEN}`,
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).then(r => r.json());
+
+    return res.json({ debug: true, DB_ID, rawResponse });
+
     const allPages = await queryAll(DB_ID);
 
     // DEBUG: 실제 속성명 확인
