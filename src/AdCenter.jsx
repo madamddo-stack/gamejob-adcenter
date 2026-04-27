@@ -520,8 +520,10 @@ function ProductCard({ item }) {
       <div style={{ display:"grid", gridTemplateColumns:"3fr 2fr" }}>
 
         {/* 좌 — 목업 */}
-        <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF" }}>
-          {renderMockup()}
+        <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <div style={{ width:"100%", maxWidth: isBoothType ? "100%" : 480 }}>
+            {renderMockup()}
+          </div>
         </div>
 
         {/* 우 — 설명+가격 */}
