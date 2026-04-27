@@ -120,7 +120,7 @@ module.exports = async (req, res) => {
         size:     prop(p, "이미지사이즈") || "-",
         capacity: prop(p, "이미지용량")  || "-",
         rolling:  prop(p, "노출방식"),
-        location: prop(p, "노출위치")   || null,
+        location: id === "emperiredge" ? "PC 메인 채용관 상단 우측" : null,
         price:    prop(p, "가격"),
         note:     prop(p, "비고")       || null,
       };
