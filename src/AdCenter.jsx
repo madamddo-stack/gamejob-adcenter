@@ -97,7 +97,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
 const MockBoothMobile = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   return (
-    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
         <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
         <div style={{ display:"flex", gap:6 }}>
@@ -206,7 +206,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
   return (
-    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
         <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
         <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
@@ -410,7 +410,7 @@ const MockMainBanner = ({ hl }) => {
 
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl }) => (
-  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+  <div style={{ width:"100%", height:220, background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
@@ -418,14 +418,37 @@ const MockMobile = ({ hl }) => (
       </div>
     </div>
     <div style={{ padding:"5px" }}>
-      <Zone label="모바일 메인띠" sub="624×210" color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
+      {/* 모바일 메인띠 — commPick일 때 스켈레톤으로 대체 */}
+      {hl === "commPick" ? (
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px", marginBottom:3 }}>
+          <SkeletonRow w="80%" h={6} mb={2} />
+          <SkeletonRow w="55%" h={4} mb={0} />
+        </div>
+      ) : (
+        <Zone label="모바일 메인띠" sub="624×210" color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
+      )}
       {/* 채용관 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3 }}>
         <SkeletonRow w="70%" h={6} mb={2} />
         <SkeletonRow w="50%" h={5} mb={0} />
       </div>
-      <Zone label="커뮤니티 Pick" sub="640×240" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
-      <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
+      {/* 커뮤니티 Pick — mobMain일 때 스켈레톤으로 대체 */}
+      {hl === "mobMain" ? (
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px", marginBottom:3, marginTop:2 }}>
+          <SkeletonRow w="75%" h={5} mb={2} />
+          <SkeletonRow w="50%" h={4} mb={0} />
+        </div>
+      ) : (
+        <Zone label="커뮤니티 Pick" sub="640×240" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
+      )}
+      {/* 모바일 서브띠 — mobMain일 때 스켈레톤으로 대체 */}
+      {hl === "mobMain" ? (
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
+          <SkeletonRow w="65%" h={5} mb={0} />
+        </div>
+      ) : (
+        <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
+      )}
     </div>
   </div>
 );
