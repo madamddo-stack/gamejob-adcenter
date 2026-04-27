@@ -94,168 +94,146 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
 );
 
 // ─── 모바일 채용관 목업 ───────────────────────────────────
-const MockBoothMobile = ({ hl }) => (
-  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
-    <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-      <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
-      <div style={{ display:"flex", gap:6 }}>
-        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
+const MockBoothMobile = ({ hl, tiers }) => {
+  const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
+  return (
+    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+      <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+        <div style={{ display:"flex", gap:6 }}>
+          {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
+        </div>
+      </div>
+      <div style={{ padding:"5px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px", marginBottom:3 }}>
+          <SkeletonRow w="70%" h={7} mb={3} />
+          <SkeletonRow w="50%" h={5} mb={0} />
+        </div>
+        {["emperor","lord","knight"].map(id => (
+          <div key={id} style={{ marginBottom:3 }}>
+            <Zone label={tiers?.find(t=>t.id===id)?.name ?? id} sub={m(id).sub}
+              color={C.blue} active={hl===id}
+              slots={hl===id ? m(id).mobSlots : null}
+              rolling={hl===id ? m(id).badge : null} />
+          </div>
+        ))}
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginTop:2 }}>
+          <SkeletonRow w="90%" h={5} mb={2} />
+          <SkeletonRow w="60%" h={5} mb={0} />
+        </div>
       </div>
     </div>
-    <div style={{ padding:"5px" }}>
-      {/* 상단 스켈레톤 (메인띠 영역) */}
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px", marginBottom:3 }}>
-        <SkeletonRow w="70%" h={7} mb={3} />
-        <SkeletonRow w="50%" h={5} mb={0} />
-      </div>
-      {/* Emperor */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Emperor 채용관" sub="상단 · 공고3개" color={C.blue}
-          active={hl==="emperor"} slots={hl==="emperor"?2:null} rolling={hl==="emperor"?"20분순환":null} />
-      </div>
-      {/* Lord */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Lord 채용관" sub="중단 · 공고2개" color={C.blue}
-          active={hl==="lord"} slots={hl==="lord"?2:null} rolling={hl==="lord"?"20분순환":null} />
-      </div>
-      {/* Knight */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Knight 채용관" sub="하단 · 공고1개" color={C.blue}
-          active={hl==="knight"} slots={hl==="knight"?1:null} rolling={hl==="knight"?"20분순환":null} />
-      </div>
-      {/* 하단 스켈레톤 */}
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginTop:2 }}>
-        <SkeletonRow w="90%" h={5} mb={2} />
-        <SkeletonRow w="60%" h={5} mb={0} />
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 // ─── PC 채용관 목업 ───────────────────────────────────────
-const MockBoothPC = ({ hl }) => (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
-    <BrowserBar />
-    <GNB />
-    <div style={{ display:"flex", alignItems:"stretch" }}>
-      {/* 백스킨 좌 */}
-      <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 2px 3px 3px", display:"flex", alignItems:"center", justifyContent:"center" }}>
-        <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(좌)</span>
-      </div>
-
-      {/* 중앙 */}
-      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
-        {/* 탑 스켈레톤 */}
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
-          <SkeletonRow w="60%" h={5} mb={2} />
-          <SkeletonRow w="40%" h={4} mb={0} />
+const MockBoothPC = ({ hl, tiers }) => {
+  const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
+  const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  return (
+    <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+      <BrowserBar />
+      <GNB />
+      <div style={{ display:"flex", alignItems:"stretch" }}>
+        <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 2px 3px 3px", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(좌)</span>
         </div>
-        {/* 상단띠 스켈레톤 */}
-        <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
-          <SkeletonRow w="50%" h={4} mb={0} />
+        <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
+            <SkeletonRow w="60%" h={5} mb={2} />
+            <SkeletonRow w="40%" h={4} mb={0} />
+          </div>
+          <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
+            <SkeletonRow w="50%" h={4} mb={0} />
+          </div>
+          <Zone label={name("emperor")} sub={m("emperor").sub} color={C.blue}
+            active={hl==="emperor"} slots={hl==="emperor" ? m("emperor").pcSlots : null}
+            rolling={hl==="emperor" ? m("emperor").badge : null} />
+          <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
+            <SkeletonRow w="50%" h={4} mb={0} />
+          </div>
+          <Zone label={name("lord")} sub={m("lord").sub} color={C.blue}
+            active={hl==="lord"} slots={hl==="lord" ? m("lord").pcSlots : null}
+            rolling={hl==="lord" ? m("lord").badge : null} />
+          <Zone label={name("knight")} sub={m("knight").sub} color={C.blue}
+            active={hl==="knight"} slots={hl==="knight" ? m("knight").pcSlots : null}
+            rolling={hl==="knight" ? m("knight").badge : null} />
         </div>
-        {/* Emperor */}
-        <Zone label="Emperor 채용관" sub="상단 · 로고+공고3개" color={C.blue}
-          active={hl==="emperor"} slots={hl==="emperor"?4:null} rolling={hl==="emperor"?"20분순환":null} />
-        {/* 미들띠 스켈레톤 */}
-        <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
-          <SkeletonRow w="50%" h={4} mb={0} />
+        <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 3px 3px 2px", display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
         </div>
-        {/* Lord */}
-        <Zone label="Lord 채용관" sub="중단 · 로고+공고2개" color={C.blue}
-          active={hl==="lord"} slots={hl==="lord"?3:null} rolling={hl==="lord"?"20분순환":null} />
-        {/* Knight */}
-        <Zone label="Knight 채용관" sub="하단 · 로고+공고1개" color={C.blue}
-          active={hl==="knight"} slots={hl==="knight"?2:null} rolling={hl==="knight"?"20분순환":null} />
-      </div>
-
-      {/* 백스킨 우 */}
-      <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 3px 3px 2px", display:"flex", alignItems:"center", justifyContent:"center" }}>
-        <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── PC 서브(채용정보) 목업 — 채용관 전용 ────────────────
-const MockRecruitPC = ({ hl }) => (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
-    <BrowserBar />
-    <GNB />
-    {/* 상단 스켈레톤 */}
-    <div style={{ padding:"5px 5px 3px" }}>
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px", display:"flex", gap:6 }}>
-        {["직종","지역","경력","직급"].map(f => (
-          <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"3px 8px" }}>
-            <span style={{ fontSize:8, color:"#94A3B8" }}>{f}</span>
-          </div>
-        ))}
+const MockRecruitPC = ({ hl, tiers }) => {
+  const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
+  const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  return (
+    <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+      <BrowserBar />
+      <GNB />
+      <div style={{ padding:"5px 5px 3px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px", display:"flex", gap:6 }}>
+          {["직종","지역","경력","직급"].map(f => (
+            <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"3px 8px" }}>
+              <span style={{ fontSize:8, color:"#94A3B8" }}>{f}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {["sword","shield","armor"].map(id => (
+        <div key={id} style={{ padding:"2px 5px" }}>
+          <Zone label={name(id)} sub={m(id).sub} color={C.blue}
+            active={hl===id} slots={hl===id ? m(id).pcSlots : null}
+            rolling={hl===id ? m(id).badge : null} />
+        </div>
+      ))}
+      <div style={{ padding:"3px 5px 5px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
+          <SkeletonRow w="80%" h={6} mb={3} />
+          <SkeletonRow w="55%" h={5} mb={0} />
+        </div>
       </div>
     </div>
-    {/* Sword */}
-    <div style={{ padding:"2px 5px" }}>
-      <Zone label="Sword 채용관" sub="상단 · 최근수정순" color={C.blue}
-        active={hl==="sword"} slots={hl==="sword"?3:null} rolling={hl==="sword"?"매일갱신":null} />
-    </div>
-    {/* Shield */}
-    <div style={{ padding:"2px 5px" }}>
-      <Zone label="Shield 채용관" sub="중단 · 최근수정순" color={C.blue}
-        active={hl==="shield"} slots={hl==="shield"?3:null} rolling={hl==="shield"?"매일갱신":null} />
-    </div>
-    {/* Armor */}
-    <div style={{ padding:"2px 5px" }}>
-      <Zone label="Armor 채용관" sub="하단 · 최근수정순" color={C.blue}
-        active={hl==="armor"} slots={hl==="armor"?3:null} rolling={hl==="armor"?"매일갱신":null} />
-    </div>
-    {/* 하단 스켈레톤 */}
-    <div style={{ padding:"3px 5px 5px" }}>
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
-        <SkeletonRow w="80%" h={6} mb={3} />
-        <SkeletonRow w="55%" h={5} mb={0} />
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 // ─── 모바일 서브(채용정보) 목업 — 채용관 전용 ────────────
-const MockRecruitMobile = ({ hl }) => (
-  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
-    <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-      <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
-      <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
-    </div>
-    <div style={{ padding:"5px" }}>
-      {/* 필터 스켈레톤 */}
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3, display:"flex", gap:3, flexWrap:"wrap" }}>
-        {["직종","지역","경력"].map(f => (
-          <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"2px 6px" }}>
-            <span style={{ fontSize:7.5, color:"#94A3B8" }}>{f}</span>
+const MockRecruitMobile = ({ hl, tiers }) => {
+  const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
+  const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  return (
+    <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+      <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+        <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
+      </div>
+      <div style={{ padding:"5px" }}>
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3, display:"flex", gap:3, flexWrap:"wrap" }}>
+          {["직종","지역","경력"].map(f => (
+            <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"2px 6px" }}>
+              <span style={{ fontSize:7.5, color:"#94A3B8" }}>{f}</span>
+            </div>
+          ))}
+        </div>
+        {["sword","shield","armor"].map(id => (
+          <div key={id} style={{ marginBottom:3 }}>
+            <Zone label={name(id)} sub={m(id).sub} color={C.blue}
+              active={hl===id} slots={hl===id ? m(id).mobSlots : null}
+              rolling={hl===id ? m(id).badge : null} />
           </div>
         ))}
-      </div>
-      {/* Sword */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Sword 채용관" sub="상단" color={C.blue}
-          active={hl==="sword"} slots={hl==="sword"?2:null} rolling={hl==="sword"?"매일갱신":null} />
-      </div>
-      {/* Shield */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Shield 채용관" sub="중단" color={C.blue}
-          active={hl==="shield"} slots={hl==="shield"?2:null} rolling={hl==="shield"?"매일갱신":null} />
-      </div>
-      {/* Armor */}
-      <div style={{ marginBottom:3 }}>
-        <Zone label="Armor 채용관" sub="하단" color={C.blue}
-          active={hl==="armor"} slots={hl==="armor"?2:null} rolling={hl==="armor"?"매일갱신":null} />
-      </div>
-      {/* 하단 스켈레톤 */}
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"4px", marginTop:2 }}>
-        <SkeletonRow w="85%" h={5} mb={2} />
-        <SkeletonRow w="60%" h={5} mb={0} />
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"4px", marginTop:2 }}>
+          <SkeletonRow w="85%" h={5} mb={2} />
+          <SkeletonRow w="60%" h={5} mb={0} />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── PC 서브 목업 (배너 전용) ─────────────────────────────
 const MockSub = ({ hl }) => (
@@ -488,11 +466,11 @@ function ProductCard({ item }) {
         <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
           <div style={{ width:155, flexShrink:0 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-            <MockBoothMobile hl={item.id} />
+            <MockBoothMobile hl={item.id} tiers={item.tiers} />
           </div>
           <div style={{ flex:1 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
-            <MockBoothPC hl={item.id} />
+            <MockBoothPC hl={item.id} tiers={item.tiers} />
           </div>
         </div>
       );
@@ -502,11 +480,11 @@ function ProductCard({ item }) {
         <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
           <div style={{ width:155, flexShrink:0 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-            <MockRecruitMobile hl={item.id} />
+            <MockRecruitMobile hl={item.id} tiers={item.tiers} />
           </div>
           <div style={{ flex:1 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
-            <MockRecruitPC hl={item.id} />
+            <MockRecruitPC hl={item.id} tiers={item.tiers} />
           </div>
         </div>
       );
@@ -787,7 +765,7 @@ export default function AdCenter() {
       items.push({
         id:tier.id, category:"메인 채용관", title:tier.name,
         tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
-        zoneLabel:"메인", mockup:null,
+        zoneLabel:"메인", mockup:null, tiers:mainBooth.tiers,
         features:tier.features,
         priceTabs:[
           { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
@@ -801,7 +779,7 @@ export default function AdCenter() {
       items.push({
         id:tier.id, category:"채용정보 채용관", title:tier.name,
         tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
-        zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} />,
+        zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} />, tiers:recruitBooth.tiers,
         features:["채용정보 탭 "+tier.position+" 고정 노출","기업로고+기업명+채용제목 노출","최근 수정공고 순 상단 배치","메인채용관 구매 시 자동 포함"],
         priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함" }],
       });

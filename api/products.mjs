@@ -70,6 +70,12 @@ export default async function handler(req, res) {
           color:    prop(t, "색상"),
           bgLight:  prop(t, "배경색"),
           features: (prop(t, "특징") || "").split("\n").filter(Boolean),
+          mockup: {
+            pcSlots:  prop(t, "목업_PC구좌"),
+            mobSlots: prop(t, "목업_모바일구좌"),
+            sub:      prop(t, "목업_설명"),
+            badge:    prop(t, "목업_갱신뱃지"),
+          },
           combined: prices.filter(p => prop(p, "유형") === "결합").sort(sortByPeriod).map(p => ({
             period:      prop(p, "기간"),
             price:       prop(p, "가격"),
@@ -102,6 +108,12 @@ export default async function handler(req, res) {
           position:   prop(p, "위치"),
           combined:   prop(p, "결합단가"),
           individual: prop(p, "개별단가"),
+          mockup: {
+            pcSlots:  prop(p, "목업_PC구좌"),
+            mobSlots: prop(p, "목업_모바일구좌"),
+            sub:      prop(p, "목업_설명"),
+            badge:    prop(p, "목업_갱신뱃지"),
+          },
         };
       }).filter(Boolean),
     };
