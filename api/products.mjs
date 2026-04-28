@@ -71,9 +71,11 @@ export default async function handler(req, res) {
           bgLight:  prop(t, "배경색"),
           features: (prop(t, "특징") || "").split("\n").filter(Boolean),
           mockup: {
-            pcSlots:  prop(t, "목업_PC구좌"),
-            mobSlots: prop(t, "목업_모바일구좌"),
-            sub:      prop(t, "목업_설명"),
+            pcSlots:       prop(t, "목업_PC구좌"),
+            mobSlots:      prop(t, "목업_모바일구좌"),
+            sub:           prop(t, "목업_설명"),
+            topfixPcSlots:  prop(t, "목업_상단고정_PC구좌"),
+            topfixMobSlots: prop(t, "목업_상단고정_모바일구좌"),
             badge:    prop(t, "목업_갱신뱃지"),
           },
           combined: prices.filter(p => prop(p, "유형") === "결합").sort(sortByPeriod).map(p => ({

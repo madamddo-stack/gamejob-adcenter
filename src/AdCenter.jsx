@@ -114,7 +114,7 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
           <div key={id} style={{ marginBottom:3 }}>
             <Zone label={tiers?.find(t=>t.id===id)?.name ?? id} sub={m(id).sub}
               color={C.blue} active={hl===id}
-              slots={hl===id ? m(id).mobSlots : null}
+              slots={hl===id ? (isTopfix ? (m(id).topfixMobSlots ?? m(id).mobSlots) : m(id).mobSlots) : null}
               rolling={hl===id ? m(id).badge : null}
               topfix={hl===id ? isTopfix : false} />
           </div>
@@ -149,14 +149,14 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
             <SkeletonRow w="50%" h={4} mb={0} />
           </div>
           <Zone label={name("emperor")} sub={m("emperor").sub} color={C.blue}
-            active={hl==="emperor"} slots={hl==="emperor" ? m("emperor").pcSlots : null}
+            active={hl==="emperor"} slots={hl==="emperor" ? (isTopfix ? (m("emperor").topfixPcSlots ?? m("emperor").pcSlots) : m("emperor").pcSlots) : null}
             rolling={hl==="emperor" ? m("emperor").badge : null}
             topfix={hl==="emperor" ? isTopfix : false} />
           <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
             <SkeletonRow w="50%" h={4} mb={0} />
           </div>
           <Zone label={name("lord")} sub={m("lord").sub} color={C.blue}
-            active={hl==="lord"} slots={hl==="lord" ? m("lord").pcSlots : null}
+            active={hl==="lord"} slots={hl==="lord" ? (isTopfix ? (m("lord").topfixPcSlots ?? m("lord").pcSlots) : m("lord").pcSlots) : null}
             rolling={hl==="lord" ? m("lord").badge : null}
             topfix={hl==="lord" ? isTopfix : false} />
           <Zone label={name("knight")} sub={m("knight").sub} color={C.blue}
