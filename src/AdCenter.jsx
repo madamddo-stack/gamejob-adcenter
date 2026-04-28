@@ -258,7 +258,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
 
 // ─── PC 서브 목업 (배너 전용) ─────────────────────────────
 const MockSub = ({ hl }) => (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:314 }}>
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:343 }}>
     <BrowserBar />
     <GNB />
 
