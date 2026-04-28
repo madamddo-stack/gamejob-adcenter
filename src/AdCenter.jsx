@@ -257,7 +257,10 @@ const MockRecruitMobile = ({ hl, tiers }) => {
 };
 
 // ─── PC 서브 목업 (배너 전용) ─────────────────────────────
-const MockSub = ({ hl }) => (
+const MockSub = ({ hl, ads=[] }) => {
+  const ad = (id) => ads.find(a => a.id === id) ?? {};
+  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
+  return (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:343 }}>
     <BrowserBar />
     <GNB />
@@ -267,15 +270,16 @@ const MockSub = ({ hl }) => (
 
       {/* 좌: 서브 날개 */}
       <div style={{ width:40, flexShrink:0 }}>
-        <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"}
+        <Zone label={ad("subwing").name||"서브 날개"} sub={sz("subwing")} color={C.blue} active={hl==="subwing"}
+          rolling={hl==="subwing" ? ad("subwing").rolling||null : null}
           style={{ padding:"6px 2px", height:120, boxSizing:"border-box" }} />
       </div>
 
       {/* 중앙: 커뮤니티Pick + 스켈레톤 + 서브하단 */}
       <div style={{ width:356, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
 
-        <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue}
-          active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null}
+        <Zone label={ad("commPick").name||"커뮤니티 Pick"} sub={sz("commPick")} color={C.blue}
+          active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null}
           style={{ minHeight:56 }} />
 
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"6px 8px", flex:1 }}>
@@ -287,8 +291,8 @@ const MockSub = ({ hl }) => (
 
         <div style={{ display:"flex", justifyContent:"center" }}>
           <div style={{ width:"50%" }}>
-            <Zone label="서브 하단" sub="570×110" color={C.blue}
-              active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+            <Zone label={ad("subbottom").name||"서브 하단"} sub={sz("subbottom")} color={C.blue}
+              active={hl==="subbottom"} rolling={hl==="subbottom" ? ad("subbottom").rolling||null : null} />
           </div>
         </div>
 
@@ -296,17 +300,20 @@ const MockSub = ({ hl }) => (
 
       {/* 우: 서브 스카이 */}
       <div style={{ width:40, flexShrink:0 }}>
-        <Zone label="서브스카이" sub="120×600" color={C.blue} active={hl==="subsky"}
-          rolling={hl==="subsky"?"4구좌":null}
+        <Zone label={ad("subsky").name||"서브스카이"} sub={sz("subsky")} color={C.blue} active={hl==="subsky"}
+          rolling={hl==="subsky" ? ad("subsky").rolling||null : null}
           style={{ height:200, padding:"4px 2px", boxSizing:"border-box" }} />
       </div>
 
     </div>
   </div>
-);
+  );
+};
 
 // ─── PC 메인 배너 목업 ────────────────────────────────────
-const MockMainBanner = ({ hl }) => {
+const MockMainBanner = ({ hl, ads=[] }) => {
+  const ad = (id) => ads.find(a => a.id === id) ?? {};
+  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
   const isSkin = hl === "backskin";
   const skinColor = C.blue;
   const skinStyle = (side) => ({
@@ -345,8 +352,8 @@ const MockMainBanner = ({ hl }) => {
 
           {/* 메인 탑 + 우측 스켈레톤 */}
           <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
-            <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
-              active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
+            <Zone label={ad("maintop").name||"메인 탑"} sub={sz("maintop")} color={C.blue}
+              active={hl==="maintop"} rolling={hl==="maintop" ? ad("maintop").rolling||null : null}
               style={{ flex:2, minHeight:28 }} />
             <div style={{ flex:1, display:"flex", gap:2 }}>
               <div style={{ flex:1, background:"#E9EEF4", borderRadius:5 }} />
@@ -373,8 +380,8 @@ const MockMainBanner = ({ hl }) => {
           </div>
 
           {/* 메인 상단띠 — Emperor 바로 위 */}
-          <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.blue}
-            active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
+          <Zone label={ad("topstrip").name||"메인 상단띠"} sub={sz("topstrip")} color={C.blue}
+            active={hl==="topstrip"} rolling={hl==="topstrip" ? ad("topstrip").rolling||null : null} />
 
           {/* Emperor 채용관 스켈레톤 (4번째 슬롯 = Emperor Edge) */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
@@ -411,8 +418,8 @@ const MockMainBanner = ({ hl }) => {
           </div>
 
           {/* 메인 미들띠 */}
-          <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
-            active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
+          <Zone label={ad("midstrip").name||"메인 미들띠"} sub={sz("midstrip")} color={C.blue}
+            active={hl==="midstrip"} rolling={hl==="midstrip" ? ad("midstrip").rolling||null : null} />
 
           {/* Lord 채용관 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
@@ -438,7 +445,10 @@ const MockMainBanner = ({ hl }) => {
 };
 
 // ─── 모바일 배너 목업 ─────────────────────────────────────
-const MockMobile = ({ hl }) => (
+const MockMobile = ({ hl, ads=[] }) => {
+  const ad = (id) => ads.find(a => a.id === id) ?? {};
+  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
+  return (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:314 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
@@ -454,7 +464,7 @@ const MockMobile = ({ hl }) => (
           <SkeletonRow w="55%" h={4} mb={0} />
         </div>
       ) : (
-        <Zone label="모바일 메인띠" sub="624×210" color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain"?"3구좌":null} style={{ marginBottom:3 }} />
+        <Zone label={ad("mobMain").name||"모바일 메인띠"} sub={sz("mobMain")} color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain" ? ad("mobMain").rolling||null : null} style={{ marginBottom:3 }} />
       )}
       {/* 채용관 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3 }}>
@@ -468,7 +478,7 @@ const MockMobile = ({ hl }) => (
           <SkeletonRow w="50%" h={4} mb={0} />
         </div>
       ) : (
-        <Zone label="커뮤니티 Pick" sub="640×240" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
+        <Zone label={ad("commPick").name||"커뮤니티 Pick"} sub={sz("commPick")} color={C.blue} active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null} style={{ marginBottom:3, marginTop:2 }} />
       )}
       {/* 커뮤니티Pick ~ 모바일서브띠 사이 콘텐츠 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
@@ -482,7 +492,7 @@ const MockMobile = ({ hl }) => (
           <SkeletonRow w="65%" h={5} mb={0} />
         </div>
       ) : (
-        <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
+        <Zone label={ad("mobSub").name||"모바일 서브띠"} sub={sz("mobSub")} color={C.blue} active={hl==="mobSub"} rolling={hl==="mobSub" ? ad("mobSub").rolling||null : null} style={{ marginBottom:2 }} />
       )}
       {/* 모바일 서브띠 하단 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
@@ -491,7 +501,8 @@ const MockMobile = ({ hl }) => (
       </div>
     </div>
   </div>
-);
+  );
+};
 
 // ─── 이력서 목업 ──────────────────────────────────────────
 const MockResume = () => (
@@ -863,7 +874,7 @@ export default function AdCenter() {
       items.push({
         id:tier.id, category:"채용정보 채용관", title:tier.name,
         tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
-        zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} />, tiers:recruitBooth.tiers,
+        zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} ads={bannerAds} />, tiers:recruitBooth.tiers,
         features:["채용정보 탭 "+tier.position+" 고정 노출","기업로고+기업명+채용제목 노출","최근 수정공고 순 상단 배치","메인채용관 구매 시 자동 포함"],
         priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함" }],
       });
@@ -880,24 +891,24 @@ export default function AdCenter() {
           <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
             <div style={{ width:155, flexShrink:0 }}>
               <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-              <MockMobile hl="commPick" />
+              <MockMobile hl="commPick" ads={bannerAds} />
             </div>
             <div style={{ flex:1 }}>
               <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
-              <MockSub hl="commPick" />
+              <MockSub hl="commPick" ads={bannerAds} />
             </div>
           </div>
         );
       } else if (MAIN_IDS.includes(b.id)) {
-        mockup = <MockMainBanner hl={b.id} />;
+        mockup = <MockMainBanner hl={b.id} ads={bannerAds} />;
       } else if (SUB_IDS.includes(b.id)) {
-        mockup = <MockSub hl={b.id} />;
+        mockup = <MockSub hl={b.id} ads={bannerAds} />;
       } else if (MOB_IDS.includes(b.id)) {
         mockup = (
           <div style={{ display:"flex", justifyContent:"center" }}>
             <div style={{ width:155, flexShrink:0 }}>
               <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-              <MockMobile hl={b.id} />
+              <MockMobile hl={b.id} ads={bannerAds} />
             </div>
           </div>
         );
