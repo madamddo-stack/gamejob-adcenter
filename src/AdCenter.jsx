@@ -478,6 +478,16 @@ const MockMobile = ({ hl }) => (
       ) : (
         <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
       )}
+      {/* 하단 추가 스켈레톤 */}
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
+        <SkeletonRow w="80%" h={4} mb={2} />
+        <SkeletonRow w="60%" h={4} mb={2} />
+        <SkeletonRow w="70%" h={4} mb={0} />
+      </div>
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px" }}>
+        <SkeletonRow w="75%" h={4} mb={2} />
+        <SkeletonRow w="50%" h={4} mb={0} />
+      </div>
     </div>
   </div>
 );
