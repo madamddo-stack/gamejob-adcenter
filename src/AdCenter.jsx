@@ -268,7 +268,7 @@ const MockSub = ({ hl }) => (
       {/* 좌: 서브 날개 */}
       <div style={{ width:40, flexShrink:0 }}>
         <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"}
-          style={{ padding:"6px 2px", height:"100%", boxSizing:"border-box" }} />
+          style={{ padding:"6px 2px", height:120, boxSizing:"border-box" }} />
       </div>
 
       {/* 중앙: 커뮤니티Pick + 스켈레톤 + 서브하단 */}
@@ -298,7 +298,7 @@ const MockSub = ({ hl }) => (
       <div style={{ width:40, flexShrink:0 }}>
         <Zone label="서브스카이" sub="120×600" color={C.blue} active={hl==="subsky"}
           rolling={hl==="subsky"?"4구좌":null}
-          style={{ height:"100%", minHeight:100, padding:"4px 2px", boxSizing:"border-box" }} />
+          style={{ height:200, padding:"4px 2px", boxSizing:"border-box" }} />
       </div>
 
     </div>
