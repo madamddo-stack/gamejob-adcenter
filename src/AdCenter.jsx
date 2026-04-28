@@ -81,14 +81,14 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
     </div>
     {active && slots && (
       layout === "horizontal" ? (
-        /* 가로형: 슬롯을 세로로 쌓고, 각 슬롯 내부는 로고(좌) + 텍스트(우) */
-        <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+        /* 가로형: 슬롯은 1줄 가로 배열, 각 슬롯 내부는 로고(좌) + 텍스트(우) */
+        <div style={{ display:"flex", gap:3 }}>
           {Array.from({ length:slots }).map((_,i) => (
-            <div key={i} style={{ background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 6px", display:"flex", alignItems:"center", gap:5 }}>
-              <div style={{ width:18, height:18, background:`${color}35`, borderRadius:3, flexShrink:0 }} />
+            <div key={i} style={{ flex:1, background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 6px", display:"flex", alignItems:"center", gap:5 }}>
+              <div style={{ width:14, height:14, background:`${color}35`, borderRadius:3, flexShrink:0 }} />
               <div style={{ flex:1 }}>
-                <div style={{ background:`${color}30`, borderRadius:2, height:5, marginBottom:3, width:"70%" }} />
-                <div style={{ background:`${color}20`, borderRadius:2, height:4, width:"90%" }} />
+                <div style={{ background:`${color}30`, borderRadius:2, height:4, marginBottom:3, width:"70%" }} />
+                <div style={{ background:`${color}20`, borderRadius:2, height:3, width:"90%" }} />
               </div>
             </div>
           ))}
