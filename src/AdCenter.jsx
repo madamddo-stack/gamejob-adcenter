@@ -65,7 +65,7 @@ const SkeletonRow = ({ w="100%", h=8, mb=4 }) => (
 );
 
 // 지면 존 블록
-const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
+const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix }) => (
   <div style={{
     borderRadius:5, padding:"7px 9px",
     background: active ? `${color}12` : "#EAECF0",
@@ -83,6 +83,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
       <div style={{ display:"flex", gap:3 }}>
         {Array.from({ length:slots }).map((_,i) => (
           <div key={i} style={{ flex:1, background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 3px" }}>
+            {topfix && <div style={{ background:`${color}50`, borderRadius:2, height:9, width:"100%", marginBottom:2 }} />}
             <div style={{ background:`${color}35`, borderRadius:2, height:8, width:"50%", margin:"0 auto 3px" }} />
             <div style={{ background:`${color}22`, borderRadius:2, height:5, marginBottom:2 }} />
             <div style={{ background:`${color}22`, borderRadius:2, height:4, width:"75%" }} />
@@ -94,7 +95,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling }) => (
 );
 
 // ─── 모바일 채용관 목업 ───────────────────────────────────
-const MockBoothMobile = ({ hl, tiers }) => {
+const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   return (
     <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
@@ -114,7 +115,8 @@ const MockBoothMobile = ({ hl, tiers }) => {
             <Zone label={tiers?.find(t=>t.id===id)?.name ?? id} sub={m(id).sub}
               color={C.blue} active={hl===id}
               slots={hl===id ? m(id).mobSlots : null}
-              rolling={hl===id ? m(id).badge : null} />
+              rolling={hl===id ? m(id).badge : null}
+              topfix={hl===id ? isTopfix : false} />
           </div>
         ))}
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginTop:2 }}>
@@ -127,7 +129,7 @@ const MockBoothMobile = ({ hl, tiers }) => {
 };
 
 // ─── PC 채용관 목업 ───────────────────────────────────────
-const MockBoothPC = ({ hl, tiers }) => {
+const MockBoothPC = ({ hl, tiers, isTopfix }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
   return (
@@ -148,13 +150,15 @@ const MockBoothPC = ({ hl, tiers }) => {
           </div>
           <Zone label={name("emperor")} sub={m("emperor").sub} color={C.blue}
             active={hl==="emperor"} slots={hl==="emperor" ? m("emperor").pcSlots : null}
-            rolling={hl==="emperor" ? m("emperor").badge : null} />
+            rolling={hl==="emperor" ? m("emperor").badge : null}
+            topfix={hl==="emperor" ? isTopfix : false} />
           <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
             <SkeletonRow w="50%" h={4} mb={0} />
           </div>
           <Zone label={name("lord")} sub={m("lord").sub} color={C.blue}
             active={hl==="lord"} slots={hl==="lord" ? m("lord").pcSlots : null}
-            rolling={hl==="lord" ? m("lord").badge : null} />
+            rolling={hl==="lord" ? m("lord").badge : null}
+            topfix={hl==="lord" ? isTopfix : false} />
           <Zone label={name("knight")} sub={m("knight").sub} color={C.blue}
             active={hl==="knight"} slots={hl==="knight" ? m("knight").pcSlots : null}
             rolling={hl==="knight" ? m("knight").badge : null} />
@@ -485,15 +489,16 @@ function ProductCard({ item }) {
 
   const renderMockup = () => {
     if (item.category === "메인 채용관") {
+      const hlId = item.hlId || item.id;
       return (
         <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
           <div style={{ width:155, flexShrink:0 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-            <MockBoothMobile hl={item.id} tiers={item.tiers} />
+            <MockBoothMobile hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
           <div style={{ flex:1 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
-            <MockBoothPC hl={item.id} tiers={item.tiers} />
+            <MockBoothPC hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
         </div>
       );
@@ -795,9 +800,27 @@ export default function AdCenter() {
         priceTabs:[
           { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
           { label:"개별 (PC/M)", rows:tier.individual.map(r=>({ label:r.period, value:fw(r.price) })), note:"* 최소 신청기간 1주" },
-          ...(tier.combined[0]?.topfix ? [{ label:"상단고정 옵션", rows:tier.combined.filter(r=>r.topfix).map(r=>({ label:r.period, value:fw(r.topfixTotal), sub:fw(r.topfix)+" (옵션)" })), note:"* 결합 기준 상단고정 포함가" }] : []),
         ],
       });
+      // Emperor / Lord → 상단고정 별도 상품
+      if (tier.id === "emperor" || tier.id === "lord") {
+        const announcementCount = tier.id === "emperor" ? 3 : 2;
+        const topfixFeatures = tier.features.length > 0
+          ? [`상단이미지+기업로고+대표공고 ${announcementCount}개 노출`, ...tier.features.slice(1)]
+          : [`상단이미지+기업로고+대표공고 ${announcementCount}개 노출`];
+        items.push({
+          id:`${tier.id}-topfix`, category:"메인 채용관",
+          title:`${tier.name} 상단고정`,
+          tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
+          zoneLabel:"메인", mockup:null, tiers:mainBooth.tiers,
+          hlId:tier.id, isTopfix:true,
+          features:topfixFeatures,
+          priceTabs:[
+            { label:"결합 (PC+M)", rows:tier.combined.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 결합 가격 + 상단고정 옵션 포함가 / 최소 1주" },
+            { label:"개별 (PC/M)", rows:tier.individual.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 개별 가격 + 상단고정 옵션 포함가 / 최소 신청기간 1주" },
+          ],
+        });
+      }
     });
     recruitBooth.tiers.forEach((tier, ti) => {
       const colors = [[C.blue,C.blueL],[C.green,C.greenL],[C.amber,C.amberL]];
@@ -868,12 +891,21 @@ export default function AdCenter() {
   }, [mainBooth, recruitBooth, bannerAds, resumeService]);
 
   // LNB 데이터
-  const LNB_ALL = useMemo(() => [
-    { group:"메인 채용관",    sectionId:"sec-main",    items:mainBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
-    { group:"채용정보 채용관", sectionId:"sec-recruit", items:recruitBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
-    { group:"배너 광고",      sectionId:"sec-banner",  items:bannerAds.filter(b=>b.price).map(b=>({ id:b.id, label:b.name })) },
-    { group:"이력서 열람",    sectionId:"sec-resume",  items:[{ id:"resume", label:"이력서 열람 서비스" }] },
-  ], [mainBooth, recruitBooth, bannerAds]);
+  const LNB_ALL = useMemo(() => {
+    const mainItems = [];
+    mainBooth.tiers.forEach(t => {
+      mainItems.push({ id:t.id, label:t.name.replace(" 채용관","") });
+      if (t.id === "emperor" || t.id === "lord") {
+        mainItems.push({ id:`${t.id}-topfix`, label:`${t.name.replace(" 채용관","")} 상단고정` });
+      }
+    });
+    return [
+      { group:"메인 채용관",    sectionId:"sec-main",    items:mainItems },
+      { group:"채용정보 채용관", sectionId:"sec-recruit", items:recruitBooth.tiers.map(t=>({ id:t.id, label:t.name.replace(" 채용관","") })) },
+      { group:"배너 광고",      sectionId:"sec-banner",  items:bannerAds.filter(b=>b.price).map(b=>({ id:b.id, label:b.name })) },
+      { group:"이력서 열람",    sectionId:"sec-resume",  items:[{ id:"resume", label:"이력서 열람 서비스" }] },
+    ];
+  }, [mainBooth, recruitBooth, bannerAds]);
 
   const LNB_PKG = useMemo(() => [
     {
