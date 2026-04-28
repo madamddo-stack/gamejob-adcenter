@@ -271,39 +271,12 @@ const MockSub = ({ hl }) => (
           style={{ padding:"6px 2px", height:"100%", boxSizing:"border-box" }} />
       </div>
 
-      {/* 중앙 */}
+      {/* 중앙: 커뮤니티Pick + 스켈레톤 + 서브하단 */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
 
-        {/* 메뉴 스켈레톤 — blue */}
-        <div style={{ background:`${C.blue}10`, borderRadius:4, padding:"4px 6px", display:"flex", gap:3 }}>
-          {["직종","지역","경력","직급"].map(f => (
-            <div key={f} style={{ background:`${C.blue}25`, borderRadius:3, padding:"2px 6px" }}>
-              <span style={{ fontSize:7, color:C.blue }}>{f}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* 콘텐츠 영역 — green */}
-        <div style={{ background:"#E8F5E9", borderRadius:4, padding:"7px 8px" }}>
-          <div style={{ display:"flex", gap:6 }}>
-            <div style={{ flex:1 }}>
-              <div style={{ background:"#A5D6A7", borderRadius:2, height:5, width:"70%", marginBottom:3 }} />
-              <div style={{ background:"#C8E6C9", borderRadius:2, height:4, width:"90%", marginBottom:2 }} />
-              <div style={{ background:"#C8E6C9", borderRadius:2, height:4, width:"75%" }} />
-            </div>
-            <div style={{ flex:1 }}>
-              <div style={{ background:"#A5D6A7", borderRadius:2, height:5, width:"70%", marginBottom:3 }} />
-              <div style={{ background:"#C8E6C9", borderRadius:2, height:4, width:"85%", marginBottom:2 }} />
-              <div style={{ background:"#C8E6C9", borderRadius:2, height:4, width:"60%" }} />
-            </div>
-          </div>
-        </div>
-
-        {/* 커뮤니티 Pick */}
         <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue}
           active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
 
-        {/* 스켈레톤 */}
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"6px 8px", flex:1 }}>
           <SkeletonRow w="60%" h={5} mb={3} />
           <SkeletonRow w="85%" h={4} mb={2} />
@@ -311,7 +284,6 @@ const MockSub = ({ hl }) => (
           <SkeletonRow w="55%" h={4} mb={0} />
         </div>
 
-        {/* 서브 하단 */}
         <Zone label="서브 하단" sub="570×110" color={C.blue}
           active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
 
