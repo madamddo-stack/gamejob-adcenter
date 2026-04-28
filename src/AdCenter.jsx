@@ -470,6 +470,12 @@ const MockMobile = ({ hl }) => (
       ) : (
         <Zone label="커뮤니티 Pick" sub="640×240" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} style={{ marginBottom:3, marginTop:2 }} />
       )}
+      {/* 커뮤니티Pick ~ 모바일서브띠 사이 콘텐츠 스켈레톤 */}
+      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
+        <SkeletonRow w="80%" h={4} mb={2} />
+        <SkeletonRow w="60%" h={4} mb={2} />
+        <SkeletonRow w="70%" h={4} mb={0} />
+      </div>
       {/* 모바일 서브띠 — mobMain일 때 스켈레톤으로 대체 */}
       {hl === "mobMain" ? (
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
@@ -478,13 +484,8 @@ const MockMobile = ({ hl }) => (
       ) : (
         <Zone label="모바일 서브띠" color={C.blue} active={hl==="mobSub"} style={{ marginBottom:2 }} />
       )}
-      {/* 하단 추가 스켈레톤 */}
+      {/* 모바일 서브띠 하단 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
-        <SkeletonRow w="80%" h={4} mb={2} />
-        <SkeletonRow w="60%" h={4} mb={2} />
-        <SkeletonRow w="70%" h={4} mb={0} />
-      </div>
-      <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px" }}>
         <SkeletonRow w="75%" h={4} mb={2} />
         <SkeletonRow w="50%" h={4} mb={0} />
       </div>
