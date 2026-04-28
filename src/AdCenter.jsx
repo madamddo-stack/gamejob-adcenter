@@ -258,7 +258,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
 
 // ─── PC 서브 목업 (배너 전용) ─────────────────────────────
 const MockSub = ({ hl }) => (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:314 }}>
     <BrowserBar />
     <GNB />
 
@@ -439,7 +439,7 @@ const MockMainBanner = ({ hl }) => {
 
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl }) => (
-  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:314 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
