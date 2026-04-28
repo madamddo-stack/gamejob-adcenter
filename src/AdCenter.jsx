@@ -83,7 +83,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix }) =
       <div style={{ display:"flex", gap:3 }}>
         {Array.from({ length:slots }).map((_,i) => (
           <div key={i} style={{ flex:1, background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 3px" }}>
-            {topfix && <div style={{ background:`${color}50`, borderRadius:2, height:9, width:"100%", marginBottom:2 }} />}
+            {topfix && <div style={{ background:`${color}50`, borderRadius:2, height:18, width:"100%", marginBottom:2 }} />}
             <div style={{ background:`${color}35`, borderRadius:2, height:8, width:"50%", margin:"0 auto 3px" }} />
             <div style={{ background:`${color}22`, borderRadius:2, height:5, marginBottom:2 }} />
             <div style={{ background:`${color}22`, borderRadius:2, height:4, width:"75%" }} />
