@@ -367,23 +367,36 @@ const MockMainBanner = ({ hl }) => {
             </div>
           </div>
 
-          {/* Emperor 채용관 스켈레톤 + Emperor Edge */}
-          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
-            <div style={{ flex:1, background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
-              <SkeletonRow w="45%" h={5} mb={3} />
-              <div style={{ display:"flex", gap:2 }}>
-                {[1,2,3,4].map(i => (
-                  <div key={i} style={{ flex:1, background:"#E9EEF4", borderRadius:3, padding:"4px 2px" }}>
-                    <div style={{ width:"50%", height:8, background:"#D1D9E6", borderRadius:2, margin:"0 auto 3px" }} />
-                    <SkeletonRow w="90%" h={3} mb={2} />
-                    <SkeletonRow w="70%" h={3} mb={0} />
+          {/* Emperor 채용관 스켈레톤 (4번째 슬롯 = Emperor Edge) */}
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
+            <SkeletonRow w="45%" h={5} mb={3} />
+            <div style={{ display:"flex", gap:2 }}>
+              {[0,1,2,3].map(i => {
+                const isEdge = i === 3;
+                const edgeActive = isEdge && hl === "emperiredge";
+                return (
+                  <div key={i} style={{
+                    flex:1,
+                    background: edgeActive ? `${C.blue}18` : "#E9EEF4",
+                    border: edgeActive ? `1px dashed ${C.blue}66` : "none",
+                    borderRadius:3, padding:"4px 2px",
+                  }}>
+                    {edgeActive ? (
+                      <>
+                        <div style={{ fontSize:7, color:C.blue, fontWeight:700, textAlign:"center", marginBottom:3 }}>▶ Emperor Edge</div>
+                        <div style={{ background:`${C.blue}30`, borderRadius:2, height:20, width:"100%" }} />
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ width:"50%", height:8, background:"#D1D9E6", borderRadius:2, margin:"0 auto 3px" }} />
+                        <SkeletonRow w="90%" h={3} mb={2} />
+                        <SkeletonRow w="70%" h={3} mb={0} />
+                      </>
+                    )}
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
-            <Zone label="Emperor Edge" sub="258×532" color={C.blue}
-              active={hl==="emperiredge"}
-              style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
           </div>
 
           {/* 메인 미들띠 */}
