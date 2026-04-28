@@ -378,13 +378,15 @@ const MockMainBanner = ({ hl }) => {
                   <div key={i} style={{
                     flex:1,
                     background: edgeActive ? `${C.blue}18` : "#E9EEF4",
-                    border: edgeActive ? `1px dashed ${C.blue}66` : "none",
+                    border: isEdge ? `1px dashed ${edgeActive ? C.blue+"66" : "#B0B8C9"}` : "none",
                     borderRadius:3, padding:"4px 2px",
                   }}>
-                    {edgeActive ? (
+                    {isEdge ? (
                       <>
-                        <div style={{ fontSize:7, color:C.blue, fontWeight:700, textAlign:"center", marginBottom:3 }}>▶ Emperor Edge</div>
-                        <div style={{ background:`${C.blue}30`, borderRadius:2, height:20, width:"100%" }} />
+                        <div style={{ fontSize:7, color: edgeActive ? C.blue : C.gray2, fontWeight: edgeActive ? 700 : 400, textAlign:"center", marginBottom:3 }}>
+                          {edgeActive ? "▶ Emperor Edge" : "Emperor Edge"}
+                        </div>
+                        <div style={{ background: edgeActive ? `${C.blue}30` : "#D1D9E6", borderRadius:2, height:20, width:"100%" }} />
                       </>
                     ) : (
                       <>
