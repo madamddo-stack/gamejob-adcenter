@@ -65,7 +65,7 @@ const SkeletonRow = ({ w="100%", h=8, mb=4 }) => (
 );
 
 // 지면 존 블록
-const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix }) => (
+const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, layout="vertical" }) => (
   <div style={{
     borderRadius:5, padding:"7px 9px",
     background: active ? `${color}12` : "#EAECF0",
@@ -80,16 +80,32 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix }) =
       )}
     </div>
     {active && slots && (
-      <div style={{ display:"flex", gap:3 }}>
-        {Array.from({ length:slots }).map((_,i) => (
-          <div key={i} style={{ flex:1, background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 3px" }}>
-            {topfix && <div style={{ background:`${color}50`, borderRadius:2, height:18, width:"100%", marginBottom:2 }} />}
-            <div style={{ background:`${color}35`, borderRadius:2, height:8, width:"50%", margin:"0 auto 3px" }} />
-            <div style={{ background:`${color}22`, borderRadius:2, height:5, marginBottom:2 }} />
-            <div style={{ background:`${color}22`, borderRadius:2, height:4, width:"75%" }} />
-          </div>
-        ))}
-      </div>
+      layout === "horizontal" ? (
+        /* 가로형: 슬롯을 세로로 쌓고, 각 슬롯 내부는 로고(좌) + 텍스트(우) */
+        <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+          {Array.from({ length:slots }).map((_,i) => (
+            <div key={i} style={{ background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 6px", display:"flex", alignItems:"center", gap:5 }}>
+              <div style={{ width:18, height:18, background:`${color}35`, borderRadius:3, flexShrink:0 }} />
+              <div style={{ flex:1 }}>
+                <div style={{ background:`${color}30`, borderRadius:2, height:5, marginBottom:3, width:"70%" }} />
+                <div style={{ background:`${color}20`, borderRadius:2, height:4, width:"90%" }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* 세로형: 슬롯을 가로로 배열하고, 각 슬롯 내부는 로고(상) + 텍스트(하) */
+        <div style={{ display:"flex", gap:3 }}>
+          {Array.from({ length:slots }).map((_,i) => (
+            <div key={i} style={{ flex:1, background:`${color}18`, border:`1px dashed ${color}55`, borderRadius:4, padding:"5px 3px" }}>
+              {topfix && <div style={{ background:`${color}50`, borderRadius:2, height:18, width:"100%", marginBottom:2 }} />}
+              <div style={{ background:`${color}35`, borderRadius:2, height:8, width:"50%", margin:"0 auto 3px" }} />
+              <div style={{ background:`${color}22`, borderRadius:2, height:5, marginBottom:2 }} />
+              <div style={{ background:`${color}22`, borderRadius:2, height:4, width:"75%" }} />
+            </div>
+          ))}
+        </div>
+      )
     )}
   </div>
 );
@@ -192,7 +208,7 @@ const MockRecruitPC = ({ hl, tiers }) => {
         <div key={id} style={{ padding:"2px 5px" }}>
           <Zone label={name(id)} sub={m(id).sub} color={C.blue}
             active={hl===id} slots={hl===id ? m(id).pcSlots : null}
-            rolling={hl===id ? m(id).badge : null} />
+            rolling={hl===id ? m(id).badge : null} layout="horizontal" />
         </div>
       ))}
       <div style={{ padding:"3px 5px 5px" }}>
@@ -227,7 +243,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
           <div key={id} style={{ marginBottom:3 }}>
             <Zone label={name(id)} sub={m(id).sub} color={C.blue}
               active={hl===id} slots={hl===id ? m(id).mobSlots : null}
-              rolling={hl===id ? m(id).badge : null} />
+              rolling={hl===id ? m(id).badge : null} layout="horizontal" />
           </div>
         ))}
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"4px", marginTop:2 }}>
