@@ -275,7 +275,8 @@ const MockSub = ({ hl }) => (
       <div style={{ width:356, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
 
         <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue}
-          active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
+          active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null}
+          style={{ minHeight:56 }} />
 
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"6px 8px", flex:1 }}>
           <SkeletonRow w="60%" h={5} mb={3} />
