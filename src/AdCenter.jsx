@@ -284,8 +284,12 @@ const MockSub = ({ hl }) => (
           <SkeletonRow w="55%" h={4} mb={0} />
         </div>
 
-        <Zone label="서브 하단" sub="570×110" color={C.blue}
-          active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+        <div style={{ display:"flex", justifyContent:"center" }}>
+          <div style={{ width:"50%" }}>
+            <Zone label="서브 하단" sub="570×110" color={C.blue}
+              active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+          </div>
+        </div>
 
       </div>
 
