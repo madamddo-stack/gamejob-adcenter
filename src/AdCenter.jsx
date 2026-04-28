@@ -332,17 +332,6 @@ const MockMainBanner = ({ hl }) => {
 
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
-      {/* 커튼 — GNB 위, 전체 너비 */}
-      <div style={{
-        background: hl==="curtain" ? `${C.blue}12` : "#EAECF0",
-        borderBottom: hl==="curtain" ? `1.5px solid ${C.blue}` : "1px solid #DDE1E7",
-        padding:"4px 9px", transition:"all .18s",
-      }}>
-        <span style={{ fontSize:9, fontWeight:hl==="curtain"?700:500, color:hl==="curtain"?C.blue:C.gray }}>
-          {hl==="curtain" ? "▶ 메인 커튼" : "메인 커튼"}
-        </span>
-      </div>
-
       <BrowserBar />
       <GNB />
 
@@ -360,9 +349,23 @@ const MockMainBanner = ({ hl }) => {
             active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
             style={{ minHeight:28 }} />
 
-          {/* 메인 상단띠 */}
-          <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.blue}
-            active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
+          {/* 콘텐츠 스켈레톤 */}
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
+            <div style={{ display:"flex", gap:8 }}>
+              <div style={{ flex:1 }}>
+                <SkeletonRow w="70%" h={5} mb={3} />
+                <SkeletonRow w="90%" h={4} mb={2} />
+                <SkeletonRow w="80%" h={4} mb={2} />
+                <SkeletonRow w="60%" h={4} mb={0} />
+              </div>
+              <div style={{ flex:1 }}>
+                <SkeletonRow w="70%" h={5} mb={3} />
+                <SkeletonRow w="90%" h={4} mb={2} />
+                <SkeletonRow w="75%" h={4} mb={2} />
+                <SkeletonRow w="55%" h={4} mb={0} />
+              </div>
+            </div>
+          </div>
 
           {/* Emperor 채용관 스켈레톤 + Emperor Edge */}
           <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
@@ -383,31 +386,12 @@ const MockMainBanner = ({ hl }) => {
               style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
           </div>
 
-          {/* 콘텐츠 스켈레톤 */}
-          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
-            <div style={{ display:"flex", gap:8 }}>
-              <div style={{ flex:1 }}>
-                <SkeletonRow w="70%" h={5} mb={3} />
-                <SkeletonRow w="90%" h={4} mb={2} />
-                <SkeletonRow w="80%" h={4} mb={2} />
-                <SkeletonRow w="60%" h={4} mb={0} />
-              </div>
-              <div style={{ flex:1 }}>
-                <SkeletonRow w="70%" h={5} mb={3} />
-                <SkeletonRow w="90%" h={4} mb={2} />
-                <SkeletonRow w="75%" h={4} mb={2} />
-                <SkeletonRow w="55%" h={4} mb={0} />
-              </div>
-            </div>
-          </div>
-
           {/* 메인 미들띠 */}
           <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
             active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
 
-          {/* Lord/Knight 스켈레톤 */}
+          {/* 하단 여백용 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
-            <SkeletonRow w="40%" h={5} mb={3} />
             <div style={{ display:"flex", gap:2 }}>
               {[1,2,3].map(i => (
                 <div key={i} style={{ flex:1, background:"#E9EEF4", borderRadius:3, padding:"4px 2px" }}>
