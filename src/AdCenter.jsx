@@ -263,10 +263,10 @@ const MockSub = ({ hl }) => (
     <GNB />
 
     {/* 3열 레이아웃: [서브날개] [중앙] [서브스카이] */}
-    <div style={{ padding:"3px 4px 5px", display:"flex", gap:3, alignItems:"stretch" }}>
+    <div style={{ padding:"3px 4px 5px", display:"flex", gap:3, alignItems:"stretch", justifyContent:"center" }}>
 
       {/* 좌: 서브 날개 */}
-      <div style={{ width:22, flexShrink:0 }}>
+      <div style={{ width:40, flexShrink:0 }}>
         <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"}
           style={{ padding:"6px 2px", height:"100%", boxSizing:"border-box" }} />
       </div>
@@ -290,7 +290,7 @@ const MockSub = ({ hl }) => (
       </div>
 
       {/* 우: 서브 스카이 */}
-      <div style={{ width:26, flexShrink:0 }}>
+      <div style={{ width:40, flexShrink:0 }}>
         <Zone label="서브스카이" sub="120×600" color={C.blue} active={hl==="subsky"}
           rolling={hl==="subsky"?"4구좌":null}
           style={{ height:"100%", minHeight:100, padding:"4px 2px", boxSizing:"border-box" }} />
