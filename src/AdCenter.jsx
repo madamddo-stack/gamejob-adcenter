@@ -132,7 +132,8 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
               color={C.blue} active={hl===id}
               slots={hl===id ? (isTopfix ? (m(id).topfixMobSlots ?? m(id).mobSlots) : m(id).mobSlots) : null}
               rolling={hl===id ? m(id).badge : null}
-              topfix={hl===id ? isTopfix : false} />
+              topfix={hl===id ? isTopfix : false}
+              layout={id==="knight" ? "horizontal" : "vertical"} />
           </div>
         ))}
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginTop:2 }}>
@@ -177,7 +178,7 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
             topfix={hl==="lord" ? isTopfix : false} />
           <Zone label={name("knight")} sub={m("knight").sub} color={C.blue}
             active={hl==="knight"} slots={hl==="knight" ? m("knight").pcSlots : null}
-            rolling={hl==="knight" ? m("knight").badge : null} />
+            rolling={hl==="knight" ? m("knight").badge : null} layout="horizontal" />
         </div>
         <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 3px 3px 2px", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
@@ -331,6 +332,17 @@ const MockMainBanner = ({ hl }) => {
 
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+      {/* 커튼 — GNB 위, 전체 너비 */}
+      <div style={{
+        background: hl==="curtain" ? `${C.blue}12` : "#EAECF0",
+        borderBottom: hl==="curtain" ? `1.5px solid ${C.blue}` : "1px solid #DDE1E7",
+        padding:"4px 9px", transition:"all .18s",
+      }}>
+        <span style={{ fontSize:9, fontWeight:hl==="curtain"?700:500, color:hl==="curtain"?C.blue:C.gray }}>
+          {hl==="curtain" ? "▶ 메인 커튼" : "메인 커튼"}
+        </span>
+      </div>
+
       <BrowserBar />
       <GNB />
 
@@ -343,40 +355,10 @@ const MockMainBanner = ({ hl }) => {
         {/* 중앙 콘텐츠 */}
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
 
-          {/* 메인 탑 + 우측 콘텐츠 스켈레톤 */}
-          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
-            <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
-              active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
-              style={{ flex:2 }} />
-            <div style={{ flex:1, display:"flex", gap:2 }}>
-              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5, padding:"6px 5px" }}>
-                <SkeletonRow w="80%" h={4} mb={2} />
-                <SkeletonRow w="60%" h={3} mb={0} />
-              </div>
-              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5, padding:"6px 5px" }}>
-                <SkeletonRow w="80%" h={4} mb={2} />
-                <SkeletonRow w="60%" h={3} mb={0} />
-              </div>
-            </div>
-          </div>
-
-          {/* 콘텐츠 스켈레톤 (탑~상단띠 사이) */}
-          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
-            <div style={{ display:"flex", gap:8 }}>
-              <div style={{ flex:1 }}>
-                <SkeletonRow w="70%" h={5} mb={3} />
-                <SkeletonRow w="90%" h={4} mb={2} />
-                <SkeletonRow w="80%" h={4} mb={2} />
-                <SkeletonRow w="60%" h={4} mb={0} />
-              </div>
-              <div style={{ flex:1 }}>
-                <SkeletonRow w="70%" h={5} mb={3} />
-                <SkeletonRow w="90%" h={4} mb={2} />
-                <SkeletonRow w="75%" h={4} mb={2} />
-                <SkeletonRow w="55%" h={4} mb={0} />
-              </div>
-            </div>
-          </div>
+          {/* 메인 탑 */}
+          <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
+            active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
+            style={{ minHeight:28 }} />
 
           {/* 메인 상단띠 */}
           <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.blue}
@@ -400,6 +382,28 @@ const MockMainBanner = ({ hl }) => {
               active={hl==="emperiredge"}
               style={{ width:22, flexShrink:0, padding:"10px 2px", fontSize:7 }} />
           </div>
+
+          {/* 콘텐츠 스켈레톤 */}
+          <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
+            <div style={{ display:"flex", gap:8 }}>
+              <div style={{ flex:1 }}>
+                <SkeletonRow w="70%" h={5} mb={3} />
+                <SkeletonRow w="90%" h={4} mb={2} />
+                <SkeletonRow w="80%" h={4} mb={2} />
+                <SkeletonRow w="60%" h={4} mb={0} />
+              </div>
+              <div style={{ flex:1 }}>
+                <SkeletonRow w="70%" h={5} mb={3} />
+                <SkeletonRow w="90%" h={4} mb={2} />
+                <SkeletonRow w="75%" h={4} mb={2} />
+                <SkeletonRow w="55%" h={4} mb={0} />
+              </div>
+            </div>
+          </div>
+
+          {/* 메인 미들띠 */}
+          <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
+            active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
 
           {/* Lord/Knight 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
