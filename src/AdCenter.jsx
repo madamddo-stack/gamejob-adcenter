@@ -883,9 +883,11 @@ export default function AdCenter() {
         mockup = <MockSub hl={b.id} />;
       } else if (MOB_IDS.includes(b.id)) {
         mockup = (
-          <div>
-            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
-            <MockMobile hl={b.id} />
+          <div style={{ display:"flex", justifyContent:"center" }}>
+            <div style={{ width:155, flexShrink:0 }}>
+              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+              <MockMobile hl={b.id} />
+            </div>
           </div>
         );
       }
