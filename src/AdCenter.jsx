@@ -272,7 +272,7 @@ const MockSub = ({ hl }) => (
       </div>
 
       {/* 중앙: 커뮤니티Pick + 스켈레톤 + 서브하단 */}
-      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
+      <div style={{ width:356, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
 
         <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue}
           active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
@@ -569,7 +569,7 @@ function ProductCard({ item }) {
 
         {/* 좌 — 목업 */}
         <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <div style={{ width:"100%", maxWidth: isBoothType ? "100%" : (item.mockupMaxWidth ?? 480) }}>
+          <div style={{ width:"100%", maxWidth: (isBoothType || item.id === "commPick") ? "100%" : 480 }}>
             {renderMockup()}
           </div>
         </div>
@@ -889,7 +889,6 @@ export default function AdCenter() {
         id:b.id, category:"배너 광고", title:b.name,
         tag:b.device+" · "+b.zone, tagColor:dc[0], tagBg:dc[1],
         zoneLabel:b.zone, mockup,
-        mockupMaxWidth: (b.id === "commPick") ? "100%" : SUB_IDS.includes(b.id) ? 418 : 480,
         exposure:[
           { label:"노출 위치", value:b.location || b.zone+" ("+deviceLabel+")" },
           { label:"노출 방식", value:b.rolling },
