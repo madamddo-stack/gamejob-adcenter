@@ -367,6 +367,10 @@ const MockMainBanner = ({ hl }) => {
             </div>
           </div>
 
+          {/* 메인 상단띠 — Emperor 바로 위 */}
+          <Zone label="메인 상단띠" sub="1080×70 · 3구좌" color={C.blue}
+            active={hl==="topstrip"} rolling={hl==="topstrip"?"3구좌":null} />
+
           {/* Emperor 채용관 스켈레톤 (4번째 슬롯 = Emperor Edge) */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
             <SkeletonRow w="45%" h={5} mb={3} />
@@ -405,8 +409,9 @@ const MockMainBanner = ({ hl }) => {
           <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
             active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
 
-          {/* 하단 여백용 스켈레톤 */}
+          {/* Lord 채용관 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
+            <SkeletonRow w="40%" h={5} mb={3} />
             <div style={{ display:"flex", gap:2 }}>
               {[1,2,3].map(i => (
                 <div key={i} style={{ flex:1, background:"#E9EEF4", borderRadius:3, padding:"4px 2px" }}>
@@ -416,10 +421,6 @@ const MockMainBanner = ({ hl }) => {
               ))}
             </div>
           </div>
-
-          {/* 메인 미들띠 */}
-          <Zone label="메인 미들띠" sub="1080×70 · 3구좌" color={C.blue}
-            active={hl==="midstrip"} rolling={hl==="midstrip"?"3구좌":null} />
 
         </div>
 
