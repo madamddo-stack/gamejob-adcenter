@@ -344,10 +344,16 @@ const MockMainBanner = ({ hl }) => {
         {/* 중앙 콘텐츠 */}
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
 
-          {/* 메인 탑 */}
-          <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
-            active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
-            style={{ minHeight:28 }} />
+          {/* 메인 탑 + 우측 스켈레톤 */}
+          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
+            <Zone label="메인 탑" sub="2560×1000 · 3구좌" color={C.blue}
+              active={hl==="maintop"} rolling={hl==="maintop"?"3구좌":null}
+              style={{ flex:2, minHeight:28 }} />
+            <div style={{ flex:1, display:"flex", gap:2 }}>
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5 }} />
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:5 }} />
+            </div>
+          </div>
 
           {/* 콘텐츠 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 7px" }}>
