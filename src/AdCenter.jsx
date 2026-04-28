@@ -261,47 +261,55 @@ const MockSub = ({ hl }) => (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
     <BrowserBar />
     <GNB />
-    {/* 상단 스켈레톤 (커뮤니티Pick은 별도 처리) */}
-    {hl !== "commPick" && (
-      <div style={{ padding:"5px 5px 2px" }}>
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"6px 8px" }}>
-          <SkeletonRow w="60%" h={6} mb={2} />
-          <SkeletonRow w="40%" h={5} mb={0} />
-        </div>
+
+    {/* 메뉴 스켈레톤 — blue */}
+    <div style={{ padding:"4px 5px 2px" }}>
+      <div style={{ background:`${C.blue}10`, borderRadius:5, padding:"5px 8px", display:"flex", gap:3 }}>
+        {["직종","지역","경력","직급"].map(f => (
+          <div key={f} style={{ background:`${C.blue}20`, borderRadius:3, padding:"2px 7px" }}>
+            <span style={{ fontSize:7.5, color:C.blue }}>{f}</span>
+          </div>
+        ))}
       </div>
-    )}
-    {/* 커뮤니티 Pick */}
-    <div style={{ padding:"5px 5px 2px" }}>
-      <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue} active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
     </div>
-    <div style={{ padding:"0 5px 2px", display:"flex", gap:3 }}>
-      {/* 날개 */}
-      <div style={{ width:24, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
-        <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"} style={{ padding:"7px 2px" }} />
-        <Zone label="날개2" color={C.blue} active={hl==="subwing2"} style={{ padding:"7px 2px" }} />
+
+    {/* 메인 콘텐츠 영역 스켈레톤 — green */}
+    <div style={{ padding:"2px 5px" }}>
+      <div style={{ background:"#E8F5E9", borderRadius:5, padding:"8px 10px" }}>
+        <div style={{ background:"#A5D6A7", borderRadius:3, height:6, width:"60%", marginBottom:4 }} />
+        <div style={{ background:"#A5D6A7", borderRadius:3, height:5, width:"40%" }} />
       </div>
-      {/* 채용관 스켈레톤 */}
+    </div>
+
+    {/* 3열 레이아웃: [서브날개] [중앙] [서브스카이] */}
+    <div style={{ padding:"2px 5px 5px", display:"flex", gap:3, alignItems:"stretch" }}>
+
+      {/* 서브 날개 */}
+      <div style={{ width:24, flexShrink:0 }}>
+        <Zone label="날개" sub="90×154" color={C.blue} active={hl==="subwing"}
+          style={{ padding:"7px 2px", height:"100%", boxSizing:"border-box" }} />
+      </div>
+
+      {/* 중앙: 커뮤니티Pick + 채용관 스켈레톤 + 서브하단 */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
-          <SkeletonRow w="70%" h={6} mb={2} />
-          <SkeletonRow w="50%" h={5} mb={0} />
+        <Zone label="커뮤니티 Pick" sub="1780×528" color={C.blue}
+          active={hl==="commPick"} rolling={hl==="commPick"?"4구좌":null} />
+        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px", flex:1 }}>
+          <SkeletonRow w="70%" h={5} mb={2} />
+          <SkeletonRow w="50%" h={4} mb={2} />
+          <SkeletonRow w="60%" h={4} mb={0} />
         </div>
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
-          <SkeletonRow w="65%" h={6} mb={2} />
-          <SkeletonRow w="45%" h={5} mb={0} />
-        </div>
-        <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px" }}>
-          <SkeletonRow w="60%" h={6} mb={2} />
-          <SkeletonRow w="40%" h={5} mb={0} />
-        </div>
+        <Zone label="서브 하단" sub="570×110" color={C.blue}
+          active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
       </div>
-      {/* 스카이 */}
+
+      {/* 서브 스카이 */}
       <div style={{ width:28, flexShrink:0 }}>
-        <Zone label="서브스카이 120×600" color={C.blue} active={hl==="subsky"} rolling={hl==="subsky"?"4구좌":null} style={{ height:"100%", minHeight:90, padding:"4px 2px" }} />
+        <Zone label="서브스카이" sub="120×600" color={C.blue} active={hl==="subsky"}
+          rolling={hl==="subsky"?"4구좌":null}
+          style={{ height:"100%", minHeight:90, padding:"4px 2px", boxSizing:"border-box" }} />
       </div>
-    </div>
-    <div style={{ padding:"0 5px 5px" }}>
-      <Zone label="서브 하단" sub="570×110" color={C.blue} active={hl==="subbottom"} rolling={hl==="subbottom"?"4구좌":null} />
+
     </div>
   </div>
 );
