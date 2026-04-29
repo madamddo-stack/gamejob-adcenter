@@ -713,7 +713,7 @@ function PackageCard({ pkg }) {
           {pkg.highlight && <span style={{ display:"inline-block", alignSelf:"flex-start", background:C.blue, borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700, color:"#fff" }}>BEST</span>}
           <div>
             <p style={{ fontSize:26, fontWeight:900, color:"#fff", margin:0 }}>{fw(pkg.price)}</p>
-            <p style={{ fontSize:11.5, color:"rgba(255,255,255,0.35)", marginTop:4 }}>1주 · VAT포함</p>
+            <p style={{ fontSize:11.5, color:"rgba(255,255,255,0.35)", marginTop:4 }}>1주일 · VAT포함</p>
           </div>
           <p style={{ fontSize:13, color:"rgba(255,255,255,0.55)", lineHeight:1.75, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:16, margin:0 }}>{pkg.desc}</p>
         </div>
@@ -761,13 +761,13 @@ function PackageCompare({ bannerPackages }) {
               </tr>
             ))}
             <tr style={{ background:C.navy }}>
-              <td colSpan={2} style={{ padding:"11px 16px", fontWeight:700, fontSize:13, color:"#fff" }}>금액 (VAT포함 · 1주)</td>
+              <td colSpan={2} style={{ padding:"11px 16px", fontWeight:700, fontSize:13, color:"#fff" }}>금액 (VAT포함 · 1주일)</td>
               {bannerPackages.map(p => <td key={p.id} style={{ padding:"11px 16px", textAlign:"center", fontWeight:800, fontSize:14, color:"#fff" }}>{fw(p.price)}</td>)}
             </tr>
           </tbody>
         </table>
       </div>
-      <p style={{ fontSize:11, color:C.gray2, padding:"7px 16px", margin:0 }}>* 최소 신청기간 1주 이상</p>
+      <p style={{ fontSize:11, color:C.gray2, padding:"7px 16px", margin:0 }}>* 최소 신청기간 1주일 이상</p>
     </div>
   );
 }
@@ -845,8 +845,8 @@ export default function AdCenter() {
         zoneLabel:"메인", mockup:null, tiers:mainBooth.tiers,
         features:tier.features,
         priceTabs:[
-          { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주" },
-          { label:"개별 (PC/M)", rows:tier.individual.map(r=>({ label:r.period, value:fw(r.price) })), note:"* 최소 신청기간 1주" },
+          { label:"결합 (PC+M)", rows:tier.combined.map(r=>({ label:r.period, value:fw(r.price), sub:fw(r.original) })), note:"* 개별 합산 대비 35% 할인 / 최소 1주일" },
+          { label:"개별 (PC/M)", rows:tier.individual.map(r=>({ label:r.period, value:fw(r.price) })), note:"* 최소 신청기간 1주일" },
         ],
       });
       // Emperor / Lord → 상단고정 별도 상품
@@ -863,8 +863,8 @@ export default function AdCenter() {
           hlId:tier.id, isTopfix:true,
           features:topfixFeatures,
           priceTabs:[
-            { label:"결합 (PC+M)", rows:tier.combined.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 결합 가격 + 상단고정 옵션 포함가 / 최소 1주" },
-            { label:"개별 (PC/M)", rows:tier.individual.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 개별 가격 + 상단고정 옵션 포함가 / 최소 신청기간 1주" },
+            { label:"결합 (PC+M)", rows:tier.combined.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 결합 가격 + 상단고정 옵션 포함가 / 최소 1주일" },
+            { label:"개별 (PC/M)", rows:tier.individual.filter(r=>r.topfixTotal).map(r=>({ label:r.period, value:fw(r.topfixTotal) })), note:"* 개별 가격 + 상단고정 옵션 포함가 / 최소 신청기간 1주일" },
           ],
         });
       }
@@ -876,7 +876,7 @@ export default function AdCenter() {
         tag:tier.position+" 노출", tagColor:colors[ti][0], tagBg:colors[ti][1],
         zoneLabel:"채용정보", mockup:<MockSub hl={tier.id} ads={bannerAds} />, tiers:recruitBooth.tiers,
         features:["채용정보 탭 "+tier.position+" 고정 노출","기업로고+기업명+채용제목 노출","최근 수정공고 순 상단 배치","메인채용관 구매 시 자동 포함"],
-        priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주 / 메인채용관 구매 시 자동 포함" }],
+        priceTabs:[{ label:"일 단가", rows:[{ label:"결합 (PC+M)", value:tier.combined.toLocaleString()+"원/일" },{ label:"개별 (PC/M)", value:tier.individual.toLocaleString()+"원/일" }], note:"* 최소 신청기간 1주일 / 메인채용관 구매 시 자동 포함" }],
       });
     });
     bannerAds.filter(b=>b.price).forEach(b => {
@@ -1112,7 +1112,7 @@ export default function AdCenter() {
       {/* ── 푸터 ── */}
       <footer style={{ borderTop:`1px solid ${C.border}`, background:C.white, padding:"16px 40px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <p style={{ fontSize:12, color:C.gray2, margin:0 }}>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
-        <p style={{ fontSize:11.5, color:C.gray2, margin:0 }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주, 배너 1주 이상</p>
+        <p style={{ fontSize:11.5, color:C.gray2, margin:0 }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주일, 배너 1주일 이상</p>
       </footer>
     </div>
   );
