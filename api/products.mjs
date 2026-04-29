@@ -131,14 +131,15 @@ export default async function handler(req, res) {
       if (!p) return null;
       return {
         id,
-        device:   prop(p, "디바이스"),
-        zone:     prop(p, "지면"),
-        name:     prop(p, "이름"),
-        size:     prop(p, "이미지사이즈") || "-",
-        capacity: prop(p, "이미지용량")   || "-",
-        rolling:  prop(p, "노출방식"),
-        price:    prop(p, "가격"),
-        note:     prop(p, "비고") || null,
+        device:      prop(p, "디바이스"),
+        zone:        prop(p, "지면"),
+        name:        prop(p, "이름"),
+        size:        prop(p, "이미지사이즈") || "-",
+        capacity:    prop(p, "이미지용량")   || "-",
+        rolling:     prop(p, "노출방식"),
+        mockupDesc:  prop(p, "목업_설명") || null,
+        price:       prop(p, "가격"),
+        note:        prop(p, "비고") || null,
       };
     }).filter(Boolean);
 

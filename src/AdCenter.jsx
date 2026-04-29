@@ -259,7 +259,7 @@ const MockRecruitMobile = ({ hl, tiers }) => {
 // ─── PC 서브 목업 (배너 전용) ─────────────────────────────
 const MockSub = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
-  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
+  const sz = (id) => ad(id).mockupDesc || ad(id).size?.replace(/px/gi,"").trim() || "";
   return (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:343 }}>
     <BrowserBar />
@@ -313,7 +313,7 @@ const MockSub = ({ hl, ads=[] }) => {
 // ─── PC 메인 배너 목업 ────────────────────────────────────
 const MockMainBanner = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
-  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
+  const sz = (id) => ad(id).mockupDesc || ad(id).size?.replace(/px/gi,"").trim() || "";
   const isSkin = hl === "backskin";
   const skinColor = C.blue;
   const skinStyle = (side) => ({
@@ -447,7 +447,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
 // ─── 모바일 배너 목업 ─────────────────────────────────────
 const MockMobile = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
-  const sz = (id) => ad(id).size?.replace(/px/gi,"").trim() || "";
+  const sz = (id) => ad(id).mockupDesc || ad(id).size?.replace(/px/gi,"").trim() || "";
   return (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:314 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
