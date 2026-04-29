@@ -65,13 +65,35 @@ const SkeletonRow = ({ w="100%", h=8, mb=4 }) => (
 );
 
 // 지면 존 블록
-const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, layout="vertical" }) => (
-  <div style={{
-    borderRadius:5, padding:"7px 9px",
-    background: active ? `${color}12` : "#EAECF0",
-    border: active ? `1.5px solid ${color}` : `1px solid ${C.border2}`,
-    transition:"all .18s", ...style,
-  }}>
+const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, layout="vertical", previewImg }) => {
+  const [hovered, setHovered] = useState(false);
+  const [pos, setPos] = useState({ x:0, y:0 });
+  const handleMouseMove = (e) => setPos({ x: e.clientX, y: e.clientY });
+  return (
+  <div
+    style={{ borderRadius:5, padding:"7px 9px", position:"relative",
+      background: active ? `${color}12` : "#EAECF0",
+      border: active ? `1.5px solid ${color}` : `1px solid ${C.border2}`,
+      transition:"all .18s", ...style,
+    }}
+    onMouseEnter={() => previewImg && setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
+    onMouseMove={handleMouseMove}
+  >
+    {hovered && previewImg && (
+      <div style={{
+        position:"fixed", zIndex:9999, pointerEvents:"none",
+        left: pos.x + 16, top: pos.y - 60,
+        background:"#fff", borderRadius:10,
+        boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
+        border:"1px solid #E5E7EA",
+        padding:6, maxWidth:360,
+      }}>
+        <img src={previewImg} alt="실제 화면 미리보기"
+          style={{ width:360, borderRadius:6, display:"block" }} />
+        <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+      </div>
+    )}
     <div style={{ fontSize:9, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0, wordBreak:"keep-all", overflowWrap:"break-word", whiteSpace:"pre-wrap" }}>
       {active ? `▶ ${label}` : label}
       {sub && <span style={{ fontSize:8, fontWeight:400, marginLeft:4, opacity:0.7 }}>{sub}</span>}
@@ -108,7 +130,8 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
       )
     )}
   </div>
-);
+  );
+};
 
 // ─── 모바일 채용관 목업 ───────────────────────────────────
 const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
@@ -149,6 +172,7 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
 const MockBoothPC = ({ hl, tiers, isTopfix }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  const preview = (id) => tiers?.find(t => t.id === id)?.previewUrl ?? null;
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
       <BrowserBar />
@@ -168,7 +192,8 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
           <Zone label={name("emperor")} sub={m("emperor").sub} color={C.blue}
             active={hl==="emperor"} slots={hl==="emperor" ? (isTopfix ? (m("emperor").topfixPcSlots ?? m("emperor").pcSlots) : m("emperor").pcSlots) : null}
             rolling={hl==="emperor" ? m("emperor").badge : null}
-            topfix={hl==="emperor" ? isTopfix : false} />
+            topfix={hl==="emperor" ? isTopfix : false}
+            previewImg={preview("emperor")} />
           <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 6px" }}>
             <SkeletonRow w="50%" h={4} mb={0} />
           </div>
