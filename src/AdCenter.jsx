@@ -72,7 +72,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
     border: active ? `1.5px solid ${color}` : `1px solid ${C.border2}`,
     transition:"all .18s", ...style,
   }}>
-    <div style={{ fontSize:9, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0, wordBreak:"keep-all", overflowWrap:"break-word" }}>
+    <div style={{ fontSize:9, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0, wordBreak:"keep-all", overflowWrap:"break-word", whiteSpace:"pre-wrap" }}>
       {active ? `▶ ${label}` : label}
       {sub && <span style={{ fontSize:8, fontWeight:400, marginLeft:4, opacity:0.7 }}>{sub}</span>}
       {active && rolling && (
