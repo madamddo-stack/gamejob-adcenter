@@ -449,8 +449,8 @@ const MockMainBanner = ({ hl, ads=[] }) => {
                 return (
                   <div key={i} style={{
                     flex:1,
-                    background: edgeActive ? `${C.blue}18` : "#E9EEF4",
-                    border: isEdge ? `1px dashed ${edgeActive ? C.blue+"66" : "#B0B8C9"}` : "none",
+                    background: edgeActive ? `${C.blue}12` : "#E9EEF4",
+                    border: isEdge ? `${edgeActive ? "1.5px solid" : "1px solid"} ${edgeActive ? C.blue : "#D2D5DB"}` : "none",
                     borderRadius:3, padding:"4px 2px",
                   }} {...edgeHandlers}>
                     {isEdge ? (
