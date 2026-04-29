@@ -76,7 +76,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
       border: active ? `1.5px solid ${color}` : `1px solid ${C.border2}`,
       transition:"all .18s", ...style,
     }}
-    onMouseEnter={() => previewImg && setHovered(true)}
+    onMouseEnter={() => previewImg && active && setHovered(true)}
     onMouseLeave={() => setHovered(false)}
     onMouseMove={handleMouseMove}
   >
@@ -441,7 +441,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
               {[0,1,2,3].map(i => {
                 const isEdge = i === 3;
                 const edgeActive = isEdge && hl === "emperiredge";
-                const edgeHandlers = isEdge && prv("emperiredge") ? {
+                const edgeHandlers = edgeActive && prv("emperiredge") ? {
                   onMouseEnter: () => setEdgeHovered(true),
                   onMouseLeave: () => setEdgeHovered(false),
                   onMouseMove:  (e) => setEdgePos({ x: e.clientX, y: e.clientY }),
