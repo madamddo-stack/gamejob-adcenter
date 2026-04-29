@@ -25,13 +25,12 @@ async function addProperty() {
     headers,
     body: JSON.stringify({
       properties: {
-        "미리보기_URL": { url: {} },
+        "미리보기_URL_상단고정": { url: {} },
       },
     }),
   }).then(r => r.json());
   if (res.object === "error") throw new Error(res.message);
-  console.log("컬럼 추가 완료: 미리보기_URL");
-  console.log("노션에서 Emperor 행의 미리보기_URL에 이미지 URL을 입력하세요.");
+  console.log("컬럼 추가 완료: 미리보기_URL_상단고정");
 }
 
 addProperty().catch(console.error);

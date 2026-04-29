@@ -71,7 +71,8 @@ export default async function handler(req, res) {
           color:    prop(t, "색상"),
           bgLight:  prop(t, "배경색"),
           features: (prop(t, "특징") || "").split("\n").filter(Boolean),
-          previewUrl: prop(t, "미리보기_URL") || null,
+          previewUrl:       prop(t, "미리보기_URL") || null,
+          previewUrlTopfix: prop(t, "미리보기_URL_상단고정") || null,
           mockup: {
             pcSlots:       prop(t, "목업_PC구좌"),
             mobSlots:      prop(t, "목업_모바일구좌"),

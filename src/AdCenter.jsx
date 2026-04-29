@@ -172,7 +172,10 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
 const MockBoothPC = ({ hl, tiers, isTopfix }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
-  const preview = (id) => tiers?.find(t => t.id === id)?.previewUrl ?? null;
+  const preview = (id) => {
+    const tier = tiers?.find(t => t.id === id);
+    return (isTopfix ? tier?.previewUrlTopfix : tier?.previewUrl) ?? null;
+  };
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
       <BrowserBar />
