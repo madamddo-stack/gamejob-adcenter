@@ -359,6 +359,8 @@ const MockMainBanner = ({ hl, ads=[] }) => {
   const skinColor = C.blue;
   const [skinHovered, setSkinHovered] = useState(false);
   const [skinPos, setSkinPos] = useState({ x:0, y:0 });
+  const [edgeHovered, setEdgeHovered] = useState(false);
+  const [edgePos, setEdgePos] = useState({ x:0, y:0 });
   const skinStyle = (side) => ({
     width: 56, flexShrink:0,
     background: isSkin ? `${skinColor}12` : "#F1F5F9",
@@ -439,13 +441,18 @@ const MockMainBanner = ({ hl, ads=[] }) => {
               {[0,1,2,3].map(i => {
                 const isEdge = i === 3;
                 const edgeActive = isEdge && hl === "emperiredge";
+                const edgeHandlers = isEdge && prv("emperiredge") ? {
+                  onMouseEnter: () => setEdgeHovered(true),
+                  onMouseLeave: () => setEdgeHovered(false),
+                  onMouseMove:  (e) => setEdgePos({ x: e.clientX, y: e.clientY }),
+                } : {};
                 return (
                   <div key={i} style={{
                     flex:1,
                     background: edgeActive ? `${C.blue}18` : "#E9EEF4",
                     border: isEdge ? `1px dashed ${edgeActive ? C.blue+"66" : "#B0B8C9"}` : "none",
                     borderRadius:3, padding:"4px 2px",
-                  }}>
+                  }} {...edgeHandlers}>
                     {isEdge ? (
                       <>
                         <div style={{ fontSize:7, color: edgeActive ? C.blue : C.gray2, fontWeight: edgeActive ? 700 : 400, textAlign:"center", marginBottom:3 }}>
@@ -463,6 +470,21 @@ const MockMainBanner = ({ hl, ads=[] }) => {
                   </div>
                 );
               })}
+              {/* Emperor Edge 미리보기 팝업 */}
+              {edgeHovered && prv("emperiredge") && (
+                <div style={{
+                  position:"fixed", zIndex:9999, pointerEvents:"none",
+                  left: edgePos.x + 16, top: edgePos.y - 60,
+                  background:"#fff", borderRadius:10,
+                  boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
+                  border:"1px solid #E5E7EA",
+                  padding:6, width:510,
+                }}>
+                  <img src={prv("emperiredge")} alt="실제 화면 미리보기"
+                    style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
+                  <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+                </div>
+              )}
             </div>
           </div>
 
