@@ -270,7 +270,7 @@ const MockSub = ({ hl, ads=[] }) => {
     <div style={{ padding:"3px 4px 5px", display:"flex", gap:3, alignItems:"stretch", justifyContent:"center" }}>
 
       {/* 좌: 서브 날개 */}
-      <div style={{ width:40, flexShrink:0 }}>
+      <div style={{ width:130, flexShrink:0 }}>
         <Zone label={lbl("subwing")} sub={sub("subwing")} color={C.blue} active={hl==="subwing"}
           rolling={hl==="subwing" ? ad("subwing").rolling||null : null}
           style={{ padding:"6px 2px", height:120, boxSizing:"border-box" }} />
@@ -300,7 +300,7 @@ const MockSub = ({ hl, ads=[] }) => {
       </div>
 
       {/* 우: 서브 스카이 */}
-      <div style={{ width:40, flexShrink:0 }}>
+      <div style={{ width:130, flexShrink:0 }}>
         <Zone label={lbl("subsky")} sub={sub("subsky")} color={C.blue} active={hl==="subsky"}
           rolling={hl==="subsky" ? ad("subsky").rolling||null : null}
           style={{ height:200, padding:"4px 2px", boxSizing:"border-box" }} />
