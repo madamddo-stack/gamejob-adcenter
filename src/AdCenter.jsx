@@ -136,6 +136,10 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
 // ─── 모바일 채용관 목업 ───────────────────────────────────
 const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
+  const preview = (id) => {
+    const tier = tiers?.find(t => t.id === id);
+    return (isTopfix ? tier?.previewUrlTopfix : tier?.previewUrl) ?? null;
+  };
   return (
     <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
@@ -156,7 +160,8 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
               slots={hl===id ? (isTopfix ? (m(id).topfixMobSlots ?? m(id).mobSlots) : m(id).mobSlots) : null}
               rolling={hl===id ? m(id).badge : null}
               topfix={hl===id ? isTopfix : false}
-              layout={id==="knight" ? "horizontal" : "vertical"} />
+              layout={id==="knight" ? "horizontal" : "vertical"}
+              previewImg={preview(id)} />
           </div>
         ))}
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginTop:2 }}>
@@ -203,10 +208,12 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
           <Zone label={name("lord")} sub={m("lord").sub} color={C.blue}
             active={hl==="lord"} slots={hl==="lord" ? (isTopfix ? (m("lord").topfixPcSlots ?? m("lord").pcSlots) : m("lord").pcSlots) : null}
             rolling={hl==="lord" ? m("lord").badge : null}
-            topfix={hl==="lord" ? isTopfix : false} />
+            topfix={hl==="lord" ? isTopfix : false}
+            previewImg={preview("lord")} />
           <Zone label={name("knight")} sub={m("knight").sub} color={C.blue}
             active={hl==="knight"} slots={hl==="knight" ? m("knight").pcSlots : null}
-            rolling={hl==="knight" ? m("knight").badge : null} layout="horizontal" />
+            rolling={hl==="knight" ? m("knight").badge : null} layout="horizontal"
+            previewImg={preview("knight")} />
         </div>
         <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 3px 3px 2px", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
@@ -220,6 +227,7 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
 const MockRecruitPC = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  const preview = (id) => tiers?.find(t => t.id === id)?.previewUrl ?? null;
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
       <BrowserBar />
@@ -237,7 +245,8 @@ const MockRecruitPC = ({ hl, tiers }) => {
         <div key={id} style={{ padding:"2px 5px" }}>
           <Zone label={name(id)} sub={m(id).sub} color={C.blue}
             active={hl===id} slots={hl===id ? m(id).pcSlots : null}
-            rolling={hl===id ? m(id).badge : null} layout="horizontal" />
+            rolling={hl===id ? m(id).badge : null} layout="horizontal"
+            previewImg={preview(id)} />
         </div>
       ))}
       <div style={{ padding:"3px 5px 5px" }}>
@@ -254,6 +263,7 @@ const MockRecruitPC = ({ hl, tiers }) => {
 const MockRecruitMobile = ({ hl, tiers }) => {
   const m = (id) => tiers?.find(t => t.id === id)?.mockup ?? {};
   const name = (id) => tiers?.find(t => t.id === id)?.name ?? id;
+  const preview = (id) => tiers?.find(t => t.id === id)?.previewUrl ?? null;
   return (
     <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
@@ -272,7 +282,8 @@ const MockRecruitMobile = ({ hl, tiers }) => {
           <div key={id} style={{ marginBottom:3 }}>
             <Zone label={name(id)} sub={m(id).sub} color={C.blue}
               active={hl===id} slots={hl===id ? m(id).mobSlots : null}
-              rolling={hl===id ? m(id).badge : null} layout="horizontal" />
+              rolling={hl===id ? m(id).badge : null} layout="horizontal"
+              previewImg={preview(id)} />
           </div>
         ))}
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"4px", marginTop:2 }}>

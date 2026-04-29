@@ -113,6 +113,7 @@ export default async function handler(req, res) {
           position:   prop(p, "위치"),
           combined:   prop(p, "결합단가"),
           individual: prop(p, "개별단가"),
+          previewUrl: prop(p, "미리보기_URL") || null,
           mockup: {
             pcSlots:  prop(p, "목업_PC구좌"),
             mobSlots: prop(p, "목업_모바일구좌"),
