@@ -87,7 +87,7 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
         background:"#fff", borderRadius:10,
         boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
         border:"1px solid #E5E7EA",
-        padding:6, width:510,
+        padding:6, width:800,
       }}>
         <img src={previewImg} alt="실제 화면 미리보기"
           style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
@@ -478,7 +478,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
                   background:"#fff", borderRadius:10,
                   boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
                   border:"1px solid #E5E7EA",
-                  padding:6, width:510,
+                  padding:6, width:800,
                 }}>
                   <img src={prv("emperiredge")} alt="실제 화면 미리보기"
                     style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
@@ -518,7 +518,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
             background:"#fff", borderRadius:10,
             boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
             border:"1px solid #E5E7EA",
-            padding:6, width:510,
+            padding:6, width:800,
           }}>
             <img src={prv("backskin")} alt="실제 화면 미리보기"
               style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
