@@ -357,6 +357,8 @@ const MockMainBanner = ({ hl, ads=[] }) => {
   const prv = (id) => ad(id).previewUrl || null;
   const isSkin = hl === "backskin";
   const skinColor = C.blue;
+  const [skinHovered, setSkinHovered] = useState(false);
+  const [skinPos, setSkinPos] = useState({ x:0, y:0 });
   const skinStyle = (side) => ({
     width: 56, flexShrink:0,
     background: isSkin ? `${skinColor}12` : "#F1F5F9",
@@ -365,6 +367,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
     margin: side === "left" ? "3px 2px 3px 3px" : "3px 3px 3px 2px",
     display:"flex", alignItems:"center", justifyContent:"center",
     transition:"all .2s",
+    cursor: isSkin && prv("backskin") ? "default" : undefined,
   });
   const skinText = (side) => (
     <span style={{
@@ -376,6 +379,11 @@ const MockMainBanner = ({ hl, ads=[] }) => {
       {isSkin ? `▶ 백스킨(${side==="left"?"좌":"우"})` : `백스킨(${side==="left"?"좌":"우"})`}
     </span>
   );
+  const skinHandlers = isSkin && prv("backskin") ? {
+    onMouseEnter: () => setSkinHovered(true),
+    onMouseLeave: () => setSkinHovered(false),
+    onMouseMove:  (e) => setSkinPos({ x: e.clientX, y: e.clientY }),
+  } : {};
 
   return (
     <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7" }}>
@@ -386,7 +394,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
       <div style={{ display:"flex", gap:0, alignItems:"stretch" }}>
 
         {/* 백스킨 좌 */}
-        <div style={skinStyle("left")}>{skinText("left")}</div>
+        <div style={skinStyle("left")} {...skinHandlers}>{skinText("left")}</div>
 
         {/* 중앙 콘텐츠 */}
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
@@ -478,7 +486,23 @@ const MockMainBanner = ({ hl, ads=[] }) => {
         </div>
 
         {/* 백스킨 우 */}
-        <div style={skinStyle("right")}>{skinText("right")}</div>
+        <div style={skinStyle("right")} {...skinHandlers}>{skinText("right")}</div>
+
+        {/* 백스킨 미리보기 팝업 */}
+        {skinHovered && prv("backskin") && (
+          <div style={{
+            position:"fixed", zIndex:9999, pointerEvents:"none",
+            left: skinPos.x + 16, top: skinPos.y - 60,
+            background:"#fff", borderRadius:10,
+            boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
+            border:"1px solid #E5E7EA",
+            padding:6, width:510,
+          }}>
+            <img src={prv("backskin")} alt="실제 화면 미리보기"
+              style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
+            <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+          </div>
+        )}
 
       </div>
     </div>
