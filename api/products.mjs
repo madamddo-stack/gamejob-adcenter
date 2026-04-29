@@ -141,6 +141,7 @@ export default async function handler(req, res) {
         capacity:    prop(p, "이미지용량")   || "-",
         rolling:     prop(p, "노출방식"),
         mockupDesc:  prop(p, "목업_설명") || null,
+        previewUrl:  prop(p, "미리보기_URL") || null,
         price:       prop(p, "가격"),
         note:        prop(p, "비고") || null,
       };

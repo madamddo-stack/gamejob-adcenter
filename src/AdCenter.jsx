@@ -289,6 +289,7 @@ const MockSub = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
   const lbl = (id) => ad(id).mockupDesc || ad(id).name || "";
   const sub = (id) => ad(id).mockupDesc ? null : (ad(id).size?.replace(/px/gi,"").trim() || "");
+  const prv = (id) => ad(id).previewUrl || null;
   return (
   <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:343 }}>
     <BrowserBar />
@@ -300,7 +301,7 @@ const MockSub = ({ hl, ads=[] }) => {
       {/* 좌: 서브 날개 */}
       <div style={{ width:130, flexShrink:0 }}>
         <Zone label={lbl("subwing")} sub={sub("subwing")} color={C.blue} active={hl==="subwing"}
-          rolling={hl==="subwing" ? ad("subwing").rolling||null : null}
+          rolling={hl==="subwing" ? ad("subwing").rolling||null : null} previewImg={prv("subwing")}
           style={{ padding:"6px 2px", height:120, boxSizing:"border-box" }} />
       </div>
 
@@ -308,7 +309,7 @@ const MockSub = ({ hl, ads=[] }) => {
       <div style={{ width:356, flexShrink:0, display:"flex", flexDirection:"column", gap:2 }}>
 
         <Zone label={lbl("commPick")} sub={sub("commPick")} color={C.blue}
-          active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null}
+          active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null} previewImg={prv("commPick")}
           style={{ minHeight:56 }} />
 
         <div style={{ background:"#F1F5F9", borderRadius:4, padding:"6px 8px", flex:1 }}>
@@ -321,7 +322,7 @@ const MockSub = ({ hl, ads=[] }) => {
         <div style={{ display:"flex", justifyContent:"center" }}>
           <div style={{ width:"50%" }}>
             <Zone label={lbl("subbottom")} sub={sub("subbottom")} color={C.blue}
-              active={hl==="subbottom"} rolling={hl==="subbottom" ? ad("subbottom").rolling||null : null} />
+              active={hl==="subbottom"} rolling={hl==="subbottom" ? ad("subbottom").rolling||null : null} previewImg={prv("subbottom")} />
           </div>
         </div>
 
@@ -330,7 +331,7 @@ const MockSub = ({ hl, ads=[] }) => {
       {/* 우: 서브 스카이 */}
       <div style={{ width:130, flexShrink:0 }}>
         <Zone label={lbl("subsky")} sub={sub("subsky")} color={C.blue} active={hl==="subsky"}
-          rolling={hl==="subsky" ? ad("subsky").rolling||null : null}
+          rolling={hl==="subsky" ? ad("subsky").rolling||null : null} previewImg={prv("subsky")}
           style={{ height:200, padding:"4px 2px", boxSizing:"border-box" }} />
       </div>
 
@@ -344,6 +345,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
   const lbl = (id) => ad(id).mockupDesc || ad(id).name || "";
   const sub = (id) => ad(id).mockupDesc ? null : (ad(id).size?.replace(/px/gi,"").trim() || "");
+  const prv = (id) => ad(id).previewUrl || null;
   const isSkin = hl === "backskin";
   const skinColor = C.blue;
   const skinStyle = (side) => ({
@@ -383,7 +385,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
           {/* 메인 탑 + 우측 스켈레톤 */}
           <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
             <Zone label={lbl("maintop")} sub={sub("maintop")} color={C.blue}
-              active={hl==="maintop"} rolling={hl==="maintop" ? ad("maintop").rolling||null : null}
+              active={hl==="maintop"} rolling={hl==="maintop" ? ad("maintop").rolling||null : null} previewImg={prv("maintop")}
               style={{ flex:2, minHeight:28 }} />
             <div style={{ flex:1, display:"flex", gap:2 }}>
               <div style={{ flex:1, background:"#E9EEF4", borderRadius:5 }} />
@@ -411,7 +413,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
 
           {/* 메인 상단띠 — Emperor 바로 위 */}
           <Zone label={lbl("topstrip")} sub={sub("topstrip")} color={C.blue}
-            active={hl==="topstrip"} rolling={hl==="topstrip" ? ad("topstrip").rolling||null : null} />
+            active={hl==="topstrip"} rolling={hl==="topstrip" ? ad("topstrip").rolling||null : null} previewImg={prv("topstrip")} />
 
           {/* Emperor 채용관 스켈레톤 (4번째 슬롯 = Emperor Edge) */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
@@ -449,7 +451,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
 
           {/* 메인 미들띠 */}
           <Zone label={lbl("midstrip")} sub={sub("midstrip")} color={C.blue}
-            active={hl==="midstrip"} rolling={hl==="midstrip" ? ad("midstrip").rolling||null : null} />
+            active={hl==="midstrip"} rolling={hl==="midstrip" ? ad("midstrip").rolling||null : null} previewImg={prv("midstrip")} />
 
           {/* Lord 채용관 스켈레톤 */}
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
@@ -479,6 +481,7 @@ const MockMobile = ({ hl, ads=[] }) => {
   const ad = (id) => ads.find(a => a.id === id) ?? {};
   const lbl = (id) => ad(id).mockupDesc || ad(id).name || "";
   const sub = (id) => ad(id).mockupDesc ? null : (ad(id).size?.replace(/px/gi,"").trim() || "");
+  const prv = (id) => ad(id).previewUrl || null;
   return (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:314 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
@@ -495,7 +498,7 @@ const MockMobile = ({ hl, ads=[] }) => {
           <SkeletonRow w="55%" h={4} mb={0} />
         </div>
       ) : (
-        <Zone label={lbl("mobMain")} sub={sub("mobMain")} color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain" ? ad("mobMain").rolling||null : null} style={{ marginBottom:3 }} />
+        <Zone label={lbl("mobMain")} sub={sub("mobMain")} color={C.blue} active={hl==="mobMain"} rolling={hl==="mobMain" ? ad("mobMain").rolling||null : null} previewImg={prv("mobMain")} style={{ marginBottom:3 }} />
       )}
       {/* 채용관 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3 }}>
@@ -509,7 +512,7 @@ const MockMobile = ({ hl, ads=[] }) => {
           <SkeletonRow w="50%" h={4} mb={0} />
         </div>
       ) : (
-        <Zone label={lbl("commPick")} sub={sub("commPick")} color={C.blue} active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null} style={{ marginBottom:3, marginTop:2 }} />
+        <Zone label={lbl("commPick")} sub={sub("commPick")} color={C.blue} active={hl==="commPick"} rolling={hl==="commPick" ? ad("commPick").rolling||null : null} previewImg={prv("commPick")} style={{ marginBottom:3, marginTop:2 }} />
       )}
       {/* 커뮤니티Pick ~ 모바일서브띠 사이 콘텐츠 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
@@ -523,7 +526,7 @@ const MockMobile = ({ hl, ads=[] }) => {
           <SkeletonRow w="65%" h={5} mb={0} />
         </div>
       ) : (
-        <Zone label={lbl("mobSub")} sub={sub("mobSub")} color={C.blue} active={hl==="mobSub"} rolling={hl==="mobSub" ? ad("mobSub").rolling||null : null} style={{ marginBottom:2 }} />
+        <Zone label={lbl("mobSub")} sub={sub("mobSub")} color={C.blue} active={hl==="mobSub"} rolling={hl==="mobSub" ? ad("mobSub").rolling||null : null} previewImg={prv("mobSub")} style={{ marginBottom:2 }} />
       )}
       {/* 모바일 서브띠 하단 스켈레톤 */}
       <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:2 }}>
