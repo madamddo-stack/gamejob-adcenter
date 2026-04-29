@@ -87,10 +87,10 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
         background:"#fff", borderRadius:10,
         boxShadow:"0 8px 32px rgba(0,0,0,0.18)",
         border:"1px solid #E5E7EA",
-        padding:6, maxWidth:360,
+        padding:6, width:510,
       }}>
         <img src={previewImg} alt="실제 화면 미리보기"
-          style={{ width:360, borderRadius:6, display:"block" }} />
+          style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
         <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
       </div>
     )}
