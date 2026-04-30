@@ -301,7 +301,7 @@ const MockSub = ({ hl, ads=[] }) => {
   const lbl = (id) => ad(id).mockupDesc || ad(id).name || "";
   const prv = (id) => ad(id).previewUrl || null;
   return (
-  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:343 }}>
+  <div style={{ background:"#FAFAFA", borderRadius:8, overflow:"hidden", border:"1px solid #DDE1E7", height:314 }}>
     <BrowserBar />
     <GNB />
 
