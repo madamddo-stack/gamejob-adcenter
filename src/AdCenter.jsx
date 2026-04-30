@@ -537,7 +537,7 @@ const MockMobile = ({ hl, ads=[] }) => {
   const lbl = (id) => ad(id).mockupDesc || ad(id).name || "";
   const prv = (id) => ad(id).previewUrl || null;
   return (
-  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:314 }}>
+  <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:278 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
