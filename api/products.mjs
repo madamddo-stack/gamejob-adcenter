@@ -161,6 +161,8 @@ export default async function handler(req, res) {
         period:      prop(p, "기간"),
         highlight:   prop(p, "추천여부") || false,
         desc:        prop(p, "설명"),
+        hashtags:    (prop(p, "해시태그") || "").split(",").map(s => s.trim()).filter(Boolean),
+        features:    (prop(p, "핵심특징") || "").split("\n").map(s => s.trim()).filter(Boolean),
         includedIds: (prop(p, "포함상품ID") || "").split(",").map(s => s.trim()).filter(Boolean),
       };
     }).filter(Boolean);
