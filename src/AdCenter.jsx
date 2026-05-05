@@ -790,72 +790,304 @@ function CategorySection({ id, title, sub, children }) {
   );
 }
 
-// ─── 패키지 카드 ──────────────────────────────────────────
-function PackageCard({ pkg }) {
-  const included = packageCompareRows.filter(r => pkg.includedIds.includes(r.id));
-  const byZone = included.reduce((acc,r) => { if(!acc[r.zone]) acc[r.zone]=[]; acc[r.zone].push(r.name); return acc; }, {});
+// ─── 패키지 컬러 팔레트 ───────────────────────────────────
+const PKG_STYLES = {
+  allinone: { color: "#00A6E2", bgLight: "#EBFAFF" },
+  curtain:  { color: "#8B5E00", bgLight: "#FFF8EE" },
+  value:    { color: "#256533", bgLight: "#ECF8EF" },
+};
+
+// ─── 패키지 목업용 멀티존 ─────────────────────────────────
+const ZoneMulti = ({ label, id, includedIds, color, style={} }) => {
+  const active = includedIds.includes(id);
   return (
-    <div id={anchorId(pkg.id)} style={{ background:C.white, borderRadius:12, border: pkg.highlight?`1.5px solid ${C.blue}`:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)", scrollMarginTop:110 }}>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr" }}>
-        <div style={{ background:C.navy, padding:"32px 32px", display:"flex", flexDirection:"column", gap:14 }}>
-          {pkg.highlight && <span style={{ display:"inline-block", alignSelf:"flex-start", background:C.blue, borderRadius:4, padding:"3px 10px", fontSize:11, fontWeight:700, color:"#fff" }}>BEST</span>}
-          <div>
-            <p style={{ fontSize:26, fontWeight:900, color:"#fff", margin:0 }}>{fw(pkg.price)}</p>
-            <p style={{ fontSize:11.5, color:"rgba(255,255,255,0.35)", marginTop:4 }}>1주일 · VAT포함</p>
-          </div>
-          <p style={{ fontSize:13, color:"rgba(255,255,255,0.55)", lineHeight:1.75, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:16, margin:0 }}>{pkg.desc}</p>
+    <div style={{
+      borderRadius:4, padding:"4px 6px", transition:"all .15s",
+      background: active ? `${color}15` : "#EAECF0",
+      border: `${active ? "1.5px" : "1px"} solid ${active ? color : C.border2}`,
+      ...style,
+    }}>
+      <div style={{ fontSize:7.5, fontWeight:active?700:400, color:active?color:C.gray, wordBreak:"keep-all", whiteSpace:"pre-wrap" }}>
+        {active ? `▶ ${label}` : label}
+      </div>
+    </div>
+  );
+};
+
+// ─── 패키지 PC메인 목업 ───────────────────────────────────
+const PkgMockMain = ({ includedIds, color }) => {
+  const isSkin = includedIds.includes("backskin");
+  const isEdge = includedIds.includes("emperiredge");
+  const isCurtain = includedIds.includes("curtain");
+  const skinStyle = (side) => ({
+    width: 36, flexShrink:0,
+    background: isSkin ? `${color}12` : "#F1F5F9",
+    border: isSkin ? `1.5px solid ${color}` : "1px solid #E8ECF2",
+    borderRadius:4,
+    margin: side==="left" ? "3px 2px 3px 3px" : "3px 3px 3px 2px",
+    display:"flex", alignItems:"center", justifyContent:"center",
+  });
+  return (
+    <div style={{ background:"#FAFAFA", borderRadius:6, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+      <BrowserBar />
+      <GNB />
+      {isCurtain && (
+        <div style={{ margin:"3px", background:`${color}15`, border:`1.5px solid ${color}`, borderRadius:4, padding:"4px 8px" }}>
+          <span style={{ fontSize:7.5, fontWeight:700, color }}>▶ 메인 커튼</span>
         </div>
-        <div style={{ padding:"28px 28px", display:"flex", flexDirection:"column", gap:14 }}>
-          <p style={{ fontSize:11, fontWeight:600, color:C.gray, margin:0, letterSpacing:"0.04em" }}>포함 지면</p>
-          {Object.entries(byZone).map(([zone,items]) => (
-            <div key={zone}>
-              <p style={{ fontSize:12, color:C.sub, marginBottom:6, fontWeight:600 }}>{zone}</p>
-              <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
-                {items.map(item => <span key={item} style={{ display:"inline-block", fontSize:11.5, padding:"3px 10px", borderRadius:20, background:C.blueL, color:C.blue, fontWeight:600 }}>{item}</span>)}
-              </div>
+      )}
+      <div style={{ display:"flex", alignItems:"stretch" }}>
+        <div style={skinStyle("left")}>
+          <span style={{ fontSize:7, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
+            {isSkin ? "▶ 백스킨(좌)" : "백스킨(좌)"}
+          </span>
+        </div>
+        <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
+          <div style={{ display:"flex", gap:2, alignItems:"stretch" }}>
+            <ZoneMulti label="메인 탑" id="maintop" includedIds={includedIds} color={color} style={{ flex:2, minHeight:22 }} />
+            <div style={{ flex:1, display:"flex", gap:2 }}>
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:4 }} />
+              <div style={{ flex:1, background:"#E9EEF4", borderRadius:4 }} />
             </div>
-          ))}
+          </div>
+          <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px 6px" }}>
+            <SkeletonRow w="50%" h={4} mb={2} />
+            <SkeletonRow w="80%" h={3} mb={0} />
+          </div>
+          <ZoneMulti label="메인 상단띠" id="topstrip" includedIds={includedIds} color={color} />
+          <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px 5px" }}>
+            <SkeletonRow w="40%" h={4} mb={2} />
+            <div style={{ display:"flex", gap:2 }}>
+              {[0,1,2,3].map(i => {
+                const isEdgeSlot = i === 3;
+                const edgeActive = isEdgeSlot && isEdge;
+                return (
+                  <div key={i} style={{
+                    flex:1, borderRadius:3, padding:"3px 2px",
+                    background: edgeActive ? `${color}12` : "#E9EEF4",
+                    border: isEdgeSlot ? `${edgeActive?"1.5px":"1px"} solid ${edgeActive?color:"#D2D5DB"}` : "none",
+                  }}>
+                    {isEdgeSlot
+                      ? <div style={{ fontSize:6.5, color:edgeActive?color:C.gray2, fontWeight:edgeActive?700:400, textAlign:"center" }}>{edgeActive?"▶ Emperor Edge":"Emperor Edge"}</div>
+                      : <><div style={{ width:"40%", height:6, background:"#D1D9E6", borderRadius:2, margin:"0 auto 2px" }} /><SkeletonRow w="90%" h={2} mb={0} /></>
+                    }
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <ZoneMulti label="메인 미들띠" id="midstrip" includedIds={includedIds} color={color} />
+          <div style={{ background:"#F1F5F9", borderRadius:4, padding:"3px 5px" }}>
+            <SkeletonRow w="35%" h={4} mb={2} />
+            <div style={{ display:"flex", gap:2 }}>
+              {[1,2,3].map(i => (
+                <div key={i} style={{ flex:1, background:"#E9EEF4", borderRadius:3, padding:"3px 2px" }}>
+                  <SkeletonRow w="90%" h={2} mb={2} /><SkeletonRow w="70%" h={2} mb={0} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={skinStyle("right")}>
+          <span style={{ fontSize:7, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
+            {isSkin ? "▶ 백스킨(우)" : "백스킨(우)"}
+          </span>
         </div>
       </div>
     </div>
   );
+};
+
+// ─── 패키지 PC서브 목업 ───────────────────────────────────
+const PkgMockSub = ({ includedIds, color }) => (
+  <div style={{ background:"#FAFAFA", borderRadius:6, overflow:"hidden", border:"1px solid #DDE1E7" }}>
+    <BrowserBar />
+    <GNB />
+    <div style={{ padding:"3px 3px 4px", display:"flex", gap:2, alignItems:"stretch", justifyContent:"center" }}>
+      <div style={{ width:36, flexShrink:0 }}>
+        <ZoneMulti label="서브 날개" id="subwing" includedIds={includedIds} color={color}
+          style={{ height:88, boxSizing:"border-box" }} />
+      </div>
+      <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2 }}>
+        <ZoneMulti label="커뮤니티 Pick" id="commPick" includedIds={includedIds} color={color} style={{ minHeight:38 }} />
+        <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px 6px", flex:1 }}>
+          <SkeletonRow w="60%" h={4} mb={2} /><SkeletonRow w="80%" h={3} mb={0} />
+        </div>
+        <div style={{ display:"flex", justifyContent:"center" }}>
+          <div style={{ width:"55%" }}>
+            <ZoneMulti label="서브 하단" id="subbottom" includedIds={includedIds} color={color} />
+          </div>
+        </div>
+      </div>
+      <div style={{ width:36, flexShrink:0 }}>
+        <ZoneMulti label="서브 스카이" id="subsky" includedIds={includedIds} color={color}
+          style={{ height:150, boxSizing:"border-box" }} />
+      </div>
+    </div>
+  </div>
+);
+
+// ─── 패키지 모바일 목업 ───────────────────────────────────
+const PkgMockMobile = ({ includedIds, color }) => (
+  <div style={{ background:"#FAFAFA", borderRadius:10, overflow:"hidden", border:"2px solid #DDE1E7" }}>
+    <div style={{ background:"#212936", padding:"5px 8px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:9 }}>GAMEJOB</span>
+      <div style={{ display:"flex", gap:5 }}>
+        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:6.5 }}>{m}</span>)}
+      </div>
+    </div>
+    <div style={{ padding:"4px" }}>
+      <ZoneMulti label="모바일 메인띠" id="mobMain" includedIds={includedIds} color={color} style={{ marginBottom:2 }} />
+      <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px", marginBottom:2 }}>
+        <SkeletonRow w="70%" h={5} mb={2} /><SkeletonRow w="50%" h={4} mb={0} />
+      </div>
+      <ZoneMulti label="커뮤니티 Pick" id="commPick" includedIds={includedIds} color={color} style={{ marginBottom:2 }} />
+      <div style={{ background:"#F1F5F9", borderRadius:4, padding:"4px", marginBottom:2 }}>
+        <SkeletonRow w="80%" h={3} mb={2} /><SkeletonRow w="60%" h={3} mb={0} />
+      </div>
+      <ZoneMulti label="모바일 서브띠" id="mobSub" includedIds={includedIds} color={color} />
+    </div>
+  </div>
+);
+
+// ─── 패키지 비교표 ────────────────────────────────────────
+function PackageCompareNew({ bannerPackages }) {
+  return (
+    <div id={anchorId("allinone")} style={{ background:C.white, borderRadius:12, border:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)", scrollMarginTop:110 }}>
+      <table style={{ width:"100%", borderCollapse:"collapse", tableLayout:"fixed" }}>
+        <colgroup>
+          <col style={{ width:96 }} />
+          {bannerPackages.map(p => <col key={p.id} />)}
+        </colgroup>
+        <thead>
+          <tr>
+            <th style={{ padding:"16px 14px", background:C.grayL, borderBottom:`1px solid ${C.border}`, textAlign:"left", fontSize:11, color:C.gray, fontWeight:600, verticalAlign:"middle" }}>구분</th>
+            {bannerPackages.map(p => {
+              const { color } = PKG_STYLES[p.id] ?? {};
+              return (
+                <th key={p.id} id={anchorId(p.id)} style={{ padding:"16px", background:C.grayL, borderBottom:`1px solid ${C.border}`, borderLeft:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", scrollMarginTop:110 }}>
+                  <div style={{ color, fontWeight:800, fontSize:16 }}>{p.name}</div>
+                  <span style={{ display:"inline-block", marginTop:6, background:color, color:"#fff", fontSize:10, fontWeight:700, padding:"2px 10px", borderRadius:20 }}>
+                    {p.includedIds.length} 지면
+                  </span>
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {/* 해시태그 */}
+          <tr style={{ borderBottom:`1px solid ${C.border}` }}>
+            <td style={{ background:C.grayL }} />
+            {bannerPackages.map(p => {
+              const { color, bgLight } = PKG_STYLES[p.id] ?? {};
+              return (
+                <td key={p.id} style={{ padding:"11px 16px", borderLeft:`1px solid ${C.border}`, background:bgLight, textAlign:"center" }}>
+                  <span style={{ fontSize:13, fontWeight:700, color }}>{(p.hashtags||[]).join("  ")}</span>
+                </td>
+              );
+            })}
+          </tr>
+          {/* 핵심특징 */}
+          <tr style={{ borderBottom:`1px solid ${C.border}` }}>
+            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:12, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>핵심특징</td>
+            {bannerPackages.map(p => {
+              const { color } = PKG_STYLES[p.id] ?? {};
+              return (
+                <td key={p.id} style={{ padding:"16px", borderLeft:`1px solid ${C.border}`, verticalAlign:"top" }}>
+                  {(p.features||[]).map((f,i) => (
+                    <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:i < (p.features.length-1) ? 10 : 0 }}>
+                      <span style={{ color, fontWeight:700, fontSize:13, flexShrink:0 }}>{["①","②","③"][i]}</span>
+                      <span style={{ fontSize:12.5, color:C.sub, lineHeight:1.6 }}>{f}</span>
+                    </div>
+                  ))}
+                </td>
+              );
+            })}
+          </tr>
+          {/* 포함지면 */}
+          <tr style={{ borderBottom:`1px solid ${C.border}` }}>
+            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:12, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>포함지면</td>
+            {bannerPackages.map(p => (
+              <td key={p.id} style={{ padding:"16px", borderLeft:`1px solid ${C.border}`, verticalAlign:"top" }}>
+                {(() => {
+                  const seen = new Set();
+                  const byZone = {};
+                  packageCompareRows.forEach(r => {
+                    if (!p.includedIds.includes(r.id) || seen.has(r.name)) return;
+                    seen.add(r.name);
+                    const z = r.zone.replace(" 페이지","");
+                    if (!byZone[z]) byZone[z] = [];
+                    byZone[z].push(r.name);
+                  });
+                  return Object.entries(byZone).map(([zone, names]) => (
+                    <div key={zone} style={{ marginBottom:5 }}>
+                      <span style={{ fontSize:11, color:C.gray2, fontWeight:600 }}>{zone} : </span>
+                      <span style={{ fontSize:11.5, color:C.sub }}>{names.join(" · ")}</span>
+                    </div>
+                  ));
+                })()}
+              </td>
+            ))}
+          </tr>
+          {/* 가격 */}
+          <tr style={{ background:C.navy }}>
+            <td style={{ padding:"14px", fontWeight:700, fontSize:12, color:"#fff", whiteSpace:"nowrap" }}>가격</td>
+            {bannerPackages.map(p => (
+              <td key={p.id} style={{ padding:"14px 16px", borderLeft:"1px solid rgba(255,255,255,0.1)", textAlign:"center" }}>
+                <div style={{ fontWeight:800, fontSize:17, color:"#fff" }}>{fw(p.price)}</div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,0.5)", marginTop:3 }}>1주일 · VAT포함</div>
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-function PackageCompare({ bannerPackages }) {
+// ─── 패키지 지면 목업 뷰어 ───────────────────────────────
+function PackageMockupViewer({ bannerPackages }) {
+  const [tab, setTab] = useState("main");
+  const tabs = [
+    { id:"main",   label:"PC 메인" },
+    { id:"sub",    label:"PC 서브" },
+    { id:"mobile", label:"모바일"  },
+  ];
   return (
-    <div style={{ background:C.white, borderRadius:12, border:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)" }}>
-      <div style={{ padding:"14px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL }}>
-        <h3 style={{ fontSize:14, fontWeight:700, color:C.text, margin:0 }}>패키지 포함 지면 비교</h3>
+    <div id="sec-pkg-compare" style={{ background:C.white, borderRadius:12, border:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)", scrollMarginTop:110 }}>
+      <div style={{ padding:"12px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL, display:"flex", alignItems:"center", gap:24 }}>
+        <span style={{ fontSize:13, fontWeight:700, color:C.text, whiteSpace:"nowrap" }}>패키지별 노출 지면</span>
+        <div style={{ display:"flex", gap:0 }}>
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)} style={{
+              border:"none", background:"transparent", cursor:"pointer",
+              padding:"6px 14px", fontSize:12,
+              fontWeight: tab===t.id ? 700 : 500,
+              color: tab===t.id ? C.blue : C.gray,
+              borderBottom: tab===t.id ? `2px solid ${C.blue}` : "2px solid transparent",
+              transition:"all .15s",
+            }}>
+              {tab===t.id ? `▶ ${t.label}` : t.label}
+            </button>
+          ))}
+        </div>
       </div>
-      <div style={{ overflowX:"auto" }}>
-        <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12.5 }}>
-          <thead>
-            <tr>
-              <th style={{ padding:"9px 16px", background:C.grayL, color:C.gray, fontWeight:600, fontSize:11.5, borderBottom:`1px solid ${C.border}`, textAlign:"left", whiteSpace:"nowrap" }}>노출 위치</th>
-              <th style={{ padding:"9px 16px", background:C.grayL, color:C.gray, fontWeight:600, fontSize:11.5, borderBottom:`1px solid ${C.border}`, textAlign:"left" }}>배너명</th>
-              {bannerPackages.map(p => <th key={p.id} style={{ padding:"9px 16px", background:C.grayL, color:C.blue, fontWeight:700, fontSize:11.5, borderBottom:`1px solid ${C.border}`, textAlign:"center", whiteSpace:"nowrap" }}>{p.name}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {packageCompareRows.map((row,ri) => (
-              <tr key={ri} style={{ borderBottom:`1px solid ${C.border}` }}>
-                <td style={{ padding:"7px 16px", color:C.gray2, fontSize:11.5, whiteSpace:"nowrap" }}>{row.zone}</td>
-                <td style={{ padding:"7px 16px", color:C.text, fontWeight:500 }}>{row.name}</td>
-                {bannerPackages.map(pkg => (
-                  <td key={pkg.id} style={{ padding:"7px 16px", textAlign:"center" }}>
-                    {pkg.includedIds.includes(row.id) ? <span style={{ color:C.blue, fontSize:14, fontWeight:700 }}>●</span> : <span style={{ color:C.border2 }}>—</span>}
-                  </td>
-                ))}
-              </tr>
-            ))}
-            <tr style={{ background:C.navy }}>
-              <td colSpan={2} style={{ padding:"11px 16px", fontWeight:700, fontSize:13, color:"#fff" }}>금액 (VAT포함 · 1주일)</td>
-              {bannerPackages.map(p => <td key={p.id} style={{ padding:"11px 16px", textAlign:"center", fontWeight:800, fontSize:14, color:"#fff" }}>{fw(p.price)}</td>)}
-            </tr>
-          </tbody>
-        </table>
+      <div style={{ padding:"20px", display:"flex", gap:14, alignItems:"flex-start" }}>
+        {bannerPackages.map(p => {
+          const { color } = PKG_STYLES[p.id] ?? { color: C.blue };
+          return (
+            <div key={p.id} style={{ flex:1, display:"flex", flexDirection:"column", gap:8 }}>
+              <div style={{ textAlign:"center" }}>
+                <span style={{ fontSize:12, fontWeight:700, color }}>{p.name}</span>
+              </div>
+              {tab === "main"   && <PkgMockMain   includedIds={p.includedIds} color={color} />}
+              {tab === "sub"    && <PkgMockSub    includedIds={p.includedIds} color={color} />}
+              {tab === "mobile" && <PkgMockMobile includedIds={p.includedIds} color={color} />}
+            </div>
+          );
+        })}
       </div>
-      <p style={{ fontSize:11, color:C.gray2, padding:"7px 16px", margin:0 }}>* 최소 신청기간 1주일 이상</p>
     </div>
   );
 }
@@ -1184,13 +1416,9 @@ export default function AdCenter() {
             )}
 
             {tab === "package" && (
-              <div>
-                <CategorySection id="sec-pkg" title="배너 패키지" sub="여러 지면을 묶어 할인 혜택을 받을 수 있는 패키지 상품.">
-                  {bannerPackages.map(pkg => <PackageCard key={pkg.id} pkg={pkg} />)}
-                </CategorySection>
-                <div id="sec-pkg-compare" style={{ scrollMarginTop:110 }}>
-                  <PackageCompare bannerPackages={bannerPackages} />
-                </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+                <PackageCompareNew bannerPackages={bannerPackages} />
+                <PackageMockupViewer bannerPackages={bannerPackages} />
               </div>
             )}
           </div>

@@ -135,6 +135,8 @@ export const bannerPackages = [
     period: "1주",
     highlight: true,
     desc: "PC·서브·모바일 전 지면에 배너 게재. 최대 노출로 확실한 브랜딩 효과.",
+    hashtags: ["#대규모 공채", "#브랜드 인지도"],
+    features: ["PC·서브·모바일 전 지면 15개 완전 커버", "백스킨·커튼 등 프리미엄 단독 지면 포함", "최대 노출로 채용 브랜딩 극대화"],
     includedIds: ["backskin","maintop","topstrip","midstrip","curtain","mainright","subwing","subwing2","subsky","subbottom","commPick","commMid","mobMain","mobSub"],
   },
   {
@@ -145,6 +147,8 @@ export const bannerPackages = [
     period: "1주",
     highlight: false,
     desc: "메인 커튼 배너로 방문자 시선을 확실하게 잡는 전략형 패키지.",
+    hashtags: ["#단기집중", "#비주얼 강조"],
+    features: ["메인 커튼·우측으로 방문자 시선을 즉시 집중", "커뮤니티 채널까지 커버하는 스마트 구성", "올인원 대비 절반 비용으로 강렬한 첫인상"],
     includedIds: ["curtain","mainright","subwing2","commPick","commMid","mobSub"],
   },
   {
@@ -155,6 +159,8 @@ export const bannerPackages = [
     period: "1주",
     highlight: false,
     desc: "메인 띠배너 + 서브 + 커뮤니티 핵심 지면으로 합리적 예산 운용.",
+    hashtags: ["#상시채용", "#예산 최적화"],
+    features: ["메인 탑·띠배너 + 서브 + 커뮤니티 핵심 지면", "올인원 대비 30% 비용으로 효율적인 노출", "적은 예산으로 주요 지면 커버가 필요할 때 최적"],
     includedIds: ["maintop","topstrip","midstrip","subsky","subbottom","commPick"],
   },
 ];
