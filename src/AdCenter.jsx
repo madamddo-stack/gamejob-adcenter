@@ -1244,7 +1244,7 @@ function InquiryModal({ onClose }) {
               <p style={{ margin:0, fontSize:12, color:C.pink }}>⚠ {errMsg || "전송에 실패했습니다. 다시 시도해주세요."}</p>
             )}
             <button type="submit" disabled={status === "sending"} style={{
-              background: status === "sending" ? C.gray2 : C.navy,
+              background: status === "sending" ? C.gray2 : "#000000",
               color:"#fff", border:"none", borderRadius:8,
               padding:"12px", fontSize:14, fontWeight:700,
               cursor: status === "sending" ? "not-allowed" : "pointer",
@@ -1485,7 +1485,7 @@ export default function AdCenter() {
               ))}
               <button onClick={() => setInquiryOpen(true)} style={{
                 display:"inline-flex", alignItems:"center", gap:5,
-                height:34, background:C.navy, borderRadius:7, padding:"0 16px",
+                height:34, background:"#000000", borderRadius:7, padding:"0 16px",
                 color:"#fff", fontSize:12, fontWeight:700, border:"none", cursor:"pointer", marginLeft:2,
               }}>✉ 광고문의</button>
             </div>
