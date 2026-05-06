@@ -1200,9 +1200,9 @@ function InquiryModal({ onClose }) {
             <p style={{ fontSize:16, fontWeight:700, color:C.text, margin:"0 0 8px" }}>문의가 접수되었습니다!</p>
             <p style={{ fontSize:13, color:C.gray, margin:"0 0 24px" }}>담당자가 확인 후 이메일로 연락드리겠습니다.</p>
             <button onClick={onClose} style={{
-              background:C.navy, color:"#fff", border:"none", borderRadius:8,
+              background:"#000000", color:"#fff", border:"none", borderRadius:8,
               padding:"10px 28px", fontSize:13, fontWeight:700, cursor:"pointer",
-            }}>닫기</button>
+            }}>확인</button>
           </div>
         ) : (
           /* 폼 */
