@@ -840,12 +840,10 @@ function MainBoothPriceTable({ tiers }) {
                   <TD>{label}</TD>
                   <TD>{days}</TD>
                   <TD>
-                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2 }}>
-                      {row.original && <span style={{ fontSize:11, color:"#94a3b8", textDecoration:"line-through" }}>{row.original.toLocaleString("ko-KR")}원</span>}
-                      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                        {pct && <span style={{ fontSize:11, color:C.pink, fontWeight:700 }}>{pct}%↓</span>}
-                        <span style={{ fontWeight:700 }}>{row.price.toLocaleString("ko-KR")} 원</span>
-                      </div>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, flexWrap:"nowrap" }}>
+                      {row.original && <span style={{ fontSize:11, color:"#94a3b8", textDecoration:"line-through", whiteSpace:"nowrap" }}>{row.original.toLocaleString("ko-KR")}원</span>}
+                      {pct && <span style={{ fontSize:11, color:C.pink, fontWeight:700, whiteSpace:"nowrap" }}>{pct}%↓</span>}
+                      <span style={{ fontWeight:700, whiteSpace:"nowrap" }}>{row.price.toLocaleString("ko-KR")} 원</span>
                     </div>
                   </TD>
                   <TD>{indiv ? `${indiv.price.toLocaleString("ko-KR")} 원` : "-"}</TD>
