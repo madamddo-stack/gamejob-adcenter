@@ -790,6 +790,174 @@ function CategorySection({ id, title, sub, children }) {
   );
 }
 
+// ─── 섹션 가격 요약 테이블 ────────────────────────────────
+
+const parsePeriod = (p) => {
+  const m = p.match(/(\d+)(주|개월)\((\d+)일\)/);
+  if (!m) return { label: p, days: "" };
+  return { label: `${m[1]} ${m[2]==="주"?"주일":"개월"}`, days: `${m[3]} 일` };
+};
+
+const TH = ({ children, style={} }) => (
+  <th style={{ padding:"11px 14px", fontSize:12, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
+);
+const TD = ({ children, style={} }) => (
+  <td style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", ...style }}>{children}</td>
+);
+
+function MainBoothPriceTable({ tiers }) {
+  return (
+    <div style={{ marginBottom:32, overflowX:"auto" }}>
+      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>메인 채용관 상품 가격 안내</p>
+      <table style={{ width:"100%", borderCollapse:"collapse", minWidth:700 }}>
+        <thead>
+          <tr>
+            <TH style={{ rowSpan:2 }}>상품명</TH>
+            <TH>노출기간</TH>
+            <TH>노출일</TH>
+            <TH colSpan={3} style={{ background:"#000" }}>상품가격 (VAT포함)</TH>
+          </tr>
+          <tr>
+            <TH>결합상품(PC+M)</TH>
+            <TH>개별상품(PC/M 별도)</TH>
+            <TH>상단고정 옵션</TH>
+          </tr>
+        </thead>
+        <tbody>
+          {tiers.map(tier =>
+            tier.combined.map((row, i) => {
+              const { label, days } = parsePeriod(row.period);
+              const indiv = tier.individual[i];
+              const pct = row.original ? Math.round((1 - row.price / row.original) * 100) : null;
+              return (
+                <tr key={`${tier.id}-${i}`} style={{ background: i%2===0 ? "#fff" : C.grayL }}>
+                  {i === 0 && (
+                    <TD rowSpan={tier.combined.length} style={{ fontWeight:700, background:C.grayL, minWidth:120 }}>
+                      <span style={{ fontWeight:800 }}>{tier.name.replace(" 채용관","")}</span>
+                      <span style={{ fontWeight:400, color:C.gray, fontSize:11.5 }}> 채용관</span>
+                    </TD>
+                  )}
+                  <TD>{label}</TD>
+                  <TD>{days}</TD>
+                  <TD>
+                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2 }}>
+                      {row.original && <span style={{ fontSize:11, color:"#94a3b8", textDecoration:"line-through" }}>{row.original.toLocaleString("ko-KR")}원</span>}
+                      <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                        {pct && <span style={{ fontSize:11, color:C.pink, fontWeight:700 }}>{pct}%↓</span>}
+                        <span style={{ fontWeight:700 }}>{row.price.toLocaleString("ko-KR")} 원</span>
+                      </div>
+                    </div>
+                  </TD>
+                  <TD>{indiv ? `${indiv.price.toLocaleString("ko-KR")} 원` : "-"}</TD>
+                  <TD style={{ color: row.topfix ? C.text : C.gray2 }}>{row.topfix ? `${row.topfix.toLocaleString("ko-KR")} 원` : "-"}</TD>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+      </table>
+      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일</p>
+    </div>
+  );
+}
+
+function RecruitBoothPriceTable({ tiers }) {
+  return (
+    <div style={{ marginBottom:32, overflowX:"auto" }}>
+      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>채용정보 채용관 상품 가격 안내</p>
+      <table style={{ width:"100%", borderCollapse:"collapse", minWidth:400 }}>
+        <thead>
+          <tr>
+            <TH>상품명</TH>
+            <TH>노출 위치</TH>
+            <TH style={{ background:"#000" }}>결합 단가 (일/VAT포함)</TH>
+            <TH style={{ background:"#000" }}>개별 단가 (일/VAT포함)</TH>
+          </tr>
+        </thead>
+        <tbody>
+          {tiers.map((tier, i) => (
+            <tr key={tier.id} style={{ background: i%2===0 ? "#fff" : C.grayL }}>
+              <TD style={{ fontWeight:700 }}>{tier.name}</TD>
+              <TD>{tier.position}</TD>
+              <TD style={{ fontWeight:600 }}>{tier.combined?.toLocaleString("ko-KR")} 원</TD>
+              <TD>{tier.individual?.toLocaleString("ko-KR")} 원</TD>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 메인채용관 구매 시 자동 포함 — Emperor→Sword / Lord→Shield / Knight→Armor</p>
+    </div>
+  );
+}
+
+function BannerPriceTable({ bannerAds }) {
+  const priced = bannerAds.filter(b => b.price != null);
+  const pkg    = bannerAds.filter(b => b.price == null);
+  return (
+    <div style={{ marginBottom:32, overflowX:"auto" }}>
+      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>배너 광고 상품 가격 안내</p>
+      <table style={{ width:"100%", borderCollapse:"collapse", minWidth:560 }}>
+        <thead>
+          <tr>
+            <TH>디바이스</TH>
+            <TH>지면</TH>
+            <TH>상품명</TH>
+            <TH>이미지 사이즈</TH>
+            <TH style={{ background:"#000" }}>가격 (1주/VAT포함)</TH>
+          </tr>
+        </thead>
+        <tbody>
+          {priced.map((b, i) => (
+            <tr key={b.id} style={{ background: i%2===0 ? "#fff" : C.grayL }}>
+              <TD>{b.device}</TD>
+              <TD>{b.zone}</TD>
+              <TD style={{ fontWeight:600 }}>{b.name}</TD>
+              <TD style={{ fontSize:11.5, color:C.gray }}>{b.size}</TD>
+              <TD style={{ fontWeight:700 }}>{b.price?.toLocaleString("ko-KR")} 원</TD>
+            </tr>
+          ))}
+          {pkg.map((b, i) => (
+            <tr key={b.id} style={{ background: (priced.length+i)%2===0 ? "#fff" : C.grayL }}>
+              <TD>{b.device}</TD>
+              <TD>{b.zone}</TD>
+              <TD style={{ fontWeight:600 }}>{b.name}</TD>
+              <TD style={{ fontSize:11.5, color:C.gray }}>{b.size}</TD>
+              <TD style={{ color:C.gray2, fontSize:12 }}>패키지 포함 상품</TD>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일 이상</p>
+    </div>
+  );
+}
+
+function ResumePriceTable({ plans }) {
+  return (
+    <div style={{ marginBottom:32, overflowX:"auto" }}>
+      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>이력서 열람 서비스 가격 안내</p>
+      <table style={{ width:"100%", borderCollapse:"collapse", minWidth:360 }}>
+        <thead>
+          <tr>
+            <TH>열람 건수</TH>
+            <TH>이용기간</TH>
+            <TH style={{ background:"#000" }}>가격 (VAT포함)</TH>
+          </tr>
+        </thead>
+        <tbody>
+          {plans.map((p, i) => (
+            <tr key={p.count} style={{ background: i%2===0 ? "#fff" : C.grayL }}>
+              <TD style={{ fontWeight:700 }}>{p.count} 건</TD>
+              <TD>{p.days} 일</TD>
+              <TD style={{ fontWeight:700 }}>{p.price?.toLocaleString("ko-KR")} 원</TD>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // ─── 패키지 컬러 팔레트 ───────────────────────────────────
 const PKG_STYLES = {
   allinone: { color: "#00A6E2", bgLight: "#EBFAFF" },
@@ -1570,15 +1738,19 @@ export default function AdCenter() {
             {tab === "all" && (
               <div>
                 <CategorySection id="sec-main" title="메인 채용관" sub="게임잡 메인화면 최상단 — 기업 로고 + 대표공고를 직접 게재. Emperor · Lord · Knight 3단계 선택.">
+                  <MainBoothPriceTable tiers={mainBooth.tiers} />
                   {ALL_ITEMS.filter(i=>i.category==="메인 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-recruit" title="채용정보 채용관" sub="채용정보 탭 내 직종·지역·경력 조건 기반 타깃 노출. 메인채용관 구매 시 자동 포함.">
+                  <RecruitBoothPriceTable tiers={recruitBooth.tiers} />
                   {ALL_ITEMS.filter(i=>i.category==="채용정보 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-banner" title="배너 광고" sub="메인·서브·모바일·커뮤니티 전 지면 배너. 목적에 맞는 지면을 개별 선택.">
+                  <BannerPriceTable bannerAds={bannerAds} />
                   {ALL_ITEMS.filter(i=>i.category==="배너 광고").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-resume" title="이력서 열람 서비스" sub="게임잡 회원의 이력서·포트폴리오·연락처를 열람하고 직접 입사제의.">
+                  <ResumePriceTable plans={resumeService.plans} />
                   {ALL_ITEMS.filter(i=>i.category==="이력서 열람").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
               </div>
