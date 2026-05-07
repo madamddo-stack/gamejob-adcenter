@@ -1263,6 +1263,12 @@ export default function AdCenter() {
   const [tab, setTab] = useState("all");
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const HEADER_H = 93;
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   // 상품 데이터: 정적 파일을 기본값으로, Notion API 응답으로 덮어씀
   const [products, setProducts] = useState({
@@ -1462,14 +1468,14 @@ export default function AdCenter() {
 
       {/* ── 헤더 ── */}
       <header style={{ background:C.white, borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, zIndex:100, boxShadow:"0 1px 3px rgba(15,23,42,0.05)" }}>
-        <div style={{ width:"100%", padding:"0 40px", boxSizing:"border-box" }}>
+        <div style={{ width:"100%", padding: isMobile ? "0 16px" : "0 40px", boxSizing:"border-box" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"13px 0 0" }}>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
               <img src={gamejobLogo} alt="GAMEJOB" style={{ height:28 }} />
-              <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>
+              {!isMobile && <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>}
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
-              {[["all","전체상품 소개서"],["package","배너패키지 상품 소개서"]].map(([v,l]) => (
+              {!isMobile && [["all","전체상품 소개서"],["package","배너패키지 상품 소개서"]].map(([v,l]) => (
                 <button key={v} onClick={() => handleTabChange(v)} style={{
                   height:34, padding:"0 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
                   border:`1px solid ${C.border2}`,
@@ -1486,7 +1492,7 @@ export default function AdCenter() {
               <button onClick={() => setInquiryOpen(true)} style={{
                 display:"inline-flex", alignItems:"center", gap:5,
                 height:34, background:"#000000", borderRadius:7, padding:"0 16px",
-                color:"#fff", fontSize:12, fontWeight:700, border:"none", cursor:"pointer", marginLeft:2,
+                color:"#fff", fontSize:isMobile ? 11 : 12, fontWeight:700, border:"none", cursor:"pointer", marginLeft:2,
               }}>✉ 광고문의</button>
             </div>
           </div>
@@ -1494,7 +1500,8 @@ export default function AdCenter() {
           <nav style={{ display:"flex", gap:0, marginTop:10 }}>
             {[["all","전체 상품안내"],["package","배너패키지 상품 안내"]].map(([v,l]) => (
               <button key={v} onClick={() => handleTabChange(v)} style={{
-                padding:"10px 20px", fontSize:13, fontWeight:600,
+                padding: isMobile ? "10px 14px" : "10px 20px",
+                fontSize: isMobile ? 12 : 13, fontWeight:600,
                 background:"transparent", border:"none", cursor:"pointer",
                 color: tab===v ? C.text : C.gray2,
                 borderBottom: tab===v ? `2px solid ${C.text}` : "2px solid transparent",
