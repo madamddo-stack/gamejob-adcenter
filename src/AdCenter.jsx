@@ -1263,9 +1263,9 @@ export default function AdCenter() {
   const [tab, setTab] = useState("all");
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const HEADER_H = 93;
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 360);
   useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
+    const handler = () => setIsMobile(window.innerWidth <= 360);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
