@@ -1531,7 +1531,7 @@ export default function AdCenter() {
             {(tab==="all" ? LNB_ALL : LNB_PKG).flatMap(g => g.items).map(item => {
               const active = activeId === item.id;
               return (
-                <button key={item.id} onClick={() => onSelect(item.id, item.isAnchor)} style={{
+                <button key={item.id} onClick={() => handleSelect(item.id, item.isAnchor)} style={{
                   display:"inline-block", flexShrink:0,
                   padding:"5px 12px", fontSize:12, fontWeight:active?700:400,
                   color:active?C.blue:C.gray,
