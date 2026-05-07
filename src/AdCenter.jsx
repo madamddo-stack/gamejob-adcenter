@@ -631,7 +631,7 @@ function ProductCard({ item, isMobile }) {
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockBoothMobile hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
-          <div style={{ flex:1, minWidth:430 }}>
+          <div style={{ flex:1, minWidth:320 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockBoothPC hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
@@ -645,7 +645,7 @@ function ProductCard({ item, isMobile }) {
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockRecruitMobile hl={item.id} tiers={item.tiers} />
           </div>
-          <div style={{ flex:1, minWidth:430 }}>
+          <div style={{ flex:1, minWidth:320 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockRecruitPC hl={item.id} tiers={item.tiers} />
           </div>
