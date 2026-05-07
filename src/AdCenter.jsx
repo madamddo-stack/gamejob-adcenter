@@ -617,7 +617,7 @@ const MockResume = () => (
 );
 
 // ─── 상품 카드 ────────────────────────────────────────────
-function ProductCard({ item }) {
+function ProductCard({ item, isMobile }) {
   const [tabIdx, setTabIdx] = useState(0);
   const tab = item.priceTabs[Math.min(tabIdx, item.priceTabs.length-1)];
   const isBoothType = item.category === "메인 채용관" || item.category === "채용정보 채용관";
@@ -680,17 +680,17 @@ function ProductCard({ item }) {
       </div>
 
       {/* 카드 바디 */}
-      <div style={{ display:"grid", gridTemplateColumns:"3fr 2fr" }}>
+      <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "3fr 2fr" }}>
 
         {/* 좌 — 목업 */}
-        <div style={{ padding:"24px 20px", borderRight:`1px solid ${C.border}`, background:"#FAFCFF", display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <div style={{ padding: isMobile ? "16px" : "24px 20px", borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:"#FAFCFF", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <div style={{ width:"100%", maxWidth: (isBoothType || item.id === "commPick") ? "100%" : 480 }}>
             {renderMockup()}
           </div>
         </div>
 
         {/* 우 — 설명+가격 */}
-        <div style={{ padding:"24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
+        <div style={{ padding: isMobile ? "16px" : "24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
           <div>
             <h3 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{item.title}</h3>
           </div>
@@ -1570,16 +1570,16 @@ export default function AdCenter() {
             {tab === "all" && (
               <div>
                 <CategorySection id="sec-main" title="메인 채용관" sub="게임잡 메인화면 최상단 — 기업 로고 + 대표공고를 직접 게재. Emperor · Lord · Knight 3단계 선택.">
-                  {ALL_ITEMS.filter(i=>i.category==="메인 채용관").map(item => <ProductCard key={item.id} item={item} />)}
+                  {ALL_ITEMS.filter(i=>i.category==="메인 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-recruit" title="채용정보 채용관" sub="채용정보 탭 내 직종·지역·경력 조건 기반 타깃 노출. 메인채용관 구매 시 자동 포함.">
-                  {ALL_ITEMS.filter(i=>i.category==="채용정보 채용관").map(item => <ProductCard key={item.id} item={item} />)}
+                  {ALL_ITEMS.filter(i=>i.category==="채용정보 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-banner" title="배너 광고" sub="메인·서브·모바일·커뮤니티 전 지면 배너. 목적에 맞는 지면을 개별 선택.">
-                  {ALL_ITEMS.filter(i=>i.category==="배너 광고").map(item => <ProductCard key={item.id} item={item} />)}
+                  {ALL_ITEMS.filter(i=>i.category==="배너 광고").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-resume" title="이력서 열람 서비스" sub="게임잡 회원의 이력서·포트폴리오·연락처를 열람하고 직접 입사제의.">
-                  {ALL_ITEMS.filter(i=>i.category==="이력서 열람").map(item => <ProductCard key={item.id} item={item} />)}
+                  {ALL_ITEMS.filter(i=>i.category==="이력서 열람").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
               </div>
             )}
