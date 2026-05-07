@@ -1513,27 +1513,52 @@ export default function AdCenter() {
       </header>
 
       {/* ── 바디 ── */}
-      <div style={{ display:"flex", minHeight:`calc(100vh - ${HEADER_H}px)` }}>
+      <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", minHeight:`calc(100vh - ${HEADER_H}px)` }}>
 
-        {/* LNB — 왼쪽 고정 (여백 없이) */}
-        <div style={{
-          width:196, flexShrink:0,
-          position:"sticky", top:HEADER_H,
-          height:`calc(100vh - ${HEADER_H}px)`,
-          overflowY:"auto",
-          background:C.white,
-          borderRight:`1px solid ${C.border}`,
-        }}>
-          <LNB
-            groups={tab==="all" ? LNB_ALL : LNB_PKG}
-            activeId={activeId}
-            onSelect={handleSelect}
-          />
-        </div>
+        {/* LNB — PC: 왼쪽 고정 / Mobile: 상단 가로 스크롤 */}
+        {isMobile ? (
+          <div style={{
+            position:"sticky", top:HEADER_H, zIndex:90,
+            background:C.white, borderBottom:`1px solid ${C.border}`,
+            overflowX:"auto", whiteSpace:"nowrap",
+            display:"flex", alignItems:"center", gap:4,
+            padding:"8px 16px",
+          }}>
+            {(tab==="all" ? LNB_ALL : LNB_PKG).flatMap(g => g.items).map(item => {
+              const active = activeId === item.id;
+              return (
+                <button key={item.id} onClick={() => onSelect(item.id, item.isAnchor)} style={{
+                  display:"inline-block", flexShrink:0,
+                  padding:"5px 12px", fontSize:12, fontWeight:active?700:400,
+                  color:active?C.blue:C.gray,
+                  background:active?C.blueL:"transparent",
+                  border:`1px solid ${active?C.blue:C.border}`,
+                  borderRadius:20, cursor:"pointer", transition:"all .1s",
+                  whiteSpace:"nowrap",
+                }}>{item.label}</button>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{
+            width:196, flexShrink:0,
+            position:"sticky", top:HEADER_H,
+            height:`calc(100vh - ${HEADER_H}px)`,
+            overflowY:"auto",
+            background:C.white,
+            borderRight:`1px solid ${C.border}`,
+          }}>
+            <LNB
+              groups={tab==="all" ? LNB_ALL : LNB_PKG}
+              activeId={activeId}
+              onSelect={handleSelect}
+            />
+          </div>
+        )}
 
         {/* 콘텐츠 */}
         <div style={{ flex:1, minWidth:0, overflowX:"hidden" }}>
-          <div style={{ maxWidth:1244, padding:"28px 36px 80px" }}>
+          <div style={{ maxWidth:1244, padding: isMobile ? "20px 16px 60px" : "28px 36px 80px" }}>
 
             {tab === "all" && (
               <div>
