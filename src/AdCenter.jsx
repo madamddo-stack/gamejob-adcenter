@@ -920,8 +920,8 @@ function BannerPriceTable({ bannerAds }) {
         <tbody>
           {rows.map(({ item, showDevice, deviceRowSpan, showZone, zoneRowSpan }) => (
             <tr key={item.id}>
-              {showDevice && <TD rowSpan={deviceRowSpan} style={{ fontWeight:600, background:C.grayL }}>{item.device}</TD>}
-              {showZone   && <TD rowSpan={zoneRowSpan}   style={{ background:C.grayL }}>{zoneLabel(item.zone)}</TD>}
+              {showDevice && <TD rowSpan={deviceRowSpan} style={{ fontWeight:600 }}>{item.device}</TD>}
+              {showZone   && <TD rowSpan={zoneRowSpan}>{zoneLabel(item.zone)}</TD>}
               <TD style={{ fontWeight:700 }}>{item.name}</TD>
               <TD>1주일 (7일)</TD>
               <TD style={{ fontSize:11.5, color:C.gray }}>{item.rolling}</TD>
