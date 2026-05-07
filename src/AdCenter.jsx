@@ -1426,10 +1426,13 @@ export default function AdCenter() {
   const handleSelect = (id, isAnchor) => {
     setActiveId(id);
     const el = document.getElementById(isAnchor ? id : anchorId(id));
-    if (el) {
-      const offset = isMobile ? HEADER_H + 54 : HEADER_H; // 모바일: 헤더 + 상단 칩 메뉴 높이
+    if (!el) return;
+    if (isMobile) {
+      const offset = HEADER_H + 54; // 헤더 + 상단 칩 메뉴 높이
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior:"smooth" });
+    } else {
+      el.scrollIntoView({ behavior:"smooth", block:"start" });
     }
   };
 
