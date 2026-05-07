@@ -798,11 +798,11 @@ const parsePeriod = (p) => {
   return { label: `${m[1]} ${m[2]==="주"?"주일":"개월"}`, days: `${m[3]} 일` };
 };
 
-const TH = ({ children, style={} }) => (
-  <th style={{ padding:"11px 14px", fontSize:12, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
+const TH = ({ children, style={}, ...rest }) => (
+  <th {...rest} style={{ padding:"11px 14px", fontSize:12, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
 );
-const TD = ({ children, style={} }) => (
-  <td style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", ...style }}>{children}</td>
+const TD = ({ children, style={}, ...rest }) => (
+  <td {...rest} style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", ...style }}>{children}</td>
 );
 
 function MainBoothPriceTable({ tiers }) {
@@ -812,9 +812,9 @@ function MainBoothPriceTable({ tiers }) {
       <table style={{ width:"100%", borderCollapse:"collapse", minWidth:700 }}>
         <thead>
           <tr>
-            <TH style={{ rowSpan:2 }}>상품명</TH>
-            <TH>노출기간</TH>
-            <TH>노출일</TH>
+            <TH rowSpan={2}>상품명</TH>
+            <TH rowSpan={2}>노출기간</TH>
+            <TH rowSpan={2}>노출일</TH>
             <TH colSpan={3} style={{ background:"#000" }}>상품가격 (VAT포함)</TH>
           </tr>
           <tr>
@@ -1738,19 +1738,19 @@ export default function AdCenter() {
             {tab === "all" && (
               <div>
                 <CategorySection id="sec-main" title="메인 채용관" sub="게임잡 메인화면 최상단 — 기업 로고 + 대표공고를 직접 게재. Emperor · Lord · Knight 3단계 선택.">
-                  <MainBoothPriceTable tiers={mainBooth.tiers} />
+                  {!isMobile && <MainBoothPriceTable tiers={mainBooth.tiers} />}
                   {ALL_ITEMS.filter(i=>i.category==="메인 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-recruit" title="채용정보 채용관" sub="채용정보 탭 내 직종·지역·경력 조건 기반 타깃 노출. 메인채용관 구매 시 자동 포함.">
-                  <RecruitBoothPriceTable tiers={recruitBooth.tiers} />
+                  {!isMobile && <RecruitBoothPriceTable tiers={recruitBooth.tiers} />}
                   {ALL_ITEMS.filter(i=>i.category==="채용정보 채용관").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-banner" title="배너 광고" sub="메인·서브·모바일·커뮤니티 전 지면 배너. 목적에 맞는 지면을 개별 선택.">
-                  <BannerPriceTable bannerAds={bannerAds} />
+                  {!isMobile && <BannerPriceTable bannerAds={bannerAds} />}
                   {ALL_ITEMS.filter(i=>i.category==="배너 광고").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
                 <CategorySection id="sec-resume" title="이력서 열람 서비스" sub="게임잡 회원의 이력서·포트폴리오·연락처를 열람하고 직접 입사제의.">
-                  <ResumePriceTable plans={resumeService.plans} />
+                  {!isMobile && <ResumePriceTable plans={resumeService.plans} />}
                   {ALL_ITEMS.filter(i=>i.category==="이력서 열람").map(item => <ProductCard key={item.id} item={item} isMobile={isMobile} />)}
                 </CategorySection>
               </div>
