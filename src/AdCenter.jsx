@@ -626,12 +626,12 @@ function ProductCard({ item, isMobile }) {
     if (item.category === "메인 채용관") {
       const hlId = item.hlId || item.id;
       return (
-        <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center" }}>
+        <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center", justifyContent:"center" }}>
           <div style={{ width:155, flexShrink:0 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockBoothMobile hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
-          <div style={{ minWidth:320, maxWidth:430, margin:"0 auto" }}>
+          <div style={{ width:"100%", maxWidth:430 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockBoothPC hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
@@ -640,12 +640,12 @@ function ProductCard({ item, isMobile }) {
     }
     if (item.category === "채용정보 채용관") {
       return (
-        <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center" }}>
+        <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center", justifyContent:"center" }}>
           <div style={{ width:155, flexShrink:0 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockRecruitMobile hl={item.id} tiers={item.tiers} />
           </div>
-          <div style={{ minWidth:320, maxWidth:430, margin:"0 auto" }}>
+          <div style={{ width:"100%", maxWidth:430 }}>
             <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockRecruitPC hl={item.id} tiers={item.tiers} />
           </div>
