@@ -192,7 +192,7 @@ export default function LandingPage({ onEnter }) {
       <section style={{ padding: "72px 24px 80px", background: "#F9FAFB" }}>
         <div style={{ maxWidth: 1080, margin: "0 auto" }}>
 
-          <div style={{ marginBottom: 48 }}>
+          <div style={{ marginBottom: 48, textAlign: "center" }}>
             <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 900, color: "#131927", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
               게임잡 주요 상품 비교
             </h2>
