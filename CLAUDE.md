@@ -1,127 +1,163 @@
-# 게임잡 광고센터 프로젝트
+# CLAUDE.md — 게임잡 광고센터
 
-## 프로젝트 개요
-게임잡(gamejob.co.kr) 광고 상품을 소개하는 광고센터 웹앱.
-기업 광고 담당자가 상품을 확인하고 문의할 수 있는 페이지.
+> 이 문서는 **어떻게 만드는가**를 다룹니다. 기획 의도는 `PRD.md` 참조.
+
+---
 
 ## 기술 스택
-- React 18 + Vite
-- 스타일: 인라인 스타일 (CSS-in-JS 없음, Tailwind 없음)
-- 배포: Vercel (자동 배포, v2 브랜치)
-- URL: https://gamejob-adcenter.vercel.app
+- **Framework**: React 18 + Vite
+- **Language**: JavaScript (JSX)
+- **Styling**: 인라인 스타일 (Tailwind 없음, CSS 파일 없음)
+- **배포**: Vercel 자동 배포 (`v3` 브랜치 push 시)
+- **외부 연동**: Notion API (문의 저장), Make.com → Slack (알림 자동화)
+
+---
+
+## 브랜치 / 배포
+| 브랜치 | 용도 |
+|--------|------|
+| `v4`   | 현재 작업 브랜치 (Figma 연동 작업) |
+| `v3`   | 이전 버전 |
+| `main` | 레거시 |
+
+```bash
+git add .
+git commit -m "작업 내용"
+git push origin v4
+```
+
+---
 
 ## 파일 구조
 ```
-src/
-├── AdCenter.jsx       # 메인 컴포넌트 (전체 UI)
-└── data/
-    └── products.js    # 상품 데이터 (가격·기간·설명 수정은 여기만)
+gamejob-adcenter/
+├── src/
+│   ├── AdCenter.jsx        # 메인 컴포넌트 (전체 UI + 내부 컴포넌트)
+│   ├── main.jsx
+│   ├── bi_gamejob.svg
+│   └── data/
+│       └── products.js     # 상품 데이터 (가격·기간·설명 수정은 여기만)
+├── api/
+│   ├── submit-inquiry.mjs  # 문의 접수 → Notion 저장
+│   └── products.mjs        # 상품 데이터 API
+├── PRD.md                  # 기획 문서
+├── CLAUDE.md               # 이 파일
+└── vite.config.js
 ```
 
-## 상품 데이터 구조 (products.js)
-가격·기간·설명을 수정할 때는 `src/data/products.js`만 수정하면 전체 UI에 자동 반영됩니다.
+> **상품 가격·기간·설명 수정 시**: `src/data/products.js`만 수정하면 전체 UI 자동 반영.
 
-## 네비게이션 구조
-### 1depth (헤더 버튼)
-- 전체상품 소개서
-- 배너패키지 상품 소개서
-
-### 2depth (LNB 사이드바 — 좌측 고정, 여백 없이 붙음)
-**전체상품 소개서:**
-- 메인 채용관 > Emperor / Lord / Knight
-- 채용정보 채용관 > Sword / Shield / Armor
-- 배너 광고 > 각 상품
-- 이력서 열람 > 이력서 열람 서비스
-
-**배너패키지 상품 소개서:**
-- 배너 패키지 > 올인원 / 커튼 / 실속
-
-### LNB 동작
-- 클릭 시 해당 상품 섹션으로 앵커 스크롤
-- IntersectionObserver로 현재 뷰포트 위치에 따라 LNB 자동 활성화
-- 전체 상품이 한 페이지에 세로로 나열됨 (SPA가 아닌 스크롤 방식)
-
-## 레이아웃
-- 풀 브라우저 너비 사용
-- 내용 최대 너비: 1440px
-- 헤더: sticky, 풀 너비
-- LNB: 196px 고정, sticky, 브라우저 좌측에 딱 붙음
-- 콘텐츠: 나머지 너비
-
-## 상품 카드 구조
-각 상품은 카드로 표현:
-- 카드 헤더: 지면 위치 라벨 + 태그
-- 좌측 (3fr or 1fr): 목업 패널 (배경 #FAFCFF)
-- 우측 (2fr or 1fr): 상품명 + 특징 + 가격 탭
-
-**메인 채용관 / 채용정보 채용관**: gridTemplateColumns 3fr:2fr
-- 좌측에 Mobile 목업(왼쪽) + PC 목업(오른쪽) 나란히
-
-**배너 광고 / 이력서 열람**: gridTemplateColumns 1fr:1fr
-
-## 목업 구조
-
-### PC 메인 목업 (MockMainBanner, MockBoothPC)
-```
-[백스킨(좌) 56px] [중앙콘텐츠] [백스킨(우) 56px]
-                   ├─ 메인 탑
-                   ├─ 콘텐츠 스켈레톤
-                   ├─ 메인 상단띠
-                   ├─ [Emperor 채용관 스켈레톤] [Emperor Edge]
-                   ├─ Lord/Knight 스켈레톤
-                   └─ 메인 미들띠
-```
-- 백스킨: 항상 56px 고정, 활성 시 amber 색상 하이라이트
-- 텍스트: "백스킨\n(좌)" — (좌) 앞에서 줄바꿈
-
-### PC 서브 목업 (MockSub)
-- 커뮤니티 Pick (상단)
-- [서브날개/날개2] [채용관 스켈레톤 3개] [서브스카이]
-- 서브 하단
-
-### 모바일 목업 (MockBoothMobile, MockRecruitMobile, MockMobile)
-- 세로 스마트폰 프레임
-- 상단/하단 스켈레톤 + 해당 상품 하이라이트
-
-### 배너 상품별 목업 매핑
-| 상품 ID | 목업 |
-|--------|------|
-| backskin, maintop, topstrip, midstrip, emperiredge | MockMainBanner |
-| subwing, subwing2, subsky, subbottom, commPick, commMid | MockSub |
-| mobMain, mobSub | MockMobile |
-
-### Zone 컴포넌트
-지면 블록 표현. active 시 색상 하이라이트 + slots(구좌 카드) 표시.
-
-### SkeletonRow 컴포넌트
-주변 콘텐츠를 흐린 회색 막대로 표현.
+---
 
 ## 디자인 토큰 (C 객체)
+
+`AdCenter.jsx` 상단에 정의. 색상은 반드시 `C.xxx`로 참조하고 직접 hex 하드코딩 금지.
+토큰에 없는 색이 필요하면 `C` 객체에 먼저 추가하고 사용자에게 확인 후 사용.
+
 ```js
-navy: "#1B2B4B"   // 헤더 배경
-blue: "#2563EB"   // 주 강조색
-green: "#1E6B3C"  // Lord / Sword
-amber: "#7A4400"  // Knight / Armor / 백스킨
-purple: "#3D2FA0" // 띠배너
-pink: "#8B1A4A"   // 서브 배너
-teal: "#0B6657"   // 모바일 / 커뮤니티
+const C = {
+  navy:    "#004F6B",  // Primary/900 — 헤더 배경
+  blue:    "#00A6E2",  // Primary/500 — 주 강조색, 섹션 타이틀 바
+  blueL:   "#EBFAFF",  // Primary/50
+  green:   "#256533",  // Green/800 — Lord / Sword
+  greenL:  "#ECF8EF",  // Green/50
+  amber:   "#6B4700",  // Yellow/900 — Knight / Armor / 백스킨
+  amberL:  "#FFF7E6",  // Yellow/50
+  purple:  "#0085B5",  // Primary/700 — 띠배너
+  purpleL: "#D6F4FF",  // Primary/100
+  pink:    "#EE443F",  // Red/500 — 서브 배너
+  pinkL:   "#FDECEC",  // Red/50
+  teal:    "#308242",  // Green/700 — 모바일 / 커뮤니티
+  tealL:   "#ECF8EF",  // Green/50
+  gray:    "#6D717F",  // Grey/500
+  gray2:   "#9EA2AE",  // Grey/400
+  grayL:   "#F9FAFB",  // Grey/50
+  border:  "#E5E7EA",  // Grey/200 — 테두리 기본
+  border2: "#D2D5DB",  // Grey/300
+  white:   "#FFFFFF",
+  bg:      "#F3F4F6",  // Grey/100 — 배경
+  text:    "#131927",  // Grey/900 — 본문 텍스트
+  sub:     "#4D5461",  // Grey/600 — 보조 텍스트
+};
 ```
 
-## 배포
-```bash
-# 로컬 개발
-npm run dev
+---
 
-# Vercel 자동 배포 (push하면 자동)
-git add .
-git commit -m "작업 내용"
-git push origin v2
-```
+## 디자인 시스템 — 버튼
+| 종류 | 배경색 | 사용처 |
+|------|--------|--------|
+| 프라이머리 | `#000000` (블랙) | 헤더 "광고 문의하기", 모달 "문의 접수하기", 모달 "확인" 닫기 버튼 |
 
-## 현재 브랜치
-- `main`: 프로덕션
-- `v2`: 현재 작업 브랜치 (Vercel에서 자동 배포됨)
+---
 
-## 담당자 연락처
-- T. 02-3466-5266
-- E. ad@gamejob.co.kr
+## 반응형 (모바일 대응)
+- **브레이크포인트**: `window.innerWidth <= 720` → 모바일
+- **헤더 높이**: `HEADER_H = 93px`
+- **모바일 앵커 오프셋**: `HEADER_H + 54px` (헤더 + 칩 메뉴 높이)
+
+| 요소 | PC | 모바일 |
+|------|----|--------|
+| 헤더 | 소개서 다운로드 버튼 + 부제목 표시 | 숨김, padding 16px |
+| LNB | 좌측 196px 고정 사이드바 | 상단 가로 스크롤 칩 메뉴 |
+| ProductCard 그리드 | `3fr 2fr` | `1fr` (1열) |
+| 목업 배치 | 가로 나란히 | 세로 쌓기 |
+| 가격 요약 테이블 | 표시 | 숨김 (`!isMobile`) |
+
+---
+
+## 내부 컴포넌트 구조
+
+| 컴포넌트 | 역할 |
+|----------|------|
+| `AdCenter` | 루트 컴포넌트, 상태 관리 |
+| `CategorySection` | 섹션 래퍼 (타이틀 + 구분선 + 자식) |
+| `ProductCard` | 개별 상품 카드 (목업 + 상품 정보) |
+| `LNB` | 좌측 사이드바 네비게이션 |
+| `InquiryModal` | 광고 문의 모달 (Notion 저장) |
+| `MainBoothPriceTable` | 메인채용관 가격 요약 테이블 |
+| `RecruitBoothPriceTable` | 채용정보 채용관 가격 요약 테이블 |
+| `BannerPriceTable` | 배너 광고 가격 요약 테이블 (디바이스/지면 rowspan) |
+| `ResumePriceTable` | 이력서 열람 가격 요약 테이블 |
+| `PackageCompareNew` | 배너 패키지 비교 표 |
+| `PackageMockupViewer` | 배너 패키지 목업 뷰어 |
+| `TH` | 테이블 헤더 셀 (border, padding 기본 포함) |
+| `TD` | 테이블 데이터 셀 (border, padding, `background:#fff` 기본 포함) |
+
+### TH / TD 사용 시 주의
+- `rowSpan`, `colSpan` 등 HTML 속성은 `...rest`로 자동 전달됨.
+- `style` prop으로 개별 셀 스타일 오버라이드 가능.
+
+---
+
+## LNB 동작
+- PC: `scrollIntoView({ behavior:"smooth" })` 앵커 스크롤
+- 모바일: `window.scrollTo` + 헤더/칩 오프셋 계산
+- `IntersectionObserver`로 현재 섹션 자동 감지 → LNB 활성화
+
+---
+
+## 외부 연동
+
+### Notion API
+- 문의 접수 시 `/api/submit-inquiry.mjs` 호출 → `NOTION_DB_INQUIRY` DB에 저장
+- `.env` 필수 변수:
+  ```
+  NOTION_TOKEN=
+  NOTION_DB_RECRUIT=
+  NOTION_DB_BANNERS=
+  NOTION_DB_PACKAGES=
+  NOTION_DB_RESUME=
+  NOTION_DB_INQUIRY=
+  ```
+
+### Make.com → Slack 자동화
+- Notion `NOTION_DB_INQUIRY` 상태가 "완료"로 변경되면 Make 시나리오 트리거
+- Slack `#gamejob-광고문의` 채널에 회사명 / 이메일 / 관심상품 알림 발송
+
+---
+
+## Figma 연동 워크플로우
+1. Figma에서 UI 수정
+2. Figma 링크 공유 → Claude가 Figma MCP로 디자인 읽기
+3. `AdCenter.jsx` 코드 반영
+4. `git push origin v3` → Vercel 자동 배포
