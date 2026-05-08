@@ -180,7 +180,7 @@ export default function LandingPage({ onEnter }) {
               borderRight: i < STATS.length - 1 ? "1px solid #E5E7EA" : "none",
               display: "flex", flexDirection: "column", alignItems: "center",
             }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 28, color: "#00A6E2", marginBottom: 8 }}>
+              <span className="material-symbols-rounded" style={{ fontSize: 70, color: "#00A6E2", marginBottom: 8 }}>
                 {s.icon}
               </span>
               <div style={{ fontSize: "clamp(20px, 2.5vw, 30px)", fontWeight: 900, color: "#004F6B", letterSpacing: "-0.03em" }}>
