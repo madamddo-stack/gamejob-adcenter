@@ -775,7 +775,7 @@ function ProductCard({ item, isMobile }) {
 // ─── 카테고리 섹션 ────────────────────────────────────────
 function CategorySection({ id, title, sub, children }) {
   return (
-    <section id={id} style={{ marginBottom:56, scrollMarginTop:110 }}>
+    <section id={id} style={{ marginBottom:56, scrollMarginTop:110, borderTop:`1px solid ${C.border}`, paddingTop:40 }}>
       <div style={{ marginBottom:20 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
           <div style={{ width:4, height:24, background:C.blue, borderRadius:2 }} />
@@ -802,7 +802,7 @@ const TH = ({ children, style={}, ...rest }) => (
   <th {...rest} style={{ padding:"11px 14px", fontSize:12, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
 );
 const TD = ({ children, style={}, ...rest }) => (
-  <td {...rest} style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", ...style }}>{children}</td>
+  <td {...rest} style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", background:"#fff", ...style }}>{children}</td>
 );
 
 function MainBoothPriceTable({ tiers }) {
@@ -1430,8 +1430,8 @@ function InquiryModal({ onClose }) {
   );
 }
 
-export default function AdCenter() {
-  const [tab, setTab] = useState("all");
+export default function AdCenter({ initialTab = "all", onBack }) {
+  const [tab, setTab] = useState(initialTab);
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const HEADER_H = 93;
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 720);
@@ -1649,6 +1649,15 @@ export default function AdCenter() {
         <div style={{ width:"100%", padding: isMobile ? "0 16px" : "0 40px", boxSizing:"border-box" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"13px 0 0" }}>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+              {onBack && (
+                <button onClick={onBack} style={{
+                  background:"none", border:"none", cursor:"pointer",
+                  color:C.gray, fontSize:12, fontWeight:500,
+                  display:"flex", alignItems:"center", gap:4, padding:"4px 8px 4px 0",
+                }}>
+                  ← 홈
+                </button>
+              )}
               <img src={gamejobLogo} alt="GAMEJOB" style={{ height:28 }} />
               {!isMobile && <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>}
             </div>
