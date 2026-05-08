@@ -1,4 +1,35 @@
 import gamejobLogo from "./bi_gamejob.svg";
+import { bannerPackages } from "./data/products.js";
+
+const PKG_STYLE = {
+  allinone: {
+    tagline: "완전 커버",
+    taglineSub: "게임잡 전 지면에 브랜드를 각인시키고 싶을 때",
+    color: "#1A6FD4",
+    headerBg: "#DBEAFE",
+    badgeBg: "#1A6FD4",
+    btnBg: "#1A6FD4",
+    zoneCount: 15,
+  },
+  curtain: {
+    tagline: "첫인상 집중",
+    taglineSub: "커튼 배너로 방문자 시선을 한번에 사로잡고 싶을 때",
+    color: "#8B5E00",
+    headerBg: "#FEF3C7",
+    badgeBg: "#8B5E00",
+    btnBg: "#8B5E00",
+    zoneCount: 8,
+  },
+  value: {
+    tagline: "비용 효율",
+    taglineSub: "핵심 지면만 선별해 합리적 예산으로 운영할 때",
+    color: "#256533",
+    headerBg: "#D1FAE5",
+    badgeBg: "#256533",
+    btnBg: "#256533",
+    zoneCount: 7,
+  },
+};
 
 const STATS = [
   { value: "23만+", label: "활성 게임 인재" },
@@ -238,6 +269,94 @@ export default function LandingPage({ onEnter }) {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 배너 패키지 섹션 */}
+      <section style={{ padding: "72px 24px 80px", background: "#fff" }}>
+        <div style={{ maxWidth: 1080, margin: "0 auto" }}>
+
+          <div style={{ marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 900, color: "#131927", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
+              어떤 목적으로 광고하시나요?
+            </h2>
+            <p style={{ fontSize: 15, color: "#6D717F", margin: 0 }}>
+              목적에 맞는 배너 패키지를 선택하세요 · 최소 신청기간 1주일 · VAT포함
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+            {bannerPackages.map((pkg) => {
+              const s = PKG_STYLE[pkg.id];
+              if (!s) return null;
+              return (
+                <div key={pkg.id} style={{
+                  border: "1px solid #E5E7EA", borderRadius: 16,
+                  overflow: "hidden", display: "flex", flexDirection: "column",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}>
+                  {/* 컬러 헤더 */}
+                  <div style={{ background: s.headerBg, padding: "28px 28px 24px" }}>
+                    <div style={{ fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 900, color: s.color, letterSpacing: "-0.03em", marginBottom: 8 }}>
+                      {s.tagline}
+                    </div>
+                    <p style={{ fontSize: 13.5, color: "#4D5461", margin: "0 0 20px", lineHeight: 1.6 }}>
+                      {s.taglineSub}
+                    </p>
+                    <div style={{
+                      display: "inline-flex", alignItems: "center",
+                      background: s.badgeBg, color: "#fff",
+                      fontSize: 12, fontWeight: 700,
+                      borderRadius: 6, padding: "5px 12px",
+                    }}>
+                      {s.zoneCount}개 지면 포함
+                    </div>
+                  </div>
+
+                  {/* 바디 */}
+                  <div style={{ padding: "24px 28px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, color: "#131927", marginBottom: 16 }}>
+                      {pkg.name}
+                    </div>
+
+                    {/* 특징 */}
+                    <ul style={{ margin: "0 0 24px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+                      {pkg.features.map((f, j) => (
+                        <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13.5, color: "#4D5461", lineHeight: 1.5 }}>
+                          <span style={{ width: 3, height: 16, background: s.color, borderRadius: 2, flexShrink: 0, marginTop: 3 }} />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* 가격 */}
+                    <div style={{ marginTop: "auto" }}>
+                      <div style={{ fontSize: "clamp(22px, 2.5vw, 28px)", fontWeight: 900, color: s.color, letterSpacing: "-0.02em" }}>
+                        {pkg.price.toLocaleString("ko-KR")}원
+                      </div>
+                      <div style={{ fontSize: 12, color: "#9EA2AE", marginTop: 4 }}>
+                        {pkg.period} · VAT포함
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <button
+                    onClick={() => onEnter("package")}
+                    style={{
+                      background: s.btnBg, color: "#fff",
+                      border: "none", padding: "18px 28px",
+                      fontSize: 15, fontWeight: 700, cursor: "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                    }}
+                  >
+                    이 패키지 선택하기
+                    <span style={{ fontSize: 18 }}>→</span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
