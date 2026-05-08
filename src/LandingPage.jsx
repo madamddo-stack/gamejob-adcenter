@@ -32,10 +32,10 @@ const PKG_STYLE = {
 };
 
 const STATS = [
-  { value: "23만+", label: "활성 게임 인재" },
-  { value: "7,000+", label: "등록 기업" },
-  { value: "월 100만+", label: "공고 조회" },
-  { value: "69만+", label: "공개 이력서" },
+  { icon: "group",            value: "23만+",   label: "활성 게임 인재" },
+  { icon: "corporate_fare",   value: "7,000+",  label: "등록 기업" },
+  { icon: "visibility",       value: "월 100만+", label: "공고 조회" },
+  { icon: "description",      value: "69만+",   label: "공개 이력서" },
 ];
 
 const CATEGORIES = [
@@ -178,8 +178,12 @@ export default function LandingPage({ onEnter }) {
             <div key={i} style={{
               textAlign: "center", padding: "0 16px",
               borderRight: i < STATS.length - 1 ? "1px solid #E5E7EA" : "none",
+              display: "flex", flexDirection: "column", alignItems: "center",
             }}>
-              <div style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 900, color: "#004F6B", letterSpacing: "-0.03em" }}>
+              <span className="material-symbols-rounded" style={{ fontSize: 28, color: "#00A6E2", marginBottom: 8 }}>
+                {s.icon}
+              </span>
+              <div style={{ fontSize: "clamp(20px, 2.5vw, 30px)", fontWeight: 900, color: "#004F6B", letterSpacing: "-0.03em" }}>
                 {s.value}
               </div>
               <div style={{ fontSize: 13, color: "#6D717F", marginTop: 4 }}>{s.label}</div>
