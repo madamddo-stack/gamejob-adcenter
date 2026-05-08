@@ -277,7 +277,7 @@ export default function LandingPage({ onEnter }) {
       <section style={{ padding: "72px 24px 80px", background: "#fff" }}>
         <div style={{ maxWidth: 1080, margin: "0 auto" }}>
 
-          <div style={{ marginBottom: 48 }}>
+          <div style={{ marginBottom: 48, textAlign: "center" }}>
             <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 900, color: "#131927", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
               어떤 목적으로 광고하시나요?
             </h2>
