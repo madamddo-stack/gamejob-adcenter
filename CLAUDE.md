@@ -49,10 +49,12 @@ gamejob-adcenter/
 
 ---
 
-## 디자인 토큰 (C 객체)
+## 디자인 토큰
 
-`AdCenter.jsx` 상단에 정의. 색상은 반드시 `C.xxx`로 참조하고 직접 hex 하드코딩 금지.
-토큰에 없는 색이 필요하면 `C` 객체에 먼저 추가하고 사용자에게 확인 후 사용.
+> 전체 토큰 정의는 `DESIGN-SYSTEM.md` 참조. 값 변경 시 `tokens.json` 수정.
+
+`AdCenter.jsx` 상단 `C` 객체에 정의. 색상은 반드시 `C.xxx`로 참조하고 직접 hex 하드코딩 금지.
+토큰에 없는 색이 필요하면 `C` 객체 + `tokens.json` 모두 추가하고 사용자에게 확인 후 사용.
 
 ```js
 const C = {
