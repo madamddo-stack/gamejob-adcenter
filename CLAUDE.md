@@ -53,11 +53,12 @@ gamejob-adcenter/
 
 > 전체 토큰 정의는 `DESIGN-SYSTEM.md` 참조. 값 변경 시 `tokens.json` 수정.
 
-`AdCenter.jsx` 상단 `C` 객체에 정의. 색상은 반드시 `C.xxx`로 참조하고 직접 hex 하드코딩 금지.
-토큰에 없는 색이 필요하면 `C` 객체 + `tokens.json` 모두 추가하고 사용자에게 확인 후 사용.
+`AdCenter.jsx` 상단 `C` 객체에 정의. 색상·폰트 사이즈는 반드시 `C.xxx`로 참조하고 직접 값 하드코딩 금지.
+토큰에 없는 값이 필요하면 `C` 객체 + `tokens.json` 모두 추가하고 사용자에게 확인 후 사용.
 
 ```js
 const C = {
+  // 색상
   navy:    "#004F6B",  // Primary/900 — 헤더 배경
   blue:    "#00A6E2",  // Primary/500 — 주 강조색, 섹션 타이틀 바
   blueL:   "#EBFAFF",  // Primary/50
@@ -80,8 +81,22 @@ const C = {
   bg:      "#F3F4F6",  // Grey/100 — 배경
   text:    "#131927",  // Grey/900 — 본문 텍스트
   sub:     "#4D5461",  // Grey/600 — 보조 텍스트
+
+  // 폰트 사이즈 — 실제 UI (typography.fontSize)
+  fs: {
+    xs: 11, sm: 12, base: 13, md: 14, lg: 15,
+    lg2: 16, xl: 18, "2xl": 20, "3xl": 24, "4xl": 32, "4xl2": 40, "5xl": 48,
+  },
+
+  // 폰트 사이즈 — 목업 전용 (mockup.fontSize)
+  mock: { sm: 8, md: 9, lg: 10 },
 };
 ```
+
+> **폰트 사이즈 사용 규칙**
+> - 실제 UI: `C.fs.md` (14px), `C.fs.xl` (18px) 등
+> - 목업 미리보기: `C.mock.sm` (8px), `C.mock.md` (9px), `C.mock.lg` (10px)
+> - `"2xl"` 이상은 bracket notation 사용: `C.fs["2xl"]`
 
 ---
 

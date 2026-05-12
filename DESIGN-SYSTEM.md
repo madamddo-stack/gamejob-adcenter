@@ -41,13 +41,20 @@
 | `typography.fontWeight.extrabold` | 800 | 카드 타이틀 |
 | `typography.fontWeight.black`     | 900 | Hero, 섹션 타이틀 |
 
-### 줄 간격
+### 줄 간격 (폰트 사이즈별 1:1 대응)
 
-| 토큰명 | 값 | 용도 |
-|--------|----|------|
-| `typography.lineHeight.tight`  | 1.25 | 헤딩 |
-| `typography.lineHeight.normal` | 1.5  | 기본 |
-| `typography.lineHeight.loose`  | 1.7  | 본문 단락 |
+| 토큰명 | 폰트 | 줄간격 |
+|--------|------|--------|
+| `typography.lineHeight.xs`   | 11px | 16px |
+| `typography.lineHeight.sm`   | 12px | 18px |
+| `typography.lineHeight.base` | 13px | 20px |
+| `typography.lineHeight.md`   | 14px | 20px |
+| `typography.lineHeight.lg`   | 15px | 22px |
+| `typography.lineHeight.xl`   | 18px | 26px |
+| `typography.lineHeight.2xl`  | 20px | 28px |
+| `typography.lineHeight.3xl`  | 24px | 32px |
+| `typography.lineHeight.4xl`  | 32px | 40px |
+| `typography.lineHeight.5xl`  | 48px | 56px |
 
 ---
 

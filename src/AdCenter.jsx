@@ -29,6 +29,11 @@ const C = {
   bg:      "#F3F4F6",  // Grey/100
   text:    "#131927",  // Grey/900
   sub:     "#4D5461",  // Grey/600
+  fs: {
+    xs: 11, sm: 12, base: 13, md: 14, lg: 15,
+    lg2: 16, xl: 18, "2xl": 20, "3xl": 24, "4xl": 32, "4xl2": 40, "5xl": 48,
+  },
+  mock: { sm: 8, md: 9, lg: 10 },
 };
 
 const fw = (n) => n?.toLocaleString("ko-KR") + "원";
@@ -42,7 +47,7 @@ const BrowserBar = () => (
     <div style={{ display:"flex", gap:4 }}>
       {["#FF5F57","#FEBC2E","#28C840"].map((c,i) => <div key={i} style={{ width:9, height:9, borderRadius:"50%", background:c }} />)}
     </div>
-    <div style={{ flex:1, background:"#fff", borderRadius:4, padding:"2px 8px", fontSize:9.5, color:"#94A3B8", textAlign:"center", border:"1px solid #E2E8F0" }}>
+    <div style={{ flex:1, background:"#fff", borderRadius:4, padding:"2px 8px", fontSize:C.mock.md, color:"#94A3B8", textAlign:"center", border:"1px solid #E2E8F0" }}>
       gamejob.co.kr
     </div>
   </div>
@@ -50,10 +55,10 @@ const BrowserBar = () => (
 
 const GNB = () => (
   <div style={{ background:"#212936", padding:"7px 12px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-    <span style={{ color:"#fff", fontWeight:900, fontSize:11, letterSpacing:"-0.02em" }}>GAMEJOB</span>
+    <span style={{ color:"#fff", fontWeight:900, fontSize:C.fs.xs, letterSpacing:"-0.02em" }}>GAMEJOB</span>
     <div style={{ display:"flex", gap:10 }}>
       {["채용정보","커뮤니티","기업정보","인재정보"].map(m => (
-        <span key={m} style={{ color:"rgba(255,255,255,0.45)", fontSize:8.5 }}>{m}</span>
+        <span key={m} style={{ color:"rgba(255,255,255,0.45)", fontSize:C.mock.sm }}>{m}</span>
       ))}
     </div>
   </div>
@@ -91,14 +96,14 @@ const Zone = ({ label, sub, color, active, style={}, slots, rolling, topfix, lay
       }}>
         <img src={previewImg} alt="실제 화면 미리보기"
           style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
-        <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+        <p style={{ fontSize:C.mock.md, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
       </div>
     )}
-    <div style={{ fontSize:9, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0, wordBreak:"keep-all", overflowWrap:"break-word", whiteSpace:"pre-wrap" }}>
+    <div style={{ fontSize:C.mock.md, fontWeight:active?700:500, color:active?color:C.gray, marginBottom:(active&&slots)?6:0, wordBreak:"keep-all", overflowWrap:"break-word", whiteSpace:"pre-wrap" }}>
       {active ? `▶ ${label}` : label}
-      {sub && <span style={{ fontSize:8, fontWeight:400, marginLeft:4, opacity:0.7 }}>{sub}</span>}
+      {sub && <span style={{ fontSize:C.mock.sm, fontWeight:400, marginLeft:4, opacity:0.7 }}>{sub}</span>}
       {active && rolling && (
-        <span style={{ fontSize:8, fontWeight:600, marginLeft:4, background:`${color}20`, padding:"1px 5px", borderRadius:3, color }}>{rolling}</span>
+        <span style={{ fontSize:C.mock.sm, fontWeight:600, marginLeft:4, background:`${color}20`, padding:"1px 5px", borderRadius:3, color }}>{rolling}</span>
       )}
     </div>
     {active && slots && (
@@ -143,9 +148,9 @@ const MockBoothMobile = ({ hl, tiers, isTopfix }) => {
   return (
     <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-        <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+        <span style={{ color:"#fff", fontWeight:900, fontSize:C.mock.lg }}>GAMEJOB</span>
         <div style={{ display:"flex", gap:6 }}>
-          {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
+          {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:C.mock.sm }}>{m}</span>)}
         </div>
       </div>
       <div style={{ padding:"5px" }}>
@@ -187,7 +192,7 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
       <GNB />
       <div style={{ display:"flex", alignItems:"stretch" }}>
         <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 2px 3px 3px", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(좌)</span>
+          <span style={{ fontSize:C.mock.sm, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(좌)</span>
         </div>
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:2, padding:"3px 0" }}>
           <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px 6px" }}>
@@ -216,7 +221,7 @@ const MockBoothPC = ({ hl, tiers, isTopfix }) => {
             previewImg={preview("knight")} />
         </div>
         <div style={{ width:20, flexShrink:0, background:"#F1F5F9", border:"1px solid #E8ECF2", borderRadius:4, margin:"3px 3px 3px 2px", display:"flex", alignItems:"center", justifyContent:"center" }}>
-          <span style={{ fontSize:7, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
+          <span style={{ fontSize:C.mock.sm, color:"#CBD5E1", writingMode:"vertical-rl", whiteSpace:"nowrap" }}>백스킨(우)</span>
         </div>
       </div>
     </div>
@@ -236,7 +241,7 @@ const MockRecruitPC = ({ hl, tiers }) => {
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"7px 8px", display:"flex", gap:6 }}>
           {["직종","지역","경력","직급"].map(f => (
             <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"3px 8px" }}>
-              <span style={{ fontSize:8, color:"#94A3B8" }}>{f}</span>
+              <span style={{ fontSize:C.mock.sm, color:"#94A3B8" }}>{f}</span>
             </div>
           ))}
         </div>
@@ -267,14 +272,14 @@ const MockRecruitMobile = ({ hl, tiers }) => {
   return (
     <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7" }}>
       <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-        <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
-        <span style={{ color:"rgba(255,255,255,0.6)", fontSize:9, fontWeight:600 }}>채용정보</span>
+        <span style={{ color:"#fff", fontWeight:900, fontSize:C.mock.lg }}>GAMEJOB</span>
+        <span style={{ color:"rgba(255,255,255,0.6)", fontSize:C.mock.md, fontWeight:600 }}>채용정보</span>
       </div>
       <div style={{ padding:"5px" }}>
         <div style={{ background:"#F1F5F9", borderRadius:5, padding:"5px", marginBottom:3, display:"flex", gap:3, flexWrap:"wrap" }}>
           {["직종","지역","경력"].map(f => (
             <div key={f} style={{ background:"#E2E8F0", borderRadius:3, padding:"2px 6px" }}>
-              <span style={{ fontSize:7.5, color:"#94A3B8" }}>{f}</span>
+              <span style={{ fontSize:C.mock.sm, color:"#94A3B8" }}>{f}</span>
             </div>
           ))}
         </div>
@@ -373,7 +378,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
   });
   const skinText = (side) => (
     <span style={{
-      fontSize:8, fontWeight:isSkin?700:400,
+      fontSize:C.mock.sm, fontWeight:isSkin?700:400,
       color:isSkin?skinColor:C.gray2,
       writingMode:"vertical-rl",
       textAlign:"center",
@@ -455,7 +460,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
                   }} {...edgeHandlers}>
                     {isEdge ? (
                       <>
-                        <div style={{ fontSize:7, color: edgeActive ? C.blue : C.gray2, fontWeight: edgeActive ? 700 : 400, textAlign:"center", marginBottom:3 }}>
+                        <div style={{ fontSize:C.mock.sm, color: edgeActive ? C.blue : C.gray2, fontWeight: edgeActive ? 700 : 400, textAlign:"center", marginBottom:3 }}>
                           {edgeActive ? "▶ Emperor Edge" : "Emperor Edge"}
                         </div>
                         <div style={{ background: edgeActive ? `${C.blue}30` : "#D1D9E6", borderRadius:2, height:20, width:"100%" }} />
@@ -482,7 +487,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
                 }}>
                   <img src={prv("emperiredge")} alt="실제 화면 미리보기"
                     style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
-                  <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+                  <p style={{ fontSize:C.mock.md, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
                 </div>
               )}
             </div>
@@ -522,7 +527,7 @@ const MockMainBanner = ({ hl, ads=[] }) => {
           }}>
             <img src={prv("backskin")} alt="실제 화면 미리보기"
               style={{ width:"100%", height:"auto", borderRadius:6, display:"block" }} />
-            <p style={{ fontSize:9, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
+            <p style={{ fontSize:C.mock.md, color:C.gray2, margin:"4px 0 0", textAlign:"center" }}>실제 노출 화면</p>
           </div>
         )}
 
@@ -539,9 +544,9 @@ const MockMobile = ({ hl, ads=[] }) => {
   return (
   <div style={{ width:"100%", background:"#FAFAFA", borderRadius:14, overflow:"hidden", border:"2px solid #DDE1E7", height:278 }}>
     <div style={{ background:"#212936", padding:"6px 10px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-      <span style={{ color:"#fff", fontWeight:900, fontSize:10 }}>GAMEJOB</span>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:C.mock.lg }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:6 }}>
-        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:7.5 }}>{m}</span>)}
+        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:C.mock.sm }}>{m}</span>)}
       </div>
     </div>
     <div style={{ padding:"5px" }}>
@@ -599,17 +604,17 @@ const MockResume = () => (
     <GNB />
     <div style={{ padding:"10px" }}>
       <div style={{ background:"#fff", borderRadius:7, padding:"11px", border:`1.5px solid ${C.blue}` }}>
-        <div style={{ fontSize:9.5, color:C.blue, fontWeight:700, marginBottom:7 }}>▶ 이력서 열람 서비스</div>
+        <div style={{ fontSize:C.mock.md, color:C.blue, fontWeight:700, marginBottom:7 }}>▶ 이력서 열람 서비스</div>
         {["이력서 / 자기소개서","포트폴리오","이메일 / 연락처"].map((item,i) => (
           <div key={i} style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5, padding:"4px 7px", background:C.blueL, borderRadius:4 }}>
             <div style={{ width:13, height:13, borderRadius:"50%", background:C.blue, display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <span style={{ fontSize:8, color:"#fff", fontWeight:800 }}>✓</span>
+              <span style={{ fontSize:C.mock.sm, color:"#fff", fontWeight:800 }}>✓</span>
             </div>
-            <span style={{ fontSize:9, color:C.text, fontWeight:500 }}>{item}</span>
+            <span style={{ fontSize:C.mock.md, color:C.text, fontWeight:500 }}>{item}</span>
           </div>
         ))}
         <div style={{ marginTop:7, padding:"6px", background:C.blue, borderRadius:4, textAlign:"center" }}>
-          <span style={{ fontSize:9, color:"#fff", fontWeight:700 }}>입사제의 보내기</span>
+          <span style={{ fontSize:C.mock.md, color:"#fff", fontWeight:700 }}>입사제의 보내기</span>
         </div>
       </div>
     </div>
@@ -628,11 +633,11 @@ function ProductCard({ item, isMobile }) {
       return (
         <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center", justifyContent:"center" }}>
           <div style={{ width:155, flexShrink:0 }}>
-            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+            <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockBoothMobile hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
           <div style={{ width:430, flexShrink:0 }}>
-            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+            <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockBoothPC hl={hlId} tiers={item.tiers} isTopfix={item.isTopfix} />
           </div>
         </div>
@@ -642,11 +647,11 @@ function ProductCard({ item, isMobile }) {
       return (
         <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", gap:14, alignItems:"center", justifyContent:"center" }}>
           <div style={{ width:155, flexShrink:0 }}>
-            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+            <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
             <MockRecruitMobile hl={item.id} tiers={item.tiers} />
           </div>
           <div style={{ width:430, flexShrink:0 }}>
-            <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+            <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
             <MockRecruitPC hl={item.id} tiers={item.tiers} />
           </div>
         </div>
@@ -669,12 +674,12 @@ function ProductCard({ item, isMobile }) {
       {/* 카드 헤더 */}
       <div style={{ padding:"11px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL, display:"flex", alignItems:"center", gap:8 }}>
         <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-          <span style={{ fontSize:11.5, color:C.gray, fontWeight:500 }}>지면 위치</span>
+          <span style={{ fontSize:C.fs.sm, color:C.gray, fontWeight:500 }}>지면 위치</span>
           {item.zoneLabel && (
-            <span style={{ fontSize:11, color:C.blue, background:C.blueL, padding:"2px 8px", borderRadius:4, fontWeight:600 }}>{item.zoneLabel}</span>
+            <span style={{ fontSize:C.fs.xs, color:C.blue, background:C.blueL, padding:"2px 8px", borderRadius:4, fontWeight:600 }}>{item.zoneLabel}</span>
           )}
           {item.tag && (
-            <span style={{ fontSize:11, fontWeight:600, color:item.tagColor, background:item.tagBg, padding:"2px 9px", borderRadius:4 }}>{item.tag}</span>
+            <span style={{ fontSize:C.fs.xs, fontWeight:600, color:item.tagColor, background:item.tagBg, padding:"2px 9px", borderRadius:4 }}>{item.tag}</span>
           )}
         </div>
       </div>
@@ -692,30 +697,30 @@ function ProductCard({ item, isMobile }) {
         {/* 우 — 설명+가격 */}
         <div style={{ padding: isMobile ? "16px" : "24px 28px", display:"flex", flexDirection:"column", gap:18 }}>
           <div>
-            <h3 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{item.title}</h3>
+            <h3 style={{ fontSize:C.fs["2xl"], fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{item.title}</h3>
           </div>
 
           {/* 특징 / 노출 */}
           {item.exposure ? (
             <>
               <div>
-                <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>노출</p>
+                <p style={{ fontSize:C.fs.xs, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>노출</p>
                 <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
                   {item.exposure.map((row,i) => (
                     <div key={i} style={{ display:"flex", alignItems:"center", borderBottom: i < item.exposure.length-1 ? `1px solid ${C.border}` : "none" }}>
-                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
-                      <span style={{ fontSize:12.5, color:C.text, padding:"8px 12px" }}>{row.value}</span>
+                      <span style={{ fontSize:C.fs.sm, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
+                      <span style={{ fontSize:C.fs.base, color:C.text, padding:"8px 12px" }}>{row.value}</span>
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>제작 가이드</p>
+                <p style={{ fontSize:C.fs.xs, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>제작 가이드</p>
                 <div style={{ display:"flex", flexDirection:"column", gap:0, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden" }}>
                   {item.guide.map((row,i) => (
                     <div key={i} style={{ display:"flex", alignItems:"center", borderBottom: i < item.guide.length-1 ? `1px solid ${C.border}` : "none" }}>
-                      <span style={{ fontSize:11.5, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
-                      <span style={{ fontSize:12.5, color:C.text, padding:"8px 12px" }}>{row.value}</span>
+                      <span style={{ fontSize:C.fs.sm, color:C.gray, fontWeight:600, width:96, flexShrink:0, padding:"8px 12px", background:C.grayL, whiteSpace:"nowrap" }}>{row.label}</span>
+                      <span style={{ fontSize:C.fs.base, color:C.text, padding:"8px 12px" }}>{row.value}</span>
                     </div>
                   ))}
                 </div>
@@ -723,7 +728,7 @@ function ProductCard({ item, isMobile }) {
             </>
           ) : (
             <div>
-              <p style={{ fontSize:11, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>상품 특징</p>
+              <p style={{ fontSize:C.fs.xs, fontWeight:600, color:C.gray, marginBottom:8, letterSpacing:"0.02em" }}>상품 특징</p>
               <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
                 {item.features.map((f,i) => (
                   <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
@@ -732,7 +737,7 @@ function ProductCard({ item, isMobile }) {
                         <path d="M1.5 4L3.2 5.8L6.5 2.2" stroke={C.blue} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    <span style={{ fontSize:12.5, color:C.sub, lineHeight:1.55 }}>{f}</span>
+                    <span style={{ fontSize:C.fs.base, color:C.sub, lineHeight:1.55 }}>{f}</span>
                   </div>
                 ))}
               </div>
@@ -745,7 +750,7 @@ function ProductCard({ item, isMobile }) {
               <div style={{ display:"flex", gap:0, marginBottom:12, border:`1px solid ${C.border}`, borderRadius:7, overflow:"hidden", width:"fit-content" }}>
                 {item.priceTabs.map((t,i) => (
                   <button key={i} onClick={() => setTabIdx(i)} style={{
-                    padding:"5px 13px", fontSize:11.5, fontWeight:600, cursor:"pointer",
+                    padding:"5px 13px", fontSize:C.fs.sm, fontWeight:600, cursor:"pointer",
                     border:"none", borderRight: i < item.priceTabs.length-1 ? `1px solid ${C.border}` : "none",
                     background: tabIdx===i ? C.blue : C.white,
                     color: tabIdx===i ? "#fff" : C.gray,
@@ -756,15 +761,15 @@ function ProductCard({ item, isMobile }) {
             <div style={{ minHeight: Math.max(...item.priceTabs.map(t => t.rows.length * (t.rows.some(r => r.sub) ? 46 : 33))) }}>
               {tab.rows.map((r,i) => (
                 <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:`1px solid ${C.border}` }}>
-                  <span style={{ fontSize:12.5, color:i===0?C.text:C.gray }}>{r.label}</span>
+                  <span style={{ fontSize:C.fs.base, color:i===0?C.text:C.gray }}>{r.label}</span>
                   <div style={{ textAlign:"right" }}>
-                    {r.sub && <div style={{ fontSize:11, color:"#CBD5E1", textDecoration:"line-through" }}>{r.sub}</div>}
+                    {r.sub && <div style={{ fontSize:C.fs.xs, color:"#CBD5E1", textDecoration:"line-through" }}>{r.sub}</div>}
                     <span style={{ fontSize:i===0?16:13.5, fontWeight:i===0?700:500, color:i===0?C.blue:C.text }}>{r.value}</span>
                   </div>
                 </div>
               ))}
             </div>
-            {tab.note && <p style={{ fontSize:11, color:C.gray2, marginTop:6 }}>{tab.note}</p>}
+            {tab.note && <p style={{ fontSize:C.fs.xs, color:C.gray2, marginTop:6 }}>{tab.note}</p>}
           </div>
         </div>
       </div>
@@ -779,9 +784,9 @@ function CategorySection({ id, title, sub, children }) {
       <div style={{ marginBottom:20 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
           <div style={{ width:4, height:24, background:C.blue, borderRadius:2 }} />
-          <h2 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{title}</h2>
+          <h2 style={{ fontSize:C.fs["2xl"], fontWeight:800, color:C.text, margin:0, letterSpacing:"-0.02em" }}>{title}</h2>
         </div>
-        {sub && <p style={{ fontSize:13, color:C.gray, margin:"0 0 0 14px", lineHeight:1.6 }}>{sub}</p>}
+        {sub && <p style={{ fontSize:C.fs.base, color:C.gray, margin:"0 0 0 14px", lineHeight:1.6 }}>{sub}</p>}
       </div>
       <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
         {children}
@@ -799,16 +804,16 @@ const parsePeriod = (p) => {
 };
 
 const TH = ({ children, style={}, ...rest }) => (
-  <th {...rest} style={{ padding:"11px 14px", fontSize:12, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
+  <th {...rest} style={{ padding:"11px 14px", fontSize:C.fs.sm, fontWeight:700, color:"#fff", background:"#111", border:"1px solid #2a2a2a", textAlign:"center", whiteSpace:"nowrap", ...style }}>{children}</th>
 );
 const TD = ({ children, style={}, ...rest }) => (
-  <td {...rest} style={{ padding:"10px 14px", fontSize:12.5, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", background:"#fff", ...style }}>{children}</td>
+  <td {...rest} style={{ padding:"10px 14px", fontSize:C.fs.base, border:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", background:"#fff", ...style }}>{children}</td>
 );
 
 function MainBoothPriceTable({ tiers }) {
   return (
     <div style={{ marginBottom:32, overflowX:"auto" }}>
-      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>메인 채용관 상품 가격 안내</p>
+      <p style={{ fontSize:C.fs.lg, fontWeight:700, color:C.text, margin:"0 0 12px" }}>메인 채용관 상품 가격 안내</p>
       <table style={{ width:"100%", borderCollapse:"collapse", minWidth:700 }}>
         <thead>
           <tr>
@@ -834,15 +839,15 @@ function MainBoothPriceTable({ tiers }) {
                   {i === 0 && (
                     <TD rowSpan={tier.combined.length} style={{ fontWeight:700, background:C.grayL, minWidth:120 }}>
                       <span style={{ fontWeight:800 }}>{tier.name.replace(" 채용관","")}</span>
-                      <span style={{ fontWeight:400, color:C.gray, fontSize:11.5 }}> 채용관</span>
+                      <span style={{ fontWeight:400, color:C.gray, fontSize:C.fs.sm }}> 채용관</span>
                     </TD>
                   )}
                   <TD>{label}</TD>
                   <TD>{days}</TD>
                   <TD>
                     <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, flexWrap:"nowrap" }}>
-                      {row.original && <span style={{ fontSize:11, color:"#94a3b8", textDecoration:"line-through", whiteSpace:"nowrap" }}>{row.original.toLocaleString("ko-KR")}원</span>}
-                      {pct && <span style={{ fontSize:11, color:C.pink, fontWeight:700, whiteSpace:"nowrap" }}>{pct}%↓</span>}
+                      {row.original && <span style={{ fontSize:C.fs.xs, color:"#94a3b8", textDecoration:"line-through", whiteSpace:"nowrap" }}>{row.original.toLocaleString("ko-KR")}원</span>}
+                      {pct && <span style={{ fontSize:C.fs.xs, color:C.pink, fontWeight:700, whiteSpace:"nowrap" }}>{pct}%↓</span>}
                       <span style={{ fontWeight:700, whiteSpace:"nowrap" }}>{row.price.toLocaleString("ko-KR")} 원</span>
                     </div>
                   </TD>
@@ -854,7 +859,7 @@ function MainBoothPriceTable({ tiers }) {
           )}
         </tbody>
       </table>
-      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일</p>
+      <p style={{ fontSize:C.fs.xs, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일</p>
     </div>
   );
 }
@@ -862,7 +867,7 @@ function MainBoothPriceTable({ tiers }) {
 function RecruitBoothPriceTable({ tiers }) {
   return (
     <div style={{ marginBottom:32, overflowX:"auto" }}>
-      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>채용정보 채용관 상품 가격 안내</p>
+      <p style={{ fontSize:C.fs.lg, fontWeight:700, color:C.text, margin:"0 0 12px" }}>채용정보 채용관 상품 가격 안내</p>
       <table style={{ width:"100%", borderCollapse:"collapse", minWidth:400 }}>
         <thead>
           <tr>
@@ -883,7 +888,7 @@ function RecruitBoothPriceTable({ tiers }) {
           ))}
         </tbody>
       </table>
-      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 메인채용관 구매 시 자동 포함 — Emperor→Sword / Lord→Shield / Knight→Armor</p>
+      <p style={{ fontSize:C.fs.xs, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 메인채용관 구매 시 자동 포함 — Emperor→Sword / Lord→Shield / Knight→Armor</p>
     </div>
   );
 }
@@ -905,7 +910,7 @@ function BannerPriceTable({ bannerAds }) {
 
   return (
     <div style={{ marginBottom:32, overflowX:"auto" }}>
-      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>배너 광고 상품 가격 안내</p>
+      <p style={{ fontSize:C.fs.lg, fontWeight:700, color:C.text, margin:"0 0 12px" }}>배너 광고 상품 가격 안내</p>
       <table style={{ width:"100%", borderCollapse:"collapse", minWidth:660 }}>
         <thead>
           <tr>
@@ -924,13 +929,13 @@ function BannerPriceTable({ bannerAds }) {
               {showZone   && <TD rowSpan={zoneRowSpan}>{zoneLabel(item.zone)}</TD>}
               <TD style={{ fontWeight:700 }}>{item.name}</TD>
               <TD>1주일 (7일)</TD>
-              <TD style={{ fontSize:11.5, color:C.gray }}>{item.rolling}</TD>
+              <TD style={{ fontSize:C.fs.sm, color:C.gray }}>{item.rolling}</TD>
               <TD style={{ fontWeight:700 }}>{item.price?.toLocaleString("ko-KR")}원</TD>
             </tr>
           ))}
         </tbody>
       </table>
-      <p style={{ fontSize:11, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일 이상</p>
+      <p style={{ fontSize:C.fs.xs, color:C.gray2, marginTop:6, textAlign:"right" }}>※ 최소 신청기간 : 1주일 이상</p>
     </div>
   );
 }
@@ -938,7 +943,7 @@ function BannerPriceTable({ bannerAds }) {
 function ResumePriceTable({ plans }) {
   return (
     <div style={{ marginBottom:32, overflowX:"auto" }}>
-      <p style={{ fontSize:15, fontWeight:700, color:C.text, margin:"0 0 12px" }}>이력서 열람 서비스 가격 안내</p>
+      <p style={{ fontSize:C.fs.lg, fontWeight:700, color:C.text, margin:"0 0 12px" }}>이력서 열람 서비스 가격 안내</p>
       <table style={{ width:"100%", borderCollapse:"collapse", minWidth:360 }}>
         <thead>
           <tr>
@@ -978,7 +983,7 @@ const ZoneMulti = ({ label, id, includedIds, color, style={} }) => {
       border: `${active ? "1.5px" : "1px"} solid ${active ? color : C.border2}`,
       ...style,
     }}>
-      <div style={{ fontSize:7.5, fontWeight:active?700:400, color:active?color:C.gray, wordBreak:"keep-all", whiteSpace:"pre-wrap" }}>
+      <div style={{ fontSize:C.mock.sm, fontWeight:active?700:400, color:active?color:C.gray, wordBreak:"keep-all", whiteSpace:"pre-wrap" }}>
         {active ? `▶ ${label}` : label}
       </div>
     </div>
@@ -1004,12 +1009,12 @@ const PkgMockMain = ({ includedIds, color }) => {
       <GNB />
       {isCurtain && (
         <div style={{ margin:"3px", background:`${color}15`, border:`1.5px solid ${color}`, borderRadius:4, padding:"4px 8px" }}>
-          <span style={{ fontSize:7.5, fontWeight:700, color }}>▶ 메인 커튼</span>
+          <span style={{ fontSize:C.mock.sm, fontWeight:700, color }}>▶ 메인 커튼</span>
         </div>
       )}
       <div style={{ display:"flex", alignItems:"stretch" }}>
         <div style={skinStyle("left")}>
-          <span style={{ fontSize:7, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
+          <span style={{ fontSize:C.mock.sm, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
             {isSkin ? "▶ 백스킨(좌)" : "백스킨(좌)"}
           </span>
         </div>
@@ -1039,7 +1044,7 @@ const PkgMockMain = ({ includedIds, color }) => {
                     border: isEdgeSlot ? `${edgeActive?"1.5px":"1px"} solid ${edgeActive?color:"#D2D5DB"}` : "none",
                   }}>
                     {isEdgeSlot
-                      ? <div style={{ fontSize:6.5, color:edgeActive?color:C.gray2, fontWeight:edgeActive?700:400, textAlign:"center" }}>{edgeActive?"▶ Emperor Edge":"Emperor Edge"}</div>
+                      ? <div style={{ fontSize:C.mock.sm, color:edgeActive?color:C.gray2, fontWeight:edgeActive?700:400, textAlign:"center" }}>{edgeActive?"▶ Emperor Edge":"Emperor Edge"}</div>
                       : <><div style={{ width:"40%", height:6, background:"#D1D9E6", borderRadius:2, margin:"0 auto 2px" }} /><SkeletonRow w="90%" h={2} mb={0} /></>
                     }
                   </div>
@@ -1060,7 +1065,7 @@ const PkgMockMain = ({ includedIds, color }) => {
           </div>
         </div>
         <div style={skinStyle("right")}>
-          <span style={{ fontSize:7, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
+          <span style={{ fontSize:C.mock.sm, fontWeight:isSkin?700:400, color:isSkin?color:C.gray2, writingMode:"vertical-rl" }}>
             {isSkin ? "▶ 백스킨(우)" : "백스킨(우)"}
           </span>
         </div>
@@ -1102,9 +1107,9 @@ const PkgMockSub = ({ includedIds, color }) => (
 const PkgMockMobile = ({ includedIds, color }) => (
   <div style={{ background:"#FAFAFA", borderRadius:10, overflow:"hidden", border:"2px solid #DDE1E7" }}>
     <div style={{ background:"#212936", padding:"5px 8px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-      <span style={{ color:"#fff", fontWeight:900, fontSize:9 }}>GAMEJOB</span>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:C.mock.md }}>GAMEJOB</span>
       <div style={{ display:"flex", gap:5 }}>
-        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:6.5 }}>{m}</span>)}
+        {["채용정보","커뮤니티"].map(m => <span key={m} style={{ color:"rgba(255,255,255,0.4)", fontSize:C.mock.sm }}>{m}</span>)}
       </div>
     </div>
     <div style={{ padding:"4px" }}>
@@ -1132,13 +1137,13 @@ function PackageCompareNew({ bannerPackages }) {
         </colgroup>
         <thead>
           <tr>
-            <th style={{ padding:"16px 14px", background:C.grayL, borderBottom:`1px solid ${C.border}`, textAlign:"left", fontSize:11, color:C.gray, fontWeight:600, verticalAlign:"middle" }}>구분</th>
+            <th style={{ padding:"16px 14px", background:C.grayL, borderBottom:`1px solid ${C.border}`, textAlign:"left", fontSize:C.fs.xs, color:C.gray, fontWeight:600, verticalAlign:"middle" }}>구분</th>
             {bannerPackages.map(p => {
               const { color } = PKG_STYLES[p.id] ?? {};
               return (
                 <th key={p.id} id={anchorId(p.id)} style={{ padding:"16px", background:C.grayL, borderBottom:`1px solid ${C.border}`, borderLeft:`1px solid ${C.border}`, textAlign:"center", verticalAlign:"middle", scrollMarginTop:110 }}>
-                  <div style={{ color, fontWeight:800, fontSize:16 }}>{p.name}</div>
-                  <span style={{ display:"inline-block", marginTop:6, background:color, color:"#fff", fontSize:10, fontWeight:700, padding:"2px 10px", borderRadius:20 }}>
+                  <div style={{ color, fontWeight:800, fontSize:C.fs.lg2 }}>{p.name}</div>
+                  <span style={{ display:"inline-block", marginTop:6, background:color, color:"#fff", fontSize:C.mock.lg, fontWeight:700, padding:"2px 10px", borderRadius:20 }}>
                     {p.includedIds.length} 지면
                   </span>
                 </th>
@@ -1154,22 +1159,22 @@ function PackageCompareNew({ bannerPackages }) {
               const { color, bgLight } = PKG_STYLES[p.id] ?? {};
               return (
                 <td key={p.id} style={{ padding:"11px 16px", borderLeft:`1px solid ${C.border}`, background:bgLight, textAlign:"center" }}>
-                  <span style={{ fontSize:13, fontWeight:700, color }}>{(p.hashtags||[]).join("  ")}</span>
+                  <span style={{ fontSize:C.fs.base, fontWeight:700, color }}>{(p.hashtags||[]).join("  ")}</span>
                 </td>
               );
             })}
           </tr>
           {/* 핵심특징 */}
           <tr style={{ borderBottom:`1px solid ${C.border}` }}>
-            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:12, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>핵심특징</td>
+            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:C.fs.sm, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>핵심특징</td>
             {bannerPackages.map(p => {
               const { color } = PKG_STYLES[p.id] ?? {};
               return (
                 <td key={p.id} style={{ padding:"16px", borderLeft:`1px solid ${C.border}`, verticalAlign:"top" }}>
                   {(p.features||[]).map((f,i) => (
                     <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:i < (p.features.length-1) ? 10 : 0 }}>
-                      <span style={{ color, fontWeight:700, fontSize:13, flexShrink:0 }}>{["①","②","③"][i]}</span>
-                      <span style={{ fontSize:12.5, color:C.sub, lineHeight:1.6 }}>{f}</span>
+                      <span style={{ color, fontWeight:700, fontSize:C.fs.base, flexShrink:0 }}>{["①","②","③"][i]}</span>
+                      <span style={{ fontSize:C.fs.base, color:C.sub, lineHeight:1.6 }}>{f}</span>
                     </div>
                   ))}
                 </td>
@@ -1178,7 +1183,7 @@ function PackageCompareNew({ bannerPackages }) {
           </tr>
           {/* 포함지면 */}
           <tr style={{ borderBottom:`1px solid ${C.border}` }}>
-            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:12, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>포함지면</td>
+            <td style={{ padding:"16px 14px", fontWeight:700, fontSize:C.fs.sm, color:C.text, verticalAlign:"top", whiteSpace:"nowrap" }}>포함지면</td>
             {bannerPackages.map(p => (
               <td key={p.id} style={{ padding:"16px", borderLeft:`1px solid ${C.border}`, verticalAlign:"top" }}>
                 {(() => {
@@ -1193,8 +1198,8 @@ function PackageCompareNew({ bannerPackages }) {
                   });
                   return Object.entries(byZone).map(([zone, names]) => (
                     <div key={zone} style={{ marginBottom:5 }}>
-                      <span style={{ fontSize:11, color:C.gray2, fontWeight:600 }}>{zone} : </span>
-                      <span style={{ fontSize:11.5, color:C.sub }}>{names.join(" · ")}</span>
+                      <span style={{ fontSize:C.fs.xs, color:C.gray2, fontWeight:600 }}>{zone} : </span>
+                      <span style={{ fontSize:C.fs.sm, color:C.sub }}>{names.join(" · ")}</span>
                     </div>
                   ));
                 })()}
@@ -1203,11 +1208,11 @@ function PackageCompareNew({ bannerPackages }) {
           </tr>
           {/* 가격 */}
           <tr style={{ background:C.navy }}>
-            <td style={{ padding:"14px", fontWeight:700, fontSize:12, color:"#fff", whiteSpace:"nowrap" }}>가격</td>
+            <td style={{ padding:"14px", fontWeight:700, fontSize:C.fs.sm, color:"#fff", whiteSpace:"nowrap" }}>가격</td>
             {bannerPackages.map(p => (
               <td key={p.id} style={{ padding:"14px 16px", borderLeft:"1px solid rgba(255,255,255,0.1)", textAlign:"center" }}>
-                <div style={{ fontWeight:800, fontSize:17, color:"#fff" }}>{fw(p.price)}</div>
-                <div style={{ fontSize:11, color:"rgba(255,255,255,0.5)", marginTop:3 }}>1주일 · VAT포함</div>
+                <div style={{ fontWeight:800, fontSize:C.fs.xl, color:"#fff" }}>{fw(p.price)}</div>
+                <div style={{ fontSize:C.fs.xs, color:"rgba(255,255,255,0.5)", marginTop:3 }}>1주일 · VAT포함</div>
               </td>
             ))}
           </tr>
@@ -1228,12 +1233,12 @@ function PackageMockupViewer({ bannerPackages }) {
   return (
     <div id="sec-pkg-compare" style={{ background:C.white, borderRadius:12, border:`1px solid ${C.border}`, overflow:"hidden", boxShadow:"0 1px 6px rgba(15,23,42,0.05)", scrollMarginTop:110 }}>
       <div style={{ padding:"12px 20px", borderBottom:`1px solid ${C.border}`, background:C.grayL, display:"flex", alignItems:"center", gap:24 }}>
-        <span style={{ fontSize:13, fontWeight:700, color:C.text, whiteSpace:"nowrap" }}>패키지별 노출 지면</span>
+        <span style={{ fontSize:C.fs.base, fontWeight:700, color:C.text, whiteSpace:"nowrap" }}>패키지별 노출 지면</span>
         <div style={{ display:"flex", gap:0 }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
               border:"none", background:"transparent", cursor:"pointer",
-              padding:"6px 14px", fontSize:12,
+              padding:"6px 14px", fontSize:C.fs.sm,
               fontWeight: tab===t.id ? 700 : 500,
               color: tab===t.id ? C.blue : C.gray,
               borderBottom: tab===t.id ? `2px solid ${C.blue}` : "2px solid transparent",
@@ -1250,7 +1255,7 @@ function PackageMockupViewer({ bannerPackages }) {
           return (
             <div key={p.id} style={{ flex:1, display:"flex", flexDirection:"column", gap:8 }}>
               <div style={{ textAlign:"center" }}>
-                <span style={{ fontSize:12, fontWeight:700, color }}>{p.name}</span>
+                <span style={{ fontSize:C.fs.sm, fontWeight:700, color }}>{p.name}</span>
               </div>
               {tab === "main"   && <PkgMockMain   includedIds={p.includedIds} color={color} />}
               {tab === "sub"    && <PkgMockSub    includedIds={p.includedIds} color={color} />}
@@ -1279,7 +1284,7 @@ function LNB({ groups, activeId, onSelect }) {
               <rect x="0.5" y="7.5" width="5" height="5" rx="1" fill={C.gray2}/>
               <rect x="7.5" y="7.5" width="5" height="5" rx="1" fill={C.gray2}/>
             </svg>
-            <span style={{ fontSize:12, fontWeight:700, color:C.text }}>{g.group}</span>
+            <span style={{ fontSize:C.fs.sm, fontWeight:700, color:C.text }}>{g.group}</span>
           </div>
           {g.items.map(item => {
             const active = activeId === item.id;
@@ -1287,7 +1292,7 @@ function LNB({ groups, activeId, onSelect }) {
               <button key={item.id} onClick={() => onSelect(item.id, item.isAnchor)} style={{
                 display:"block", width:"100%", textAlign:"left",
                 padding:"5px 16px 5px 34px",
-                fontSize:12.5, fontWeight:active?600:400,
+                fontSize:C.fs.base, fontWeight:active?600:400,
                 color:active?C.blue:C.gray,
                 background:active?C.blueL:"transparent",
                 border:"none",
@@ -1338,11 +1343,11 @@ function InquiryModal({ onClose }) {
   const inputStyle = {
     width:"100%", boxSizing:"border-box",
     border:`1px solid ${C.border2}`, borderRadius:7,
-    padding:"9px 12px", fontSize:13, color:C.text,
+    padding:"9px 12px", fontSize:C.fs.base, color:C.text,
     outline:"none", background:"#fff",
     fontFamily:"inherit",
   };
-  const labelStyle = { fontSize:12, fontWeight:600, color:C.gray, marginBottom:5, display:"block" };
+  const labelStyle = { fontSize:C.fs.sm, fontWeight:600, color:C.gray, marginBottom:5, display:"block" };
 
   return (
     <div style={{
@@ -1358,21 +1363,21 @@ function InquiryModal({ onClose }) {
         {/* 헤더 */}
         <div style={{ padding:"20px 24px 16px", borderBottom:`1px solid ${C.border}`, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
-            <h2 style={{ margin:0, fontSize:18, fontWeight:800, color:C.text }}>광고 문의</h2>
-            <p style={{ margin:"4px 0 0", fontSize:12, color:C.gray2 }}>문의 내용은 노션으로 전달되며 담당자가 확인 후 연락드립니다.</p>
+            <h2 style={{ margin:0, fontSize:C.fs.xl, fontWeight:800, color:C.text }}>광고 문의</h2>
+            <p style={{ margin:"4px 0 0", fontSize:C.fs.sm, color:C.gray2 }}>문의 내용은 노션으로 전달되며 담당자가 확인 후 연락드립니다.</p>
           </div>
-          <button onClick={onClose} style={{ border:"none", background:"transparent", cursor:"pointer", fontSize:20, color:C.gray2, lineHeight:1, padding:4 }}>✕</button>
+          <button onClick={onClose} style={{ border:"none", background:"transparent", cursor:"pointer", fontSize:C.fs["2xl"], color:C.gray2, lineHeight:1, padding:4 }}>✕</button>
         </div>
 
         {status === "done" ? (
           /* 완료 화면 */
           <div style={{ padding:"48px 24px", textAlign:"center" }}>
-            <div style={{ fontSize:40, marginBottom:16 }}>✅</div>
-            <p style={{ fontSize:16, fontWeight:700, color:C.text, margin:"0 0 8px" }}>문의가 접수되었습니다!</p>
-            <p style={{ fontSize:13, color:C.gray, margin:"0 0 24px" }}>담당자가 확인 후 이메일로 연락드리겠습니다.</p>
+            <div style={{ fontSize:C.fs["4xl2"], marginBottom:16 }}>✅</div>
+            <p style={{ fontSize:C.fs.lg2, fontWeight:700, color:C.text, margin:"0 0 8px" }}>문의가 접수되었습니다!</p>
+            <p style={{ fontSize:C.fs.base, color:C.gray, margin:"0 0 24px" }}>담당자가 확인 후 이메일로 연락드리겠습니다.</p>
             <button onClick={onClose} style={{
               background:"#000000", color:"#fff", border:"none", borderRadius:8,
-              padding:"10px 28px", fontSize:13, fontWeight:700, cursor:"pointer",
+              padding:"10px 28px", fontSize:C.fs.base, fontWeight:700, cursor:"pointer",
             }}>확인</button>
           </div>
         ) : (
@@ -1412,12 +1417,12 @@ function InquiryModal({ onClose }) {
                 value={form.message} onChange={set("message")} required />
             </div>
             {status === "error" && (
-              <p style={{ margin:0, fontSize:12, color:C.pink }}>⚠ {errMsg || "전송에 실패했습니다. 다시 시도해주세요."}</p>
+              <p style={{ margin:0, fontSize:C.fs.sm, color:C.pink }}>⚠ {errMsg || "전송에 실패했습니다. 다시 시도해주세요."}</p>
             )}
             <button type="submit" disabled={status === "sending"} style={{
               background: status === "sending" ? C.gray2 : "#000000",
               color:"#fff", border:"none", borderRadius:8,
-              padding:"12px", fontSize:14, fontWeight:700,
+              padding:"12px", fontSize:C.fs.md, fontWeight:700,
               cursor: status === "sending" ? "not-allowed" : "pointer",
               transition:"background .15s",
             }}>
@@ -1515,11 +1520,11 @@ export default function AdCenter({ initialTab = "all", onBack }) {
         mockup = (
           <div style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
             <div style={{ width:155, flexShrink:0 }}>
-              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+              <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
               <MockMobile hl="commPick" ads={bannerAds} />
             </div>
             <div style={{ flex:1 }}>
-              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
+              <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>PC</p>
               <MockSub hl="commPick" ads={bannerAds} />
             </div>
           </div>
@@ -1532,7 +1537,7 @@ export default function AdCenter({ initialTab = "all", onBack }) {
         mockup = (
           <div style={{ display:"flex", justifyContent:"center" }}>
             <div style={{ width:155, flexShrink:0 }}>
-              <p style={{ fontSize:10, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
+              <p style={{ fontSize:C.mock.lg, color:C.gray2, fontWeight:600, marginBottom:6, textAlign:"center" }}>Mobile</p>
               <MockMobile hl={b.id} ads={bannerAds} />
             </div>
           </div>
@@ -1640,7 +1645,7 @@ export default function AdCenter({ initialTab = "all", onBack }) {
   }, [tab]);
 
   return (
-    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif", color:C.text, fontSize:14, fontWeight:400, lineHeight:"20px" }}>
+    <div style={{ minHeight:"100vh", background:C.bg, fontFamily:"'Noto Sans KR','Apple SD Gothic Neo',sans-serif", color:C.text, fontSize:C.fs.md, fontWeight:400, lineHeight:"20px" }}>
 
       {inquiryOpen && <InquiryModal onClose={() => setInquiryOpen(false)} />}
 
@@ -1652,19 +1657,19 @@ export default function AdCenter({ initialTab = "all", onBack }) {
               {onBack && (
                 <button onClick={onBack} style={{
                   background:"none", border:"none", cursor:"pointer",
-                  color:C.gray, fontSize:12, fontWeight:500,
+                  color:C.gray, fontSize:C.fs.sm, fontWeight:500,
                   display:"flex", alignItems:"center", gap:4, padding:"4px 8px 4px 0",
                 }}>
                   ← 홈
                 </button>
               )}
               <img src={gamejobLogo} alt="GAMEJOB" style={{ height:28 }} />
-              {!isMobile && <span style={{ fontSize:13.5, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>}
+              {!isMobile && <span style={{ fontSize:C.fs.md, color:C.sub, fontWeight:500 }}>채용 마케팅 상품안내</span>}
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
               {!isMobile && [["all","전체상품 소개서"],["package","배너패키지 상품 소개서"]].map(([v,l]) => (
                 <button key={v} onClick={() => handleTabChange(v)} style={{
-                  height:34, padding:"0 14px", fontSize:12, fontWeight:600, borderRadius:7, cursor:"pointer",
+                  height:34, padding:"0 14px", fontSize:C.fs.sm, fontWeight:600, borderRadius:7, cursor:"pointer",
                   border:`1px solid ${C.border2}`,
                   background:C.white, color:C.gray,
                   display:"flex", alignItems:"center", gap:5,
@@ -1716,7 +1721,7 @@ export default function AdCenter({ initialTab = "all", onBack }) {
               return (
                 <button key={item.id} onClick={() => handleSelect(item.id, item.isAnchor)} style={{
                   display:"inline-block", flexShrink:0,
-                  padding:"5px 12px", fontSize:12, fontWeight:active?700:400,
+                  padding:"5px 12px", fontSize:C.fs.sm, fontWeight:active?700:400,
                   color:active?C.blue:C.gray,
                   background:active?C.blueL:"transparent",
                   border:`1px solid ${active?C.blue:C.border}`,
@@ -1780,8 +1785,8 @@ export default function AdCenter({ initialTab = "all", onBack }) {
 
       {/* ── 푸터 ── */}
       <footer style={{ borderTop:`1px solid ${C.border}`, background:C.white, padding:"16px 40px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-        <p style={{ fontSize:12, color:C.gray2, margin:0 }}>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
-        <p style={{ fontSize:11.5, color:C.gray2, margin:0 }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주일, 배너 1주일 이상</p>
+        <p style={{ fontSize:C.fs.sm, color:C.gray2, margin:0 }}>게임잡 광고센터 · T. 02-3466-5266 · E. ad@gamejob.co.kr</p>
+        <p style={{ fontSize:C.fs.sm, color:C.gray2, margin:0 }}>* 모든 가격 VAT포함 / 최소 신청기간: 채용관 1주일, 배너 1주일 이상</p>
       </footer>
     </div>
   );

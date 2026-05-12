@@ -40,9 +40,6 @@ const STATS = [
 
 const CATEGORIES = [
   {
-    tag: "주목도 강화",
-    tagColor: "#00A6E2",
-    tagBg: "#EBFAFF",
     title: "메인 채용관",
     titleColor: "#00A6E2",
     type: "프리미엄 노출형",
@@ -59,9 +56,6 @@ const CATEGORIES = [
     cta: "all",
   },
   {
-    tag: "타깃 효율",
-    tagColor: "#308242",
-    tagBg: "#ECF8EF",
     title: "채용정보 채용관",
     titleColor: "#308242",
     type: "성과·효율형",
@@ -78,9 +72,6 @@ const CATEGORIES = [
     cta: "all",
   },
   {
-    tag: "브랜드 확산",
-    tagColor: "#C27A00",
-    tagBg: "#FFF7E6",
     title: "배너 광고",
     titleColor: "#C27A00",
     type: "브랜딩형",
@@ -144,7 +135,7 @@ export default function LandingPage({ onEnter }) {
           lineHeight: 1.25, letterSpacing: "-0.03em", margin: "0 0 16px",
         }}>
           게임잡 채용 마케팅으로<br />
-          <span style={{ color: "#00A6E2" }}>최적의 게임 인재</span>를 만나세요
+          <span style={{ color: "#00A6E2" }}>원하는 인재</span>를 더 빠르게!
         </h1>
 
         <p style={{
@@ -198,7 +189,7 @@ export default function LandingPage({ onEnter }) {
 
           <div style={{ marginBottom: 48, textAlign: "center" }}>
             <h2 style={{ fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 900, color: "#131927", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
-              게임잡 주요 상품 비교
+              채용 목표에 따라 선택하세요
             </h2>
             <p style={{ fontSize: 15, color: "#6D717F", margin: 0 }}>
               채용 목적에 따라 메인 노출형, 타깃 채용형, 브랜딩형 상품을 선택할 수 있습니다.
@@ -218,14 +209,6 @@ export default function LandingPage({ onEnter }) {
               }}>
                 {/* 카드 헤더 */}
                 <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #F3F4F6" }}>
-                  <div style={{
-                    display: "inline-flex",
-                    background: cat.tagBg, color: cat.tagColor,
-                    fontSize: 11, fontWeight: 700,
-                    borderRadius: 100, padding: "4px 10px", marginBottom: 10,
-                  }}>
-                    {cat.tag}
-                  </div>
                   <div style={{ fontSize: 22, fontWeight: 900, color: cat.titleColor, letterSpacing: "-0.02em", marginBottom: 8 }}>
                     {cat.title}
                   </div>
@@ -243,9 +226,9 @@ export default function LandingPage({ onEnter }) {
                 <div style={{ padding: "0 0 8px", flex: 1 }}>
                   {cat.rows.map((row, j) => (
                     <div key={j} style={{
-                      display: "grid", gridTemplateColumns: "80px 1fr",
+                      display: "grid", gridTemplateColumns: "60px 1fr",
                       borderBottom: "1px solid #F3F4F6",
-                      padding: "14px 24px", gap: 12, alignItems: "start",
+                      padding: "14px 24px", gap: 8, alignItems: "start",
                     }}>
                       <span style={{ fontSize: 12, fontWeight: 700, color: "#9EA2AE", whiteSpace: "nowrap", paddingTop: 1 }}>
                         {row.label}
