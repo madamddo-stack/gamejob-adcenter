@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "gamejob-adcenter-.+\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://www.gamejob.co.kr",
+      "permanent": false
+    }
+  ]
+}
